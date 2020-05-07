@@ -31,11 +31,14 @@ add_subdirectory (lib/glfw)
 #
 # Set include paths
 #
-include_directories (src/
-                     lib/glad/include/
-                     lib/glfw/include/
-                     lib/glm/
-                     lib/stb/)
+include_directories (
+    src/
+    lib/glad/include/
+    lib/glfw/include/
+    lib/glm/
+    lib/stb_image/
+    lib/fast_obj/
+)
 
 #
 # Add files
