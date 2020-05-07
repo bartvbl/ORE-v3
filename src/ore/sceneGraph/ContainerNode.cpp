@@ -19,3 +19,7 @@ std::vector<ore::SceneNode> *ore::ContainerNode::getChildren() {
 void ore::ContainerNode::destroy() {
 
 }
+
+std::string ore::ContainerNode::getName() {
+    return name;
+}

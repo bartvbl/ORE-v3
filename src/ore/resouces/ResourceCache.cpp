@@ -1,5 +1,5 @@
 #include "ResourceCache.h"
 
-void ore::ResourceCache::init() {
+void ore::resources::ResourceCache::init() {
 
 }

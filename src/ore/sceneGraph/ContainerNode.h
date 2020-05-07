@@ -5,14 +5,15 @@
 
 namespace ore {
     class ContainerNode : public SceneNode {
-    private:
-        std::vector<SceneNode> childVector;
     public:
+        std::vector<SceneNode> childVector;
         std::string name;
 
         ContainerNode() : name("Container Node") {}
 
         ContainerNode(std::string nodeName) : name(nodeName) {}
+
+        std::string getName() override;
 
         void preRender(RenderState &renderState) override;
         void render(RenderState &renderState) override;

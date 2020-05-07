@@ -1,22 +1,17 @@
-#ifndef SHADER_HPP
-#define SHADER_HPP
 #pragma once
 
-// System headers
 #include <glad/glad.h>
-
-// Standard headers
 #include <cassert>
 #include <fstream>
 #include <memory>
 #include <string>
 
 
-namespace Gloom
+namespace ore
 {
-    class Shader
+    class ShaderLoader
     {
-    public:
+    /*public:
         Shader()            { mProgram = glCreateProgram(); }
 
         // Public member functions
@@ -25,7 +20,6 @@ namespace Gloom
         GLuint get()        { return mProgram; }
         void   destroy()    { glDeleteProgram(mProgram); }
 
-        /* Attach a shader to the current shader program */
         void attach(std::string const &filename)
         {
             // Load GLSL Shader from source
@@ -64,8 +58,6 @@ namespace Gloom
             glDeleteShader(shader);
         }
 
-
-        /* Links all attached shaders together into a shader program */
         void link()
         {
             // Link all attached shaders
@@ -84,9 +76,6 @@ namespace Gloom
             assert(mStatus);
         }
 
-
-        /* Convenience function that attaches and links a vertex and a
-           fragment shader in a shader program */
         void makeBasicShader(std::string const &vertexFilename,
                              std::string const &fragmentFilename)
         {
@@ -95,8 +84,6 @@ namespace Gloom
             link();
         }
 
-
-        /* Used for debugging shader programs (expensive to run) */
         bool isValid()
         {
             // Validate linked shader program
@@ -115,8 +102,6 @@ namespace Gloom
             return true;
         }
 
-
-        /* Helper function for creating shaders */
         GLuint create(std::string const &filename)
         {
             // Extract file extension and create the correct shader type
@@ -140,7 +125,6 @@ namespace Gloom
         GLuint mProgram;
         GLint  mStatus;
         GLint  mLength;
+    */
     };
 }
-
-#endif

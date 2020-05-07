@@ -23,6 +23,7 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
     this->world.init();
 
     this->currentGameState = initialState;
+    this->currentGameState->set(&this->world.resourceCache);
 
     // Rendering Loop
     while (!glfwWindowShouldClose(window))
@@ -33,12 +34,16 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
         glfwPollEvents();
         handleKeyboardInput(window);
 
+        this->currentGameState->update();
+
         this->world.frameTick();
 
         ore::RenderPass::render(&this->world.scene.rootNode);
 
         glfwSwapBuffers(window);
     }
+
+    this->currentGameState->unset();
 
     glfwTerminate();
 }

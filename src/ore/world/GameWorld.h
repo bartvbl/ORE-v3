@@ -17,7 +17,7 @@ namespace ore {
 
     class GameWorld {
     public:
-        ore::ResourceCache resourceCache;
+        ore::resources::ResourceCache resourceCache;
         ore::WorldServices services;
         ore::Scene scene;
 
