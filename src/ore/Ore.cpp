@@ -2,6 +2,7 @@
 #include <ore/core/window/WindowSettings.h>
 #include <ore/core/window/Window.h>
 #include <glad/glad.h>
+#include <ore/gl/RenderPass.h>
 #include "Ore.h"
 
 void handleKeyboardInput(GLFWwindow* window)
@@ -13,10 +14,15 @@ void handleKeyboardInput(GLFWwindow* window)
     }
 }
 
-void ore::Engine::run(std::experimental::filesystem::path engineConfigFileLocation, ore::GameState *initialState) {
-    // Initialise window using GLFW
-    WindowSettings settings;
+void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameState *initialState) {
+    // Create OpenGL context and window
+    ore::WindowSettings settings;
     GLFWwindow* window = ore::window::initialise(settings);
+
+    // After context creation we can initialise services
+    this->world.init();
+
+    this->currentGameState = initialState;
 
     // Rendering Loop
     while (!glfwWindowShouldClose(window))
@@ -27,6 +33,9 @@ void ore::Engine::run(std::experimental::filesystem::path engineConfigFileLocati
         glfwPollEvents();
         handleKeyboardInput(window);
 
+        this->world.frameTick();
+
+        ore::RenderPass::render(&this->world.scene.rootNode);
 
         glfwSwapBuffers(window);
     }

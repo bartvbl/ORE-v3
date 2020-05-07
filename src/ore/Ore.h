@@ -1,12 +1,18 @@
 #pragma once
 
-#include <experimental/filesystem>
+#include <ore/utilities/filesystem.h>
 #include <ore/core/GameState.h>
+#include <ore/world/GameWorld.h>
 
 namespace ore {
-    struct Engine {
+    class Engine {
+    private:
+        ore::GameWorld world;
+        ore::GameState* currentGameState;
+
+    public:
         void run(
-            std::experimental::filesystem::path engineConfigFileLocation,
+            ore::filesystem::path engineConfigFileLocation,
             ore::GameState* initialState
         );
     };

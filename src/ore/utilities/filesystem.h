@@ -2,4 +2,6 @@
 
 #include <experimental/filesystem>
 
-namespace ore::filesystem = std::experimental::filesystem;
+namespace ore {
+    namespace filesystem = std::experimental::filesystem;
+}
