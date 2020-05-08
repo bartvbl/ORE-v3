@@ -38,6 +38,7 @@ include_directories (
     lib/glm/
     lib/stb_image/
     lib/fast_obj/
+    lib/json/
 )
 
 #
