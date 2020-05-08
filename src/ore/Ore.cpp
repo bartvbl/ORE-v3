@@ -2,7 +2,7 @@
 #include <ore/core/window/WindowSettings.h>
 #include <ore/core/window/Window.h>
 #include <glad/glad.h>
-#include <ore/gl/RenderPass.h>
+#include <ore/gl/render/RenderPass.h>
 #include "Ore.h"
 
 void handleKeyboardInput(GLFWwindow* window)
@@ -20,7 +20,7 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
     GLFWwindow* window = ore::window::initialise(settings);
 
     // After context creation we can initialise services
-    this->world.init();
+    this->world.init(window);
 
     this->currentGameState = initialState;
     this->currentGameState->set(&this->world.resourceCache);

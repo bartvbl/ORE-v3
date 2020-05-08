@@ -6,6 +6,7 @@
 #include <ore/services/InputService.h>
 #include <ore/services/SoundService.h>
 #include <ore/sceneGraph/Scene.h>
+#include <GLFW/glfw3.h>
 
 namespace ore {
     struct WorldServices {
@@ -21,7 +22,7 @@ namespace ore {
         ore::WorldServices services;
         ore::Scene scene;
 
-        void init();
+        void init(GLFWwindow* window);
 
         void frameTick();
     };

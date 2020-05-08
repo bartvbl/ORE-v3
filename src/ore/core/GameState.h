@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ore/resources/loadScreen/LoadScreenRenderer.h>
+#include <ore/world/GameWorld.h>
 
 namespace ore {
     class GameState {

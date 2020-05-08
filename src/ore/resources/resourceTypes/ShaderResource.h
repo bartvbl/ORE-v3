@@ -1,10 +1,15 @@
 #pragma once
 
+#include <ore/resources/resourceTypes/ResourceType.h>
+
 namespace ore {
     namespace resources {
-        struct ShaderResource {
+        class ShaderResource : public ore::resources::ResourceType {
+            void load() override;
 
+            bool requiresMainThread() override;
+
+            void completeLoadOnMainThread() override;
         };
     }
 }
-

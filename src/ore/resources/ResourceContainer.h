@@ -15,7 +15,7 @@ namespace ore {
             bool loadNext();
             void evict(std::string itemID);
 
-            const ContentsType* getResourceBlocking(std::string itemID);
+            const ContentsType* getResource_Blocking(std::string itemID);
         };
     }
 }

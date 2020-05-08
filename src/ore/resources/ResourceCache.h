@@ -9,6 +9,7 @@
 #include <ore/resources/resourceTypes/ShaderResource.h>
 #include <ore/resources/resourceTypes/SoundResource.h>
 #include <ore/resources/ResourceContainer.h>
+#include <GLFW/glfw3.h>
 
 namespace ore {
     namespace resources {
@@ -25,6 +26,8 @@ namespace ore {
         };
 
         class ResourceCache {
+        private:
+            GLFWwindow* window;
         public:
             ore::resources::ResourceContainer<ore::resources::TextureResource> textures;
             ore::resources::ResourceContainer<ore::resources::MeshResource> meshes;
@@ -33,7 +36,7 @@ namespace ore {
             ore::resources::ResourceContainer<ore::resources::LXFMLResource> lxfmlMeshes;
             ore::resources::ResourceContainer<ore::resources::ShaderResource> shaders;
 
-            void init();
+            void init(GLFWwindow* window);
 
             void enqueueResourceFile(
                     ore::filesystem::path resourceFileLocation);

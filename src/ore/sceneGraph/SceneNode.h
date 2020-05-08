@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ore/gl/RenderState.h>
+#include <ore/gl/render/RenderState.h>
 #include <vector>
 #include <string>
 

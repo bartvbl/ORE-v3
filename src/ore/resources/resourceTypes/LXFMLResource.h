@@ -1,9 +1,15 @@
 #pragma once
 
+#include <ore/resources/resourceTypes/ResourceType.h>
+
 namespace ore {
     namespace resources {
-        struct LXFMLResource {
+        class LXFMLResource : public ore::resources::ResourceType {
+            void load() override;
 
+            bool requiresMainThread() override;
+
+            void completeLoadOnMainThread() override;
         };
     }
 }

@@ -16,6 +16,6 @@ void ore::resources::ResourceContainer<ContentsType>::evict(std::string itemID) 
 }
 
 template<typename ContentsType>
-const ContentsType* ore::resources::ResourceContainer<ContentsType>::getResourceBlocking(std::string itemID) {
+const ContentsType* ore::resources::ResourceContainer<ContentsType>::getResource_Blocking(std::string itemID) {
     return nullptr;
 }
