@@ -6,7 +6,7 @@ namespace ore {
     }
 }
 
-#include <ore/resouces/ResourceCache.h>
+#include <ore/resources/ResourceCache.h>
 
 namespace ore {
     namespace resources {

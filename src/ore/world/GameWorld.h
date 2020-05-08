@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ore/resouces/ResourceCache.h>
+#include <ore/resources/ResourceCache.h>
 #include <ore/services/AIService.h>
 #include <ore/services/AnimationService.h>
 #include <ore/services/InputService.h>
