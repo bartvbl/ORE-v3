@@ -11,8 +11,9 @@ namespace ore {
 namespace ore {
     namespace resources {
         class LoadScreenRenderer {
-            virtual void init(ore::resources::ResourceCache* cache) = 0;
+        public:
             virtual void draw(float progress) = 0;
+            virtual void init(ore::resources::ResourceCache* cache) = 0;
         };
     }
 }

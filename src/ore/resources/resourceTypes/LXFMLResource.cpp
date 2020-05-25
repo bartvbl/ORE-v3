@@ -1,6 +1,6 @@
 #include "LXFMLResource.h"
 
-void ore::resources::LXFMLResource::load() {
+void ore::resources::LXFMLResource::load(const ore::filesystem::path &fileLocation) {
 
 }
 

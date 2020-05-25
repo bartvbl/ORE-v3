@@ -1,6 +1,6 @@
 #include "AnimationResource.h"
 
-void ore::resources::AnimationResource::load() {
+void ore::resources::AnimationResource::load(const ore::filesystem::path &fileLocation) {
 
 }
 

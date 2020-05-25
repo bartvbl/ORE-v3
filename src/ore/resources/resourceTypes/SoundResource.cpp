@@ -1,6 +1,6 @@
 #include "SoundResource.h"
 
-void ore::resources::SoundResource::load() {
+void ore::resources::SoundResource::load(const ore::filesystem::path &fileLocation) {
 
 }
 

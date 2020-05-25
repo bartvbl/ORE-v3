@@ -5,7 +5,7 @@
 namespace ore {
     namespace resources {
         class ShaderResource : public ore::resources::ResourceType {
-            void load() override;
+            void load(const ore::filesystem::path &fileLocation) override;
 
             bool requiresMainThread() override;
 

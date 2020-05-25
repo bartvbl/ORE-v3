@@ -1,6 +1,6 @@
 #include "ShaderResource.h"
 
-void ore::resources::ShaderResource::load() {
+void ore::resources::ShaderResource::load(const ore::filesystem::path &fileLocation) {
 
 }
 

@@ -9,6 +9,7 @@
 #include <ore/resources/resourceTypes/ShaderResource.h>
 #include <ore/resources/resourceTypes/SoundResource.h>
 #include <ore/resources/ResourceContainer.h>
+#include <ore/resources/ResourceLoadPriority.h>
 #include <GLFW/glfw3.h>
 
 namespace ore {
@@ -16,18 +17,13 @@ namespace ore {
         // Forward declaration due to both relying on one another
         class LoadScreenRenderer;
 
-        enum class ResourceLoadPriority {
-            // Must be present in the cache at all times
-            REQUIRED,
-            // Must eventually be in the cache, but not within the next few minutes after the loading screen completes
-            STREAMING,
-            // Keep unloaded unless requested
-            ON_DEMAND
-        };
-
         class ResourceCache {
         private:
             GLFWwindow* window;
+            unsigned int countEnqueuedItems(ore::resources::ResourceLoadPriority threshold);
+            void runMainThreadCompletions();
+
+            void registerSingleEntry(std::string id, ore::filesystem::path fileLocation, ore::resources::ResourceLoadPriority priority);
         public:
             ore::resources::ResourceContainer<ore::resources::TextureResource> textures;
             ore::resources::ResourceContainer<ore::resources::MeshResource> meshes;

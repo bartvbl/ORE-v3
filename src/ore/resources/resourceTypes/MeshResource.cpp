@@ -1,6 +1,6 @@
 #include "MeshResource.h"
 
-void ore::resources::MeshResource::load() {
+void ore::resources::MeshResource::load(const ore::filesystem::path &fileLocation) {
 
 }
 

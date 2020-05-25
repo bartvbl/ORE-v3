@@ -1,6 +1,6 @@
 #include "TextureResource.h"
 
-void ore::resources::TextureResource::load() {
+void ore::resources::TextureResource::load(const ore::filesystem::path &fileLocation) {
 
 }
 
