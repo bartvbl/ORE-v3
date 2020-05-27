@@ -5,15 +5,6 @@
 #include <ore/gl/render/RenderPass.h>
 #include "Ore.h"
 
-void handleKeyboardInput(GLFWwindow* window)
-{
-    // Use escape key for terminating the GLFW window
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    }
-}
-
 void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameState *initialState) {
     // Create OpenGL context and window
     ore::WindowSettings settings;
@@ -28,24 +19,14 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
     // Rendering Loop
     while (!glfwWindowShouldClose(window))
     {
-        // Clear colour and depth buffers
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glfwPollEvents();
-        handleKeyboardInput(window);
-
+        ore::window::newFrame();
         this->currentGameState->update();
-
         this->world.frameTick();
-
         ore::RenderPass::render(&this->world.scene.rootNode);
-
         glfwSwapBuffers(window);
     }
 
     this->currentGameState->unset();
-
     this->world.shutdown();
-
     glfwTerminate();
 }

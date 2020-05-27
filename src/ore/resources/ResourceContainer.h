@@ -30,6 +30,8 @@ namespace ore {
             std::queue<std::string> mainThreadCompletionQueue;
             std::mutex loadingQueueMutex;
             std::mutex mainThreadQueueMutex;
+            unsigned int requiredItemsInProgress = 0;
+            unsigned int streamingItemsInProgress = 0;
 
             void loadEntry(const std::string &entryID) {
                 std::cout << "Loading entry: " + entryID + "\n" << std::flush;
@@ -49,6 +51,8 @@ namespace ore {
                 } else {
                     entry->second.isLoaded = true;
                 }
+                #pragma omp atomic
+                requiredItemsInProgress--;
             }
 
             void runMainThreadJobs() {
@@ -68,18 +72,19 @@ namespace ore {
             unsigned int getEnqueuedItemCount(ore::resources::ResourceLoadPriority threshold) {
                 unsigned int enqueuedItemCount = 0;
                 if(threshold == ore::resources::ResourceLoadPriority::REQUIRED) {
-                    enqueuedItemCount += requiredLoadingQueue.size();
+                    enqueuedItemCount += requiredItemsInProgress;
                 }
                 if((threshold == ore::resources::ResourceLoadPriority::STREAMING ||
                     threshold == ore::resources::ResourceLoadPriority::REQUIRED)) {
-                    enqueuedItemCount += streamLoadingQueue.size();
+                    enqueuedItemCount += streamingItemsInProgress;
                 }
                 return enqueuedItemCount;
             }
 
             bool loadNext(ore::resources::ResourceLoadPriority threshold) {
                 loadingQueueMutex.lock();
-                if(threshold == ore::resources::ResourceLoadPriority::REQUIRED &&
+                if((threshold == ore::resources::ResourceLoadPriority::STREAMING ||
+                    threshold == ore::resources::ResourceLoadPriority::REQUIRED) &&
                    !requiredLoadingQueue.empty()) {
                     std::string nextEntry = requiredLoadingQueue.front();
                     requiredLoadingQueue.pop();
@@ -87,8 +92,7 @@ namespace ore {
                     loadEntry(nextEntry);
                     return true;
                 }
-                if((threshold == ore::resources::ResourceLoadPriority::STREAMING ||
-                    threshold == ore::resources::ResourceLoadPriority::REQUIRED) &&
+                if((threshold == ore::resources::ResourceLoadPriority::STREAMING) &&
                    !streamLoadingQueue.empty()) {
                     std::string nextEntry = streamLoadingQueue.front();
                     streamLoadingQueue.pop();
@@ -107,6 +111,8 @@ namespace ore {
         public:
             void registerResource(std::string itemID, ore::resources::ResourceLoadPriority priority, ore::filesystem::path fileLocation) {
                 std::cout << "Registering " << itemID << std::endl;
+                #pragma omp atomic
+                requiredItemsInProgress++;
                 ore::resources::ResourceContainerEntry<ContentsType> entry;
                 entry.fileLocation = fileLocation;
                 entry.priority = priority;

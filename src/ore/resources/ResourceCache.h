@@ -24,7 +24,6 @@ namespace ore {
             ore::utilities::Threadpool loadingThreadPool;
             unsigned int countEnqueuedItems(ore::resources::ResourceLoadPriority threshold);
 
-            void runMainThreadCompletions();
             void registerSingleEntry(std::string id, ore::filesystem::path fileLocation, ore::resources::ResourceLoadPriority priority);
             void wakeResourceLoadingThread();
         public:
@@ -45,6 +44,8 @@ namespace ore {
             void runLoadScreenSequence(
                     ore::resources::LoadScreenRenderer* renderer,
                     ore::resources::ResourceLoadPriority threshold);
+
+            void flushMainThreadCompletions();
 
             void shutdown();
         };

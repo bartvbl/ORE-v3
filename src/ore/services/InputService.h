@@ -2,9 +2,12 @@
 
 namespace ore {
     class InputService {
+    private:
+        GLFWwindow* gameWindow;
 
     public:
-        void init();
+        void init(GLFWwindow* gameWindow);
+        void tick();
     };
 }
 

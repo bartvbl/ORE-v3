@@ -12,15 +12,21 @@ void ore::resources::ResourceCache::init(GLFWwindow* gameWindow) {
 
 void ore::resources::ResourceCache::wakeResourceLoadingThread() {
     std::function<void()> threadJob = [this] {
-        bool loadedItem = true;
-        while(loadedItem) {
-            loadedItem = false;
-            loadedItem = loadedItem || this->textures.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
-            loadedItem = loadedItem || this->animations.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
-            loadedItem = loadedItem || this->sounds.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
-            loadedItem = loadedItem || this->meshes.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
-            loadedItem = loadedItem || this->lxfmlMeshes.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
-            loadedItem = loadedItem || this->shaders.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+        bool anItemWasLoaded = true;
+        while(anItemWasLoaded) {
+            anItemWasLoaded = false;
+            anItemWasLoaded = anItemWasLoaded
+                || this->textures.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            anItemWasLoaded = anItemWasLoaded
+                || this->animations.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            anItemWasLoaded = anItemWasLoaded
+                || this->sounds.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            anItemWasLoaded = anItemWasLoaded
+                || this->meshes.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            anItemWasLoaded = anItemWasLoaded
+                || this->lxfmlMeshes.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            anItemWasLoaded = anItemWasLoaded
+                || this->shaders.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
         }
     };
     this->loadingThreadPool.enqueue(threadJob);
@@ -40,6 +46,7 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
 
 void ore::resources::ResourceCache::enqueueResourceFile(ore::filesystem::path resourceFileLocation) {
     std::cout << "Reading resource file " << resourceFileLocation << std::endl;
+    ore::filesystem::path resListDirectory = resourceFileLocation.parent_path();
     nlohmann::json resourceFile;
     std::fstream fileStream(resourceFileLocation, std::ios::in);
     fileStream >> resourceFile;
@@ -48,13 +55,19 @@ void ore::resources::ResourceCache::enqueueResourceFile(ore::filesystem::path re
     assert(resourceFile["meta"]["version"] == 1);
 
     for(const auto& entry : resourceFile["required"]) {
-        registerSingleEntry(entry["id"], entry["src"], ore::resources::ResourceLoadPriority::REQUIRED);
+        registerSingleEntry(entry["id"],
+                resListDirectory / ore::filesystem::path(entry["src"]),
+                ore::resources::ResourceLoadPriority::REQUIRED);
     }
     for(const auto& entry : resourceFile["streaming"]) {
-        registerSingleEntry(entry["id"], entry["src"], ore::resources::ResourceLoadPriority::STREAMING);
+        registerSingleEntry(entry["id"],
+                resListDirectory / ore::filesystem::path(entry["src"]),
+                ore::resources::ResourceLoadPriority::STREAMING);
     }
     for(const auto& entry : resourceFile["onDemand"]) {
-        registerSingleEntry(entry["id"], entry["src"], ore::resources::ResourceLoadPriority::ON_DEMAND);
+        registerSingleEntry(entry["id"],
+                resListDirectory / ore::filesystem::path(entry["src"]),
+                ore::resources::ResourceLoadPriority::ON_DEMAND);
     }
 }
 
@@ -69,7 +82,7 @@ unsigned int ore::resources::ResourceCache::countEnqueuedItems(ore::resources::R
     return totalResourceCount;
 }
 
-void ore::resources::ResourceCache::runMainThreadCompletions() {
+void ore::resources::ResourceCache::flushMainThreadCompletions() {
     textures.runMainThreadJobs();
     animations.runMainThreadJobs();
     sounds.runMainThreadJobs();
@@ -84,6 +97,7 @@ void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadSc
     renderer->init(this);
     unsigned int totalItemsToLoad = countEnqueuedItems(threshold);
     unsigned int remainingItemsToLoad = totalItemsToLoad;
+    std::cout << "Items to load: " << totalItemsToLoad << std::endl;
 
     // Do load screen render
     glClearColor(0, 0, 0, 1);
@@ -93,7 +107,7 @@ void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadSc
         // Clear colour and depth buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        runMainThreadCompletions();
+        flushMainThreadCompletions();
 
         remainingItemsToLoad = countEnqueuedItems(threshold);
         float progress = float(totalItemsToLoad - remainingItemsToLoad) / float(totalItemsToLoad);
@@ -103,6 +117,8 @@ void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadSc
 
         glfwSwapBuffers(window);
     }
+
+    std::cout << "Loading complete!\n";
 }
 
 void ore::resources::ResourceCache::shutdown() {
