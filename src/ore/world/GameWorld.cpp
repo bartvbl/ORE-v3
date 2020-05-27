@@ -11,3 +11,7 @@ void ore::GameWorld::init(GLFWwindow* window) {
 void ore::GameWorld::frameTick() {
 
 }
+
+void ore::GameWorld::shutdown() {
+    resourceCache.shutdown();
+}

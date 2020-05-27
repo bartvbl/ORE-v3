@@ -10,6 +10,22 @@ void ore::resources::ResourceCache::init(GLFWwindow* gameWindow) {
     this->window = gameWindow;
 }
 
+void ore::resources::ResourceCache::wakeResourceLoadingThread() {
+    std::function<void()> threadJob = [this] {
+        bool loadedItem = true;
+        while(loadedItem) {
+            loadedItem = false;
+            loadedItem = loadedItem || this->textures.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            loadedItem = loadedItem || this->animations.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            loadedItem = loadedItem || this->sounds.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            loadedItem = loadedItem || this->meshes.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            loadedItem = loadedItem || this->lxfmlMeshes.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            loadedItem = loadedItem || this->shaders.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+        }
+    };
+    this->loadingThreadPool.enqueue(threadJob);
+}
+
 void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::filesystem::path fileLocation, ore::resources::ResourceLoadPriority priority) {
     std::string extension = fileLocation.extension();
     std::transform(extension.begin(), extension.end(), extension.begin(),
@@ -19,6 +35,7 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
     } else if(extension == ".mdl") {
         this->meshes.registerResource(id, priority, fileLocation);
     }
+    wakeResourceLoadingThread();
 }
 
 void ore::resources::ResourceCache::enqueueResourceFile(ore::filesystem::path resourceFileLocation) {
@@ -66,18 +83,19 @@ void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadSc
 
     renderer->init(this);
     unsigned int totalItemsToLoad = countEnqueuedItems(threshold);
+    unsigned int remainingItemsToLoad = totalItemsToLoad;
 
     // Do load screen render
     glClearColor(0, 0, 0, 1);
 
     // Rendering Loop
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window) && remainingItemsToLoad > 0) {
         // Clear colour and depth buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         runMainThreadCompletions();
 
-        unsigned int remainingItemsToLoad = countEnqueuedItems(threshold);
+        remainingItemsToLoad = countEnqueuedItems(threshold);
         float progress = float(totalItemsToLoad - remainingItemsToLoad) / float(totalItemsToLoad);
         renderer->draw(progress);
 
@@ -85,4 +103,8 @@ void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadSc
 
         glfwSwapBuffers(window);
     }
+}
+
+void ore::resources::ResourceCache::shutdown() {
+    this->loadingThreadPool.shutdown();
 }

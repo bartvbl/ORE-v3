@@ -22,9 +22,13 @@ namespace ore {
         ore::WorldServices services;
         ore::Scene scene;
 
+        GameWorld() : resourceCache(5) {}
+
         void init(GLFWwindow* window);
 
         void frameTick();
+
+        void shutdown();
     };
 }
 

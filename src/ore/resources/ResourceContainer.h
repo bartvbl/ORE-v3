@@ -7,6 +7,7 @@
 #include <cassert>
 #include <iostream>
 #include <queue>
+#include <mutex>
 
 namespace ore {
     namespace resources {
@@ -27,27 +28,41 @@ namespace ore {
             std::queue<std::string> requiredLoadingQueue;
             std::queue<std::string> streamLoadingQueue;
             std::queue<std::string> mainThreadCompletionQueue;
+            std::mutex loadingQueueMutex;
+            std::mutex mainThreadQueueMutex;
 
             void loadEntry(const std::string &entryID) {
-                ore::resources::ResourceContainerEntry<ContentsType>* entry = &resourceMap.find(entryID);
-                ore::resources::ResourceType* resourceType = entry->content;
-                resourceType->load(entry->fileLocation);
+                std::cout << "Loading entry: " + entryID + "\n" << std::flush;
+                typename std::map<std::string, ore::resources::ResourceContainerEntry<ContentsType>>::iterator
+                    entry = resourceMap.find(entryID);
+                ore::resources::ResourceType* resourceType = entry->second.content;
+                // Some order of events exist where a resource is loaded before a loading
+                // thread can get to it. So we do a check here just in case.
+                if(entry->second.isLoaded) {
+                    return;
+                }
+                resourceType->load(entry->second.fileLocation);
                 if(resourceType->requiresMainThread()) {
+                    mainThreadQueueMutex.lock();
                     mainThreadCompletionQueue.push(entryID);
+                    mainThreadQueueMutex.unlock();
                 } else {
-                    entry->isLoaded = true;
+                    entry->second.isLoaded = true;
                 }
             }
 
             void runMainThreadJobs() {
+                mainThreadQueueMutex.lock();
                 while(!mainThreadCompletionQueue.empty()) {
                     std::string nextEntry = mainThreadCompletionQueue.front();
                     mainThreadCompletionQueue.pop();
-                    ore::resources::ResourceContainerEntry<ContentsType>* entry = &resourceMap.find(entryID);
-                    ore::resources::ResourceType* resourceType = entry->content;
+                    typename std::map<std::string, ore::resources::ResourceContainerEntry<ContentsType>>::iterator
+                            entry = resourceMap.find(nextEntry);
+                    ore::resources::ResourceType* resourceType = entry->second.content;
                     resourceType->completeLoadOnMainThread();
-                    entry->isLoaded = true;
+                    entry->second.isLoaded = true;
                 }
+                mainThreadQueueMutex.unlock();
             }
 
             unsigned int getEnqueuedItemCount(ore::resources::ResourceLoadPriority threshold) {
@@ -62,32 +77,42 @@ namespace ore {
                 return enqueuedItemCount;
             }
 
-        public:
             bool loadNext(ore::resources::ResourceLoadPriority threshold) {
+                loadingQueueMutex.lock();
                 if(threshold == ore::resources::ResourceLoadPriority::REQUIRED &&
                    !requiredLoadingQueue.empty()) {
                     std::string nextEntry = requiredLoadingQueue.front();
                     requiredLoadingQueue.pop();
+                    loadingQueueMutex.unlock();
                     loadEntry(nextEntry);
                     return true;
                 }
                 if((threshold == ore::resources::ResourceLoadPriority::STREAMING ||
                     threshold == ore::resources::ResourceLoadPriority::REQUIRED) &&
-                    !streamLoadingQueue.empty()) {
+                   !streamLoadingQueue.empty()) {
                     std::string nextEntry = streamLoadingQueue.front();
                     streamLoadingQueue.pop();
+                    loadingQueueMutex.unlock();
                     loadEntry(nextEntry);
                     return true;
                 }
+                loadingQueueMutex.unlock();
                 return false;
             }
 
+            void evict(const std::string &itemID) {
+
+            }
+
+        public:
             void registerResource(std::string itemID, ore::resources::ResourceLoadPriority priority, ore::filesystem::path fileLocation) {
                 std::cout << "Registering " << itemID << std::endl;
                 ore::resources::ResourceContainerEntry<ContentsType> entry;
                 entry.fileLocation = fileLocation;
                 entry.priority = priority;
+                entry.content = new ContentsType();
                 if(this->resourceMap.find(itemID) == this->resourceMap.end()) {
+                    loadingQueueMutex.lock();
                     this->resourceMap[itemID] = entry;
                     if(priority == ore::resources::ResourceLoadPriority::REQUIRED) {
                         requiredLoadingQueue.emplace(itemID);
@@ -95,11 +120,8 @@ namespace ore {
                     if(priority == ore::resources::ResourceLoadPriority::STREAMING) {
                         streamLoadingQueue.emplace(itemID);
                     }
+                    loadingQueueMutex.unlock();
                 }
-            }
-
-            void evict(const std::string &itemID) {
-
             }
 
             ContentsType* getResource_Blocking(const std::string &itemID) {

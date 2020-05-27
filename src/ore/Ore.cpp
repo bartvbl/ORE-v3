@@ -45,5 +45,7 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
 
     this->currentGameState->unset();
 
+    this->world.shutdown();
+
     glfwTerminate();
 }

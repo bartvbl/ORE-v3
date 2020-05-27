@@ -11,6 +11,7 @@
 #include <ore/resources/ResourceContainer.h>
 #include <ore/resources/ResourceLoadPriority.h>
 #include <GLFW/glfw3.h>
+#include <ore/utilities/Threadpool.h>
 
 namespace ore {
     namespace resources {
@@ -20,10 +21,12 @@ namespace ore {
         class ResourceCache {
         private:
             GLFWwindow* window;
+            ore::utilities::Threadpool loadingThreadPool;
             unsigned int countEnqueuedItems(ore::resources::ResourceLoadPriority threshold);
-            void runMainThreadCompletions();
 
+            void runMainThreadCompletions();
             void registerSingleEntry(std::string id, ore::filesystem::path fileLocation, ore::resources::ResourceLoadPriority priority);
+            void wakeResourceLoadingThread();
         public:
             ore::resources::ResourceContainer<ore::resources::TextureResource> textures;
             ore::resources::ResourceContainer<ore::resources::MeshResource> meshes;
@@ -31,6 +34,8 @@ namespace ore {
             ore::resources::ResourceContainer<ore::resources::SoundResource> sounds;
             ore::resources::ResourceContainer<ore::resources::LXFMLResource> lxfmlMeshes;
             ore::resources::ResourceContainer<ore::resources::ShaderResource> shaders;
+
+            ResourceCache(unsigned int resourceLoadingThreadCount) : loadingThreadPool(resourceLoadingThreadCount) {}
 
             void init(GLFWwindow* window);
 
@@ -40,6 +45,8 @@ namespace ore {
             void runLoadScreenSequence(
                     ore::resources::LoadScreenRenderer* renderer,
                     ore::resources::ResourceLoadPriority threshold);
+
+            void shutdown();
         };
     }
 }
