@@ -1,5 +1,3 @@
-#pragma once
-
 /*
  *
  * MIT License
@@ -25,6 +23,9 @@
  * SOFTWARE.
  *
  */
+
+#ifndef FAST_OBJ_HDR
+#define FAST_OBJ_HDR
 
 
 typedef struct
@@ -271,7 +272,7 @@ static
 void file_close(void* file)
 {
     FILE* f;
-
+    
     f = (FILE*)(file);
     fclose(f);
 }
@@ -281,7 +282,7 @@ static
 size_t file_read(void* file, void* dst, size_t bytes)
 {
     FILE* f;
-
+    
     f = (FILE*)(file);
     return fread(dst, 1, bytes, f);
 }
@@ -293,7 +294,7 @@ unsigned long file_size(void* file)
     FILE* f;
     long p;
     long n;
-
+    
     f = (FILE*)(file);
 
     p = ftell(f);
@@ -313,7 +314,7 @@ char* string_copy(const char* s, const char* e)
 {
     size_t n;
     char*  p;
-
+        
     n = (size_t)(e - s);
     p = (char*)(memory_realloc(0, n + 1));
     if (p)
@@ -339,7 +340,7 @@ char* string_concat(const char* a, const char* s, const char* e)
     size_t an;
     size_t sn;
     char*  p;
-
+        
     an = a ? strlen(a) : 0;
     sn = (size_t)(e - s);
     p = (char*)(memory_realloc(0, an + sn + 1));
@@ -685,12 +686,12 @@ const char* parse_face(fastObjData* data, const char* ptr)
         if (v < 0)
             vn.p = (array_size(data->mesh->positions) / 3) - (fastObjUInt)(-v);
         else
-            vn.p = (size_t)(v);
+            vn.p = (fastObjUInt)(v);
 
         if (t < 0)
             vn.t = (array_size(data->mesh->texcoords) / 2) - (fastObjUInt)(-t);
         else if (t > 0)
-            vn.t = (size_t)(t);
+            vn.t = (fastObjUInt)(t);
         else
             vn.t = 0;
 
@@ -1152,8 +1153,8 @@ static
 void parse_buffer(fastObjData* data, const char* ptr, const char* end)
 {
     const char* p;
-
-
+    
+    
     p = ptr;
     while (p != end)
     {
@@ -1406,3 +1407,5 @@ fastObjMesh* fast_obj_read(const char* path)
 
     return m;
 }
+
+#endif

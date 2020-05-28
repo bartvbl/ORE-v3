@@ -11,3 +11,7 @@ bool ore::resources::ShaderResource::requiresMainThread() {
 void ore::resources::ShaderResource::completeLoadOnMainThread() {
 
 }
+
+void ore::resources::ShaderResource::destroy() {
+
+}

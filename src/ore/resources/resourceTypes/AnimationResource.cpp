@@ -11,3 +11,7 @@ bool ore::resources::AnimationResource::requiresMainThread() {
 void ore::resources::AnimationResource::completeLoadOnMainThread() {
 
 }
+
+void ore::resources::AnimationResource::destroy() {
+
+}

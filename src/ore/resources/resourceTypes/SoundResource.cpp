@@ -11,3 +11,7 @@ bool ore::resources::SoundResource::requiresMainThread() {
 void ore::resources::SoundResource::completeLoadOnMainThread() {
 
 }
+
+void ore::resources::SoundResource::destroy() {
+
+}

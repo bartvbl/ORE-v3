@@ -2,7 +2,7 @@
 
 #include <ore/resources/resourceTypes/material/Material.h>
 #include <string>
-#include <glm/glm.hpp>
+#include <ore/geom/vec3.h>
 
 namespace ore {
     namespace resources {
@@ -12,7 +12,7 @@ namespace ore {
             unsigned int indexBufferEndIndex;
 
             ore::resources::Material material;
-            glm::vec3 pivot;
+            ore::geom::vec3 pivot;
         };
     }
 }

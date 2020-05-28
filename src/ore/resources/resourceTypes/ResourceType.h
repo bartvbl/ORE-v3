@@ -9,6 +9,7 @@ namespace ore {
             virtual void load(const ore::filesystem::path &fileLocation) = 0;
             virtual bool requiresMainThread() = 0;
             virtual void completeLoadOnMainThread() = 0;
+            virtual void destroy() = 0;
         };
     }
 }

@@ -10,6 +10,8 @@ namespace ore {
             bool requiresMainThread() override;
 
             void completeLoadOnMainThread() override;
+
+            void destroy() override;
         };
     }
 }

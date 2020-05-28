@@ -46,7 +46,8 @@ include_directories (
 #
 # Add files
 #
-file (GLOB         LIBRARY_SOURCES lib/glad/src/glad.c)
+file (GLOB         LIBRARY_SOURCES lib/glad/src/glad.c
+                                   lib/fast_obj/fast_obj.c)
 file (GLOB_RECURSE PROJECT_HEADERS src/*.hpp
                                    src/*.h)
 file (GLOB_RECURSE PROJECT_SOURCES src/*.cpp

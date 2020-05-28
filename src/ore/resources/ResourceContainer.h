@@ -33,7 +33,7 @@ namespace ore {
             unsigned int requiredItemsInProgress = 0;
             unsigned int streamingItemsInProgress = 0;
 
-            void loadEntry(const std::string &entryID) {
+            void loadEntry(const std::string &entryID, bool isMainThread) {
                 std::cout << "Loading entry: " + entryID + "\n" << std::flush;
                 typename std::map<std::string, ore::resources::ResourceContainerEntry<ContentsType>>::iterator
                     entry = resourceMap.find(entryID);
@@ -41,16 +41,23 @@ namespace ore {
                 // Some order of events exist where a resource is loaded before a loading
                 // thread can get to it. So we do a check here just in case.
                 if(entry->second.isLoaded) {
+                    std::cout << "Entry is already loaded, exiting.." << std::endl;
                     return;
                 }
+
                 resourceType->load(entry->second.fileLocation);
-                if(resourceType->requiresMainThread()) {
+
+                if(resourceType->requiresMainThread() && !isMainThread) {
                     mainThreadQueueMutex.lock();
                     mainThreadCompletionQueue.push(entryID);
                     mainThreadQueueMutex.unlock();
+                } else if(resourceType->requiresMainThread() && isMainThread) {
+                    resourceType->completeLoadOnMainThread();
+                    entry->second.isLoaded = true;
                 } else {
                     entry->second.isLoaded = true;
                 }
+
                 #pragma omp atomic
                 requiredItemsInProgress--;
             }
@@ -89,7 +96,7 @@ namespace ore {
                     std::string nextEntry = requiredLoadingQueue.front();
                     requiredLoadingQueue.pop();
                     loadingQueueMutex.unlock();
-                    loadEntry(nextEntry);
+                    loadEntry(nextEntry, false);
                     return true;
                 }
                 if((threshold == ore::resources::ResourceLoadPriority::STREAMING) &&
@@ -97,7 +104,7 @@ namespace ore {
                     std::string nextEntry = streamLoadingQueue.front();
                     streamLoadingQueue.pop();
                     loadingQueueMutex.unlock();
-                    loadEntry(nextEntry);
+                    loadEntry(nextEntry, false);
                     return true;
                 }
                 loadingQueueMutex.unlock();
@@ -131,8 +138,18 @@ namespace ore {
             }
 
             ContentsType* getResource_Blocking(const std::string &itemID) {
+                typename std::map<std::string, ore::resources::ResourceContainerEntry<ContentsType>>::iterator
+                        entry = resourceMap.find(itemID);
+                if(entry == resourceMap.end()) {
+                    throw std::runtime_error("A requested resource named \"" + itemID + "\" of type \"" + std::string(typeid(ContentsType).name()) + "\" was not registered in advance!\nAll resources must be registered before they can be loaded.\nYou may be able to fix this by adding it to the game's resource list.");
+                }
 
-                return nullptr;
+                // If it's unloaded, load it
+                if(!entry->second.isLoaded) {
+                    loadEntry(itemID, true);
+                }
+
+                return entry->second.content;
             }
         };
     }

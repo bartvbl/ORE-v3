@@ -11,3 +11,7 @@ bool ore::resources::LXFMLResource::requiresMainThread() {
 void ore::resources::LXFMLResource::completeLoadOnMainThread() {
 
 }
+
+void ore::resources::LXFMLResource::destroy() {
+
+}

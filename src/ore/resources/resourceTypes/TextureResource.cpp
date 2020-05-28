@@ -11,3 +11,7 @@ bool ore::resources::TextureResource::requiresMainThread() {
 void ore::resources::TextureResource::completeLoadOnMainThread() {
 
 }
+
+void ore::resources::TextureResource::destroy() {
+
+}

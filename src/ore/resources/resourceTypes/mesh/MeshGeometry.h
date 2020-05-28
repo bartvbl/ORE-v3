@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <glm/glm.hpp>
 
 namespace ore {
     namespace resources {
@@ -10,10 +9,14 @@ namespace ore {
             bool hasTextures;
             bool hasNormalMap;
 
-            std::vector<glm::vec3> vertices;
-            std::vector<glm::vec2> textureCoordinates;
-            std::vector<glm::vec3> normals;
-            std::vector<unsigned int> indices;
+            unsigned int vertexCount;
+            unsigned int indexCount;
+
+            float* vertices;
+            float* textureCoordinates;
+            float* normals;
+
+            unsigned int* indices;
         };
     }
 }

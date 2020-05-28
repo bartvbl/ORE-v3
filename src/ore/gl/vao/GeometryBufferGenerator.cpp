@@ -1,7 +1,9 @@
 #include <glad/glad.h>
-#include <ore/resources/resourceTypes/mesh/Mesh.h>
-#include "GeometryBufferGenerator.h"
 
+#include <ore/resources/resourceTypes/mesh/Mesh.h>
+#include <stdexcept>
+#include "GeometryBufferGenerator.h"
+/*
 void augmentVAOWithTBNBuffers(unsigned int vaoID, ore::resources::Mesh &mesh) {
     std::vector<glm::vec3> T;
     std::vector<glm::vec3> B;
@@ -62,6 +64,7 @@ void augmentVAOWithTBNBuffers(unsigned int vaoID, ore::resources::Mesh &mesh) {
     glVertexAttribPointer(6, 3, GL_FLOAT, GL_TRUE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(6);
 }
+ */
 
 ore::gl::GeometryBuffer generateTexturedNormalBuffer(ore::resources::Mesh &mesh) {
     ore::gl::GeometryBuffer buffer;
@@ -71,14 +74,14 @@ ore::gl::GeometryBuffer generateTexturedNormalBuffer(ore::resources::Mesh &mesh)
 
     glGenBuffers(1, &buffer.vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, buffer.vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, mesh.geometry->vertices.size() * sizeof(glm::vec3), mesh.geometry->vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh.geometry->vertexCount * 3 * sizeof(float), mesh.geometry->vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
 
     if(mesh.geometry->hasNormals) {
         glGenBuffers(1, &buffer.normalBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, buffer.normalBufferID);
-        glBufferData(GL_ARRAY_BUFFER, mesh.geometry->normals.size() * sizeof(glm::vec3), mesh.geometry->normals.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, mesh.geometry->vertexCount * 3 * sizeof(float), mesh.geometry->normals, GL_STATIC_DRAW);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 3 * sizeof(float), nullptr);
         glEnableVertexAttribArray(1);
     }
@@ -86,18 +89,19 @@ ore::gl::GeometryBuffer generateTexturedNormalBuffer(ore::resources::Mesh &mesh)
     if(mesh.geometry->hasTextures) {
         glGenBuffers(1, &buffer.textureBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, buffer.textureBufferID);
-        glBufferData(GL_ARRAY_BUFFER, mesh.geometry->textureCoordinates.size() * sizeof(glm::vec2), mesh.geometry->textureCoordinates.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, mesh.geometry->vertexCount * 2 * sizeof(float), mesh.geometry->textureCoordinates, GL_STATIC_DRAW);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, 2 * sizeof(float), nullptr);
         glEnableVertexAttribArray(2);
     }
 
     if(mesh.geometry->hasNormalMap) {
-        augmentVAOWithTBNBuffers(buffer.vaoID, mesh);
+        throw std::runtime_error("Normal map support is disabled!");
+        //augmentVAOWithTBNBuffers(buffer.vaoID, mesh);
     }
 
     glGenBuffers(1, &buffer.indexBufferID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer.indexBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.geometry->indices.size() * sizeof(unsigned int), mesh.geometry->indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.geometry->indexCount * sizeof(unsigned int), mesh.geometry->indices, GL_STATIC_DRAW);
 
     return buffer;
 }
