@@ -1,5 +1,10 @@
 #pragma once
 
 #include "GeometryBuffer.h"
+#include <ore/resources/resourceTypes/mesh/Mesh.h>
 
-ore::gl::GeometryBuffer generateTexturedNormalBuffer(ore::resources::Mesh &mesh);
+namespace ore {
+    namespace gl {
+        ore::gl::GeometryBuffer generateGeometryBuffer(ore::resources::Mesh &mesh);
+    }
+}

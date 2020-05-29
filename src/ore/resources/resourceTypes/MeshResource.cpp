@@ -2,6 +2,7 @@
 #include <json.hpp>
 #include <fstream>
 #include <fast_obj.h>
+#include <ore/gl/vao/GeometryBufferGenerator.h>
 #include "MeshResource.h"
 
 // Not a member function because fast_obj can not be included from MeshResource.h.
@@ -78,17 +79,17 @@ void visitMeshPart(nlohmann::json* const partJSON, ore::resources::Mesh* const m
     for(unsigned int i = 0; i < (*partJSON)["children"].size(); i++) {
         currentPart->childParts.emplace_back();
         visitMeshPart(&(*partJSON)["children"][i], mesh, &currentPart->childParts.at(i), temporaryMesh, modelFileLocation, objectFileLocation);
-
     }
 }
 
 void ore::resources::MeshResource::load(const ore::filesystem::path &modelFileLocation) {
-    auto fast_start = std::chrono::high_resolution_clock::now();
+    fast_start = std::chrono::high_resolution_clock::now();
     ore::filesystem::path containingDirectory = modelFileLocation.parent_path();
     nlohmann::json modelFileContents;
     std::fstream fileStream(modelFileLocation, std::ios::in);
     fileStream >> modelFileContents;
     fileStream.close();
+    name = modelFileLocation.string();
 
     assert(modelFileContents["meta"]["version"] == 1);
 
@@ -110,12 +111,25 @@ void ore::resources::MeshResource::load(const ore::filesystem::path &modelFileLo
     // Construct part tree and fill buffers
     visitMeshPart(&modelFileContents["partStructure"], &this->mesh, &this->mesh.rootPart, temporaryMesh, &modelFileLocation, &objectFileLocation);
 
+    // Process materials (load textures)
+    mesh.materials.reserve(temporaryMesh->material_count);
+    for(unsigned int materialIndex = 0; materialIndex < temporaryMesh->material_count; materialIndex++) {
+        fastObjMaterial material = temporaryMesh->materials[materialIndex];
+        mesh.materials.emplace_back(
+            std::string(material.name),
+            ore::geom::vec3(material.Ka),
+            ore::geom::vec3(material.Kd),
+            ore::geom::vec3(material.Ks),
+            ore::geom::vec3(material.Ke),
+            material.d,
+            material.map_Kd.path != nullptr ?
+                std::string(material.map_Kd.path) : "",
+            material.map_bump.path != nullptr ?
+                std::string(material.map_bump.path) : "");
+        mesh.materials.at(mesh.materials.size() - 1).load();
+    }
+
     fast_obj_destroy(temporaryMesh);
-
-    auto fast_end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> fast_time = fast_end - fast_start;
-
-    std::cout << "File " + modelFileLocation.string() + " took " + std::to_string(fast_time.count()) + " seconds to load\n" << std::flush;
 }
 
 bool ore::resources::MeshResource::requiresMainThread() {
@@ -123,6 +137,16 @@ bool ore::resources::MeshResource::requiresMainThread() {
 }
 
 void ore::resources::MeshResource::completeLoadOnMainThread() {
+    geometryBuffer = ore::gl::generateGeometryBuffer(mesh);
+
+    for(auto & material : mesh.materials) {
+        material.completeOnMainThread();
+    }
+
+    auto fast_end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> fast_time = fast_end - fast_start;
+
+    std::cout << "File " + name + " took " + std::to_string(fast_time.count()) + " seconds to load\n" << std::flush;
 }
 
 void ore::resources::MeshResource::destroy() {

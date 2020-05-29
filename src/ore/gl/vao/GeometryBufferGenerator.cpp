@@ -66,7 +66,7 @@ void augmentVAOWithTBNBuffers(unsigned int vaoID, ore::resources::Mesh &mesh) {
 }
  */
 
-ore::gl::GeometryBuffer generateTexturedNormalBuffer(ore::resources::Mesh &mesh) {
+ore::gl::GeometryBuffer ore::gl::generateGeometryBuffer(ore::resources::Mesh &mesh) {
     ore::gl::GeometryBuffer buffer;
 
     glGenVertexArrays(1, &buffer.vaoID);

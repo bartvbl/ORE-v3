@@ -9,7 +9,7 @@ namespace ore {
     namespace resources {
         struct Mesh {
             ore::resources::MeshGeometry geometry;
-            ore::resources::MeshMaterials materials;
+            std::vector<Material> materials;
             ore::resources::MeshPart rootPart;
         };
     }
