@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <ore/geom/vec2.h>
 
 namespace ore {
     namespace resources {
@@ -9,14 +10,11 @@ namespace ore {
             bool hasTextures;
             bool hasNormalMap;
 
-            unsigned int vertexCount;
-            unsigned int indexCount;
+            std::vector<ore::geom::vec3> vertices;
+            std::vector<ore::geom::vec2> textureCoordinates;
+            std::vector<ore::geom::vec3> normals;
 
-            float* vertices;
-            float* textureCoordinates;
-            float* normals;
-
-            unsigned int* indices;
+            std::vector<unsigned int> indices;
         };
     }
 }

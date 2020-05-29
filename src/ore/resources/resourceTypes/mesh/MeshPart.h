@@ -8,11 +8,14 @@ namespace ore {
     namespace resources {
         struct MeshPart {
             std::string name;
+            bool containsGeometry;
             unsigned int indexBufferStartIndex;
-            unsigned int indexBufferEndIndex;
+            unsigned int indexCount;
 
-            ore::resources::Material material;
+            std::string materialName;
             ore::geom::vec3 pivot;
+
+            std::vector<ore::resources::MeshPart> childParts;
         };
     }
 }

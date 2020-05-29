@@ -3,9 +3,12 @@
 namespace ore {
     namespace geom {
         struct vec3 {
-            float x;
-            float y;
-            float z;
+            vec3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
+            vec3() = default;
+
+            float x = 0;
+            float y = 0;
+            float z = 0;
         };
     }
 }

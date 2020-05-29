@@ -74,34 +74,34 @@ ore::gl::GeometryBuffer generateTexturedNormalBuffer(ore::resources::Mesh &mesh)
 
     glGenBuffers(1, &buffer.vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, buffer.vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, mesh.geometry->vertexCount * 3 * sizeof(float), mesh.geometry->vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh.geometry.vertices.size() * sizeof(ore::geom::vec3), mesh.geometry.vertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
 
-    if(mesh.geometry->hasNormals) {
+    if(mesh.geometry.hasNormals) {
         glGenBuffers(1, &buffer.normalBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, buffer.normalBufferID);
-        glBufferData(GL_ARRAY_BUFFER, mesh.geometry->vertexCount * 3 * sizeof(float), mesh.geometry->normals, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, mesh.geometry.normals.size() * sizeof(ore::geom::vec3), mesh.geometry.normals.data(), GL_STATIC_DRAW);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 3 * sizeof(float), nullptr);
         glEnableVertexAttribArray(1);
     }
 
-    if(mesh.geometry->hasTextures) {
+    if(mesh.geometry.hasTextures) {
         glGenBuffers(1, &buffer.textureBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, buffer.textureBufferID);
-        glBufferData(GL_ARRAY_BUFFER, mesh.geometry->vertexCount * 2 * sizeof(float), mesh.geometry->textureCoordinates, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, mesh.geometry.textureCoordinates.size() * sizeof(ore::geom::vec2), mesh.geometry.textureCoordinates.data(), GL_STATIC_DRAW);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, 2 * sizeof(float), nullptr);
         glEnableVertexAttribArray(2);
     }
 
-    if(mesh.geometry->hasNormalMap) {
+    if(mesh.geometry.hasNormalMap) {
         throw std::runtime_error("Normal map support is disabled!");
         //augmentVAOWithTBNBuffers(buffer.vaoID, mesh);
     }
 
     glGenBuffers(1, &buffer.indexBufferID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer.indexBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.geometry->indexCount * sizeof(unsigned int), mesh.geometry->indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.geometry.indices.size() * sizeof(unsigned int), mesh.geometry.indices.data(), GL_STATIC_DRAW);
 
     return buffer;
 }

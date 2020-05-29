@@ -2,8 +2,8 @@
 
 namespace ore {
     namespace resources {
-        struct Material {
-            std::string name;
+        struct MeshMaterials {
+
         };
     }
 }
