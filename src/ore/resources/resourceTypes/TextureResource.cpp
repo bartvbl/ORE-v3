@@ -18,8 +18,6 @@ void ore::resources::TextureResource::load(const ore::filesystem::path &fileLoca
             std::swap(imageData[row * widthBytes + col], imageData[(imageHeight - 1 - row) * widthBytes + col]);
         }
     }
-
-
 }
 
 bool ore::resources::TextureResource::requiresMainThread() {

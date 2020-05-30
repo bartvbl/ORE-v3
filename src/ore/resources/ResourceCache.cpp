@@ -40,6 +40,8 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
         this->textures.registerResource(id, priority, fileLocation);
     } else if(extension == ".mdl") {
         this->meshes.registerResource(id, priority, fileLocation);
+    } else if(extension == ".shader") {
+        this->shaders.registerResource(id, priority, fileLocation);
     }
     wakeResourceLoadingThread();
 }
