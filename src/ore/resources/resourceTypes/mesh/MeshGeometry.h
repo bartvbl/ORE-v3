@@ -6,9 +6,9 @@
 namespace ore {
     namespace resources {
         struct MeshGeometry {
-            bool hasNormals;
-            bool hasTextures;
-            bool hasNormalMap;
+            bool hasNormals = false;
+            bool hasTextures = false;
+            bool hasNormalMap = false;
 
             std::vector<ore::geom::vec3> vertices;
             std::vector<ore::geom::vec2> textureCoordinates;

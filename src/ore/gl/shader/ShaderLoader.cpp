@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ore/gl/GLError.h>
 #include "ShaderLoader.h"
 
 enum class ShaderType {
@@ -94,31 +95,30 @@ void validateProgram(unsigned int programID) {
 }
 
 ore::resources::Shader ore::gl::createShader(ore::gl::ShaderSource* source) {
-    ore::resources::Shader shader;
-    shader.programID = glCreateProgram();
-    glUseProgram(shader.programID);
+    unsigned int programID = glCreateProgram();
+    ore::resources::Shader shader(programID);
 
     if(!source->vertexShaderSource.empty()) {
-        loadSingleShader(shader.programID, source->vertexShaderSource, ShaderType::VERTEX_SHADER);
+        loadSingleShader(shader.get(), source->vertexShaderSource, ShaderType::VERTEX_SHADER);
     }
     if(!source->fragmentShaderSource.empty()) {
-        loadSingleShader(shader.programID, source->fragmentShaderSource, ShaderType::FRAGMENT_SHADER);
+        loadSingleShader(shader.get(), source->fragmentShaderSource, ShaderType::FRAGMENT_SHADER);
     }
     if(!source->geometryShaderSource.empty()) {
-        loadSingleShader(shader.programID, source->geometryShaderSource, ShaderType::GEOMETRY_SHADER);
+        loadSingleShader(shader.get(), source->geometryShaderSource, ShaderType::GEOMETRY_SHADER);
     }
     if(!source->computeShaderSource.empty()) {
-        loadSingleShader(shader.programID, source->computeShaderSource, ShaderType::COMPUTE_SHADER);
+        loadSingleShader(shader.get(), source->computeShaderSource, ShaderType::COMPUTE_SHADER);
     }
     if(!source->tesselationControlShaderSource.empty()) {
-        loadSingleShader(shader.programID, source->tesselationControlShaderSource, ShaderType::TESSELATION_CONTROL_SHADER);
+        loadSingleShader(shader.get(), source->tesselationControlShaderSource, ShaderType::TESSELATION_CONTROL_SHADER);
     }
     if(!source->tesselationEvaluationShaderSource.empty()) {
-        loadSingleShader(shader.programID, source->tesselationEvaluationShaderSource, ShaderType::TESSELATION_EVALUATION_SHADER);
+        loadSingleShader(shader.get(), source->tesselationEvaluationShaderSource, ShaderType::TESSELATION_EVALUATION_SHADER);
     }
 
-    linkProgram(shader.programID);
-    validateProgram(shader.programID);
+    linkProgram(shader.get());
+    validateProgram(shader.get());
     return shader;
 }
 

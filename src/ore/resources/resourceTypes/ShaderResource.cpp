@@ -1,5 +1,6 @@
 #include <ore/gl/shader/ShaderLoader.h>
 #include <iostream>
+#include <thread>
 #include "ShaderResource.h"
 
 void ore::resources::ShaderResource::load(const ore::filesystem::path &fileLocation) {
@@ -9,6 +10,7 @@ void ore::resources::ShaderResource::load(const ore::filesystem::path &fileLocat
     size_t dotIndex = fileName.find('.');
     fileName = fileName.substr(0, dotIndex);
     shaderSources = ore::gl::loadShaderSources(containingDirectory, fileName);
+
 }
 
 bool ore::resources::ShaderResource::requiresMainThread() {
@@ -16,10 +18,14 @@ bool ore::resources::ShaderResource::requiresMainThread() {
 }
 
 void ore::resources::ShaderResource::completeLoadOnMainThread() {
-    ore::gl::createShader(shaderSources);
+    shader = ore::gl::createShader(shaderSources);
     delete shaderSources;
 }
 
 void ore::resources::ShaderResource::destroy() {
+    shader.destroy();
+}
 
+ore::resources::Shader ore::resources::ShaderResource::getInstance() {
+    return shader;
 }

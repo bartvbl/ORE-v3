@@ -5,6 +5,6 @@
 
 namespace ore {
     namespace gl {
-        ore::gl::GeometryBuffer generateGeometryBuffer(ore::resources::Mesh &mesh);
+        ore::gl::GeometryBuffer generateGeometryBuffer(const ore::resources::MeshGeometry &geometry);
     }
 }

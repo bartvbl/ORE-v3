@@ -11,6 +11,8 @@ namespace ore {
             ore::gl::ShaderSource* shaderSources;
             ore::resources::Shader shader;
         public:
+            ore::resources::Shader getInstance();
+
             void load(const ore::filesystem::path &fileLocation) override;
 
             bool requiresMainThread() override;

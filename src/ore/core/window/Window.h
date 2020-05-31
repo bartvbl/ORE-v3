@@ -5,6 +5,6 @@
 namespace ore {
     namespace window {
         GLFWwindow* initialise(ore::WindowSettings settings);
-        void newFrame();
+        void newFrame(GLFWwindow* window);
     }
 }

@@ -14,12 +14,13 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
     this->world.init(window);
 
     this->currentGameState = initialState;
-    this->currentGameState->set(&this->world.resourceCache);
+    this->currentGameState->set(&this->world);
 
     // Rendering Loop
     while (!glfwWindowShouldClose(window))
     {
-        ore::window::newFrame();
+        glClearColor(0.3f, 0.5f, 0.8f, 1.0f);
+        ore::window::newFrame(window);
         this->currentGameState->update();
         this->world.frameTick();
         ore::RenderPass::render(&this->world.scene.rootNode);

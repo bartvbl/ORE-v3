@@ -3,6 +3,7 @@
 #include <fstream>
 #include <fast_obj.h>
 #include <ore/gl/vao/GeometryBufferGenerator.h>
+#include <thread>
 #include "MeshResource.h"
 
 // Not a member function because fast_obj can not be included from MeshResource.h.
@@ -129,6 +130,7 @@ void ore::resources::MeshResource::load(const ore::filesystem::path &modelFileLo
     }
 
     fast_obj_destroy(temporaryMesh);
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
 bool ore::resources::MeshResource::requiresMainThread() {
@@ -136,7 +138,7 @@ bool ore::resources::MeshResource::requiresMainThread() {
 }
 
 void ore::resources::MeshResource::completeLoadOnMainThread() {
-    geometryBuffer = ore::gl::generateGeometryBuffer(mesh);
+    geometryBuffer = ore::gl::generateGeometryBuffer(mesh.geometry);
 
     for(auto & material : mesh.materials) {
         material.completeOnMainThread();

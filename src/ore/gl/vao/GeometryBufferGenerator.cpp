@@ -66,7 +66,7 @@ void augmentVAOWithTBNBuffers(unsigned int vaoID, ore::resources::Mesh &mesh) {
 }
  */
 
-ore::gl::GeometryBuffer ore::gl::generateGeometryBuffer(ore::resources::Mesh &mesh) {
+ore::gl::GeometryBuffer ore::gl::generateGeometryBuffer(const ore::resources::MeshGeometry &geometry) {
     ore::gl::GeometryBuffer buffer;
 
     glGenVertexArrays(1, &buffer.vaoID);
@@ -74,34 +74,36 @@ ore::gl::GeometryBuffer ore::gl::generateGeometryBuffer(ore::resources::Mesh &me
 
     glGenBuffers(1, &buffer.vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, buffer.vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, mesh.geometry.vertices.size() * sizeof(ore::geom::vec3), mesh.geometry.vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, geometry.vertices.size() * sizeof(ore::geom::vec3), geometry.vertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
 
-    if(mesh.geometry.hasNormals) {
+    if(geometry.hasNormals) {
         glGenBuffers(1, &buffer.normalBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, buffer.normalBufferID);
-        glBufferData(GL_ARRAY_BUFFER, mesh.geometry.normals.size() * sizeof(ore::geom::vec3), mesh.geometry.normals.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, geometry.normals.size() * sizeof(ore::geom::vec3), geometry.normals.data(), GL_STATIC_DRAW);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 3 * sizeof(float), nullptr);
         glEnableVertexAttribArray(1);
     }
 
-    if(mesh.geometry.hasTextures) {
+    if(geometry.hasTextures) {
         glGenBuffers(1, &buffer.textureBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, buffer.textureBufferID);
-        glBufferData(GL_ARRAY_BUFFER, mesh.geometry.textureCoordinates.size() * sizeof(ore::geom::vec2), mesh.geometry.textureCoordinates.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, geometry.textureCoordinates.size() * sizeof(ore::geom::vec2), geometry.textureCoordinates.data(), GL_STATIC_DRAW);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, 2 * sizeof(float), nullptr);
         glEnableVertexAttribArray(2);
     }
 
-    if(mesh.geometry.hasNormalMap) {
+    if(geometry.hasNormalMap) {
         throw std::runtime_error("Normal map support is disabled!");
         //augmentVAOWithTBNBuffers(buffer.vaoID, mesh);
     }
 
     glGenBuffers(1, &buffer.indexBufferID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer.indexBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.geometry.indices.size() * sizeof(unsigned int), mesh.geometry.indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, geometry.indices.size() * sizeof(unsigned int), geometry.indices.data(), GL_STATIC_DRAW);
+
+    buffer.indexCount = geometry.indices.size();
 
     return buffer;
 }

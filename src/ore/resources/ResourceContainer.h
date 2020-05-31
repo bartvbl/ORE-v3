@@ -116,8 +116,10 @@ namespace ore {
 
         public:
             void registerResource(std::string itemID, ore::resources::ResourceLoadPriority priority, ore::filesystem::path fileLocation) {
-                #pragma omp atomic
-                requiredItemsInProgress++;
+                if(priority == ResourceLoadPriority::REQUIRED || priority == ResourceLoadPriority::STREAMING) {
+                    #pragma omp atomic
+                    requiredItemsInProgress++;
+                }
                 ore::resources::ResourceContainerEntry<ContentsType> entry;
                 entry.fileLocation = fileLocation;
                 entry.priority = priority;

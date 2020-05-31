@@ -8,7 +8,7 @@ namespace ore {
 
     public:
         virtual void update() = 0;
-        virtual void set(ore::resources::ResourceCache* cache) = 0;
+        virtual void set(ore::GameWorld* world) = 0;
         virtual void unset() = 0;
     };
 }

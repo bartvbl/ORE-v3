@@ -1,10 +1,14 @@
 #pragma once
 
+#include <glad/glad.h>
+#include <string>
+#include <iostream>
+
 namespace ore {
-    namespace gl{
+    namespace gl {
         // Checks for whether an OpenGL error occurred. If one did,
         // it prints out the error type and ID
-        inline void printGLError() {
+        inline void printGLError(const std::string& file = "", unsigned int line = 0) {
             int errorID = glGetError();
 
             if(errorID != GL_NO_ERROR) {
@@ -34,8 +38,10 @@ namespace ore {
                         break;
                 }
 
-                fprintf(stderr, "An OpenGL error occurred (%i): %s.\n",
-                        errorID, errorString.c_str());
+                std::string locationString =
+                        (!file.empty() ? " in file " + file : "") +
+                                (line != 0 ? " on line " + std::to_string(line) : "");
+                std::cerr << "An OpenGL error occurred" + locationString + " (" + std::to_string(errorID) + "): " + errorString + ".\n";
             }
         }
     }

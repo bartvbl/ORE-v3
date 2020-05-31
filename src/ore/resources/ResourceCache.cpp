@@ -5,6 +5,8 @@
 #include <json.hpp>
 #include "ResourceCache.h"
 #include <iostream>
+#include <ore/core/window/Window.h>
+#include <ore/gl/GLError.h>
 
 void ore::resources::ResourceCache::init(GLFWwindow* gameWindow) {
     this->window = gameWindow;
@@ -98,6 +100,7 @@ void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadSc
 
     renderer->init(this);
     unsigned int totalItemsToLoad = countEnqueuedItems(threshold);
+    std::cout << "Initial number of items to load: " << totalItemsToLoad << std::endl;
     unsigned int remainingItemsToLoad = totalItemsToLoad;
 
     // Do load screen render
@@ -106,7 +109,8 @@ void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadSc
     // Rendering Loop
     while (!glfwWindowShouldClose(window) && remainingItemsToLoad > 0) {
         // Clear colour and depth buffers
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        ore::window::newFrame(window);
 
         flushMainThreadCompletions();
 
