@@ -122,21 +122,24 @@ ore::resources::Shader ore::gl::createShader(ore::gl::ShaderSource* source) {
     return shader;
 }
 
-ore::gl::ShaderSource *ore::gl::loadShaderSources(const ore::filesystem::path& directory, const std::string& fileName) {
-    // Load GLSL Shader from source
-    /*std::ifstream fd(filename.c_str());
-    if (fd.fail())
-    {
-        fprintf(stderr,
-                "Something went wrong when attaching the Shader file at \"%s\".\n"
-                "The file may not exist or is currently inaccessible.\n",
-                filename.c_str());
-        return;
+std::string tryFileLoad(const ore::filesystem::path& file) {
+    if(ore::filesystem::exists(file)) {
+        std::fstream inputStream(file);
+        return std::string(std::istreambuf_iterator<char>(inputStream),(std::istreambuf_iterator<char>()));
+    } else {
+        return "";
     }
-    auto src = std::string(std::istreambuf_iterator<char>(fd),
-                           (std::istreambuf_iterator<char>()));*/
+}
 
-    return nullptr;
+ore::gl::ShaderSource *ore::gl::loadShaderSources(const ore::filesystem::path& directory, const std::string& fileName) {
+    ore::gl::ShaderSource* sources = new ore::gl::ShaderSource;
+    sources->vertexShaderSource = tryFileLoad(directory / (fileName + ".vert"));
+    sources->fragmentShaderSource = tryFileLoad(directory / (fileName + ".frag"));
+    sources->geometryShaderSource = tryFileLoad(directory / (fileName + ".geom"));
+    sources->computeShaderSource = tryFileLoad(directory / (fileName + ".comp"));
+    sources->tesselationControlShaderSource = tryFileLoad(directory / (fileName + ".tcs"));
+    sources->tesselationEvaluationShaderSource = tryFileLoad(directory / (fileName + ".tes"));
+    return sources;
 }
 
 
