@@ -83,7 +83,6 @@ void visitMeshPart(nlohmann::json* const partJSON, ore::resources::Mesh* const m
 }
 
 void ore::resources::MeshResource::load(const ore::filesystem::path &modelFileLocation) {
-    fast_start = std::chrono::high_resolution_clock::now();
     ore::filesystem::path containingDirectory = modelFileLocation.parent_path();
     nlohmann::json modelFileContents;
     std::fstream fileStream(modelFileLocation, std::ios::in);
@@ -142,11 +141,6 @@ void ore::resources::MeshResource::completeLoadOnMainThread() {
     for(auto & material : mesh.materials) {
         material.completeOnMainThread();
     }
-
-    auto fast_end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> fast_time = fast_end - fast_start;
-
-    std::cout << "File " + name + " took " + std::to_string(fast_time.count()) + " seconds to load\n" << std::flush;
 }
 
 void ore::resources::MeshResource::destroy() {

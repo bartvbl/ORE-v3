@@ -9,7 +9,6 @@ namespace ore {
     namespace resources {
         class MeshResource : public ore::resources::ResourceType {
         private:
-            std::chrono::time_point<std::chrono::system_clock> fast_start;
             ore::resources::Mesh mesh;
             ore::gl::GeometryBuffer geometryBuffer;
             std::string name;

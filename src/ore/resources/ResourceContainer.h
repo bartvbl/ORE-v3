@@ -34,7 +34,6 @@ namespace ore {
             unsigned int streamingItemsInProgress = 0;
 
             void loadEntry(const std::string &entryID, bool isMainThread) {
-                std::cout << "Loading entry: " + entryID + "\n" << std::flush;
                 typename std::map<std::string, ore::resources::ResourceContainerEntry<ContentsType>>::iterator
                     entry = resourceMap.find(entryID);
                 ore::resources::ResourceType* resourceType = entry->second.content;
@@ -117,7 +116,6 @@ namespace ore {
 
         public:
             void registerResource(std::string itemID, ore::resources::ResourceLoadPriority priority, ore::filesystem::path fileLocation) {
-                std::cout << "Registering " << itemID << std::endl;
                 #pragma omp atomic
                 requiredItemsInProgress++;
                 ore::resources::ResourceContainerEntry<ContentsType> entry;

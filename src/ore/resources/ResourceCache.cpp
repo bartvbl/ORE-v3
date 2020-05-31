@@ -99,7 +99,6 @@ void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadSc
     renderer->init(this);
     unsigned int totalItemsToLoad = countEnqueuedItems(threshold);
     unsigned int remainingItemsToLoad = totalItemsToLoad;
-    std::cout << "Items to load: " << totalItemsToLoad << std::endl;
 
     // Do load screen render
     glClearColor(0, 0, 0, 1);
