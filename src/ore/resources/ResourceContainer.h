@@ -53,12 +53,14 @@ namespace ore {
                 } else if(resourceType->requiresMainThread() && isMainThread) {
                     resourceType->completeLoadOnMainThread();
                     entry->second.isLoaded = true;
+
+                    #pragma omp atomic
+                    requiredItemsInProgress--;
                 } else {
                     entry->second.isLoaded = true;
+                    #pragma omp atomic
+                    requiredItemsInProgress--;
                 }
-
-                #pragma omp atomic
-                requiredItemsInProgress--;
             }
 
             void runMainThreadJobs() {
@@ -71,6 +73,8 @@ namespace ore {
                     ore::resources::ResourceType* resourceType = entry->second.content;
                     resourceType->completeLoadOnMainThread();
                     entry->second.isLoaded = true;
+                    #pragma omp atomic
+                    requiredItemsInProgress--;
                 }
                 mainThreadQueueMutex.unlock();
             }
@@ -116,7 +120,7 @@ namespace ore {
 
         public:
             void registerResource(std::string itemID, ore::resources::ResourceLoadPriority priority, ore::filesystem::path fileLocation, ContentsType* contentsTypeInstance) {
-                if(priority == ResourceLoadPriority::REQUIRED || priority == ResourceLoadPriority::STREAMING) {
+                if(priority == ResourceLoadPriority::REQUIRED) {
                     #pragma omp atomic
                     requiredItemsInProgress++;
                 }
@@ -146,6 +150,9 @@ namespace ore {
 
                 // If it's unloaded, load it
                 if(!entry->second.isLoaded) {
+                    // Need to increment count for bookkeeping purposes
+                    #pragma omp atomic
+                    requiredItemsInProgress++;
                     loadEntry(itemID, true);
                 }
 
