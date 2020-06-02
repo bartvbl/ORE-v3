@@ -33,6 +33,7 @@ namespace ore {
             ore::resources::ResourceContainer<ore::resources::SoundResource> sounds;
             ore::resources::ResourceContainer<ore::resources::LXFMLResource> lxfmlMeshes;
             ore::resources::ResourceContainer<ore::resources::ShaderResource> shaders;
+            ore::resources::ResourceContainer<ore::resources::ResourceType> customResources;
 
             ResourceCache(unsigned int resourceLoadingThreadCount) : loadingThreadPool(resourceLoadingThreadCount) {}
 

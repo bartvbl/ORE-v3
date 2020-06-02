@@ -11,8 +11,6 @@ namespace ore {
             unsigned int normalBufferID = -1;
             unsigned int textureBufferID = -1;
             unsigned int indexBufferID = -1;
-
-            void draw();
         };
     }
 }

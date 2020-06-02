@@ -130,7 +130,6 @@ void ore::resources::MeshResource::load(const ore::filesystem::path &modelFileLo
     }
 
     fast_obj_destroy(temporaryMesh);
-    std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
 bool ore::resources::MeshResource::requiresMainThread() {

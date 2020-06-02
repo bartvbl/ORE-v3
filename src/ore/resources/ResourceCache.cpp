@@ -29,6 +29,8 @@ void ore::resources::ResourceCache::wakeResourceLoadingThread() {
                 || this->lxfmlMeshes.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
             anItemWasLoaded = anItemWasLoaded
                 || this->shaders.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            anItemWasLoaded = anItemWasLoaded
+                || this->customResources.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
         }
     };
     this->loadingThreadPool.enqueue(threadJob);
@@ -38,7 +40,7 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
     std::string extension = fileLocation.extension();
     std::transform(extension.begin(), extension.end(), extension.begin(),
                    [](unsigned char c){ return std::tolower(c); });
-    if(extension == ".png") {
+    if(extension == ".png" || extension == ".bmp" || extension == ".tga" || extension == ".jpg") {
         this->textures.registerResource(id, priority, fileLocation);
     } else if(extension == ".mdl") {
         this->meshes.registerResource(id, priority, fileLocation);
@@ -83,6 +85,7 @@ unsigned int ore::resources::ResourceCache::countEnqueuedItems(ore::resources::R
     totalResourceCount += meshes.getEnqueuedItemCount(threshold);
     totalResourceCount += lxfmlMeshes.getEnqueuedItemCount(threshold);
     totalResourceCount += shaders.getEnqueuedItemCount(threshold);
+    totalResourceCount += customResources.getEnqueuedItemCount(threshold);
     return totalResourceCount;
 }
 
@@ -93,6 +96,7 @@ void ore::resources::ResourceCache::flushMainThreadCompletions() {
     meshes.runMainThreadJobs();
     lxfmlMeshes.runMainThreadJobs();
     shaders.runMainThreadJobs();
+    customResources.runMainThreadJobs();
 }
 
 void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadScreenRenderer *renderer,
