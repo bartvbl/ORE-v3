@@ -115,7 +115,7 @@ namespace ore {
             }
 
         public:
-            void registerResource(std::string itemID, ore::resources::ResourceLoadPriority priority, ore::filesystem::path fileLocation) {
+            void registerResource(std::string itemID, ore::resources::ResourceLoadPriority priority, ore::filesystem::path fileLocation, ContentsType* contentsTypeInstance) {
                 if(priority == ResourceLoadPriority::REQUIRED || priority == ResourceLoadPriority::STREAMING) {
                     #pragma omp atomic
                     requiredItemsInProgress++;
@@ -123,7 +123,7 @@ namespace ore {
                 ore::resources::ResourceContainerEntry<ContentsType> entry;
                 entry.fileLocation = fileLocation;
                 entry.priority = priority;
-                entry.content = new ContentsType();
+                entry.content = contentsTypeInstance;
                 if(this->resourceMap.find(itemID) == this->resourceMap.end()) {
                     loadingQueueMutex.lock();
                     this->resourceMap[itemID] = entry;

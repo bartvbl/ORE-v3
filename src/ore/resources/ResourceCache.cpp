@@ -41,11 +41,11 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
     std::transform(extension.begin(), extension.end(), extension.begin(),
                    [](unsigned char c){ return std::tolower(c); });
     if(extension == ".png" || extension == ".bmp" || extension == ".tga" || extension == ".jpg") {
-        this->textures.registerResource(id, priority, fileLocation);
+        this->textures.registerResource(id, priority, fileLocation, new TextureResource());
     } else if(extension == ".mdl") {
-        this->meshes.registerResource(id, priority, fileLocation);
+        this->meshes.registerResource(id, priority, fileLocation, new MeshResource());
     } else if(extension == ".shader") {
-        this->shaders.registerResource(id, priority, fileLocation);
+        this->shaders.registerResource(id, priority, fileLocation, new ShaderResource());
     }
     wakeResourceLoadingThread();
 }
