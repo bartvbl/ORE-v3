@@ -74,14 +74,14 @@ ore::gl::GeometryBuffer ore::gl::generateGeometryBuffer(const ore::resources::Me
 
     glGenBuffers(1, &buffer.vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, buffer.vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, geometry.vertices.size() * sizeof(ore::geom::vec3), geometry.vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, geometry.vertices.size() * sizeof(glm::vec3), geometry.vertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
 
     if(geometry.hasNormals) {
         glGenBuffers(1, &buffer.normalBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, buffer.normalBufferID);
-        glBufferData(GL_ARRAY_BUFFER, geometry.normals.size() * sizeof(ore::geom::vec3), geometry.normals.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, geometry.normals.size() * sizeof(glm::vec3), geometry.normals.data(), GL_STATIC_DRAW);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 3 * sizeof(float), nullptr);
         glEnableVertexAttribArray(1);
     }
@@ -89,7 +89,7 @@ ore::gl::GeometryBuffer ore::gl::generateGeometryBuffer(const ore::resources::Me
     if(geometry.hasTextures) {
         glGenBuffers(1, &buffer.textureBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, buffer.textureBufferID);
-        glBufferData(GL_ARRAY_BUFFER, geometry.textureCoordinates.size() * sizeof(ore::geom::vec2), geometry.textureCoordinates.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, geometry.textureCoordinates.size() * sizeof(glm::vec2), geometry.textureCoordinates.data(), GL_STATIC_DRAW);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, 2 * sizeof(float), nullptr);
         glEnableVertexAttribArray(2);
     }

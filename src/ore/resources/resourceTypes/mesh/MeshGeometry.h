@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <ore/geom/vec2.h>
+#include <glm/glm.hpp>
 
 namespace ore {
     namespace resources {
@@ -10,9 +10,9 @@ namespace ore {
             bool hasTextures = false;
             bool hasNormalMap = false;
 
-            std::vector<ore::geom::vec3> vertices;
-            std::vector<ore::geom::vec2> textureCoordinates;
-            std::vector<ore::geom::vec3> normals;
+            std::vector<glm::vec3> vertices;
+            std::vector<glm::vec2> textureCoordinates;
+            std::vector<glm::vec3> normals;
 
             std::vector<unsigned int> indices;
         };

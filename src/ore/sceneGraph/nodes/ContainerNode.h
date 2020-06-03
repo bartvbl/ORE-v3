@@ -23,7 +23,7 @@ namespace ore {
             void render(RenderState &renderState) override;
             void postRender(RenderState &renderState) override;
 
-            std::vector<SceneNode> *getChildren() override;
+            std::vector<SceneNode*> *getChildren() override;
 
             void destroy() override;
         };
