@@ -15,8 +15,15 @@ namespace ore {
         glm::mat4 projection = glm::mat4(1.0);
     };
 
+    class ShaderUniformRenderState {
+        void setModelMatrix(glm::mat4 modelMatrix);
+        void setModelViewMatrix(glm::mat4 modelMatrix);
+        void setProjection(glm::mat4 projectionMatrix);
+    };
+
     struct RenderState {
         TransformationRenderState transformations;
         WindowDimensionsRenderState window;
+        ShaderUniformRenderState uniforms;
     };
 }

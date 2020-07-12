@@ -12,7 +12,8 @@ void ore::scene::ContainerNode::postRender(ore::RenderState &renderState) {
     // Do nothing
 }
 
-std::vector<ore::SceneNode> *ore::scene::ContainerNode::getChildren() {
+
+std::vector<ore::SceneNode*>* ore::scene::ContainerNode::getChildren() {
     return &childVector;
 }
 
