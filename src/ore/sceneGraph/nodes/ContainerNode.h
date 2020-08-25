@@ -12,7 +12,7 @@ namespace ore {
 
             ContainerNode() : name("Container Node") {}
 
-            explicit ContainerNode(std::string &nodeName) : name(nodeName) {}
+            explicit ContainerNode(std::string nodeName) : name(nodeName) {}
 
             std::string getName() override;
 

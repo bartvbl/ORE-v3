@@ -41,30 +41,29 @@ void visitMeshPart(nlohmann::json* const partJSON, ore::resources::Mesh* const m
                 throw std::runtime_error("This OBJ loader only supports 3 vertices per face. The object " + objectFileLocation->string() + " in model file " + modelFileLocation->string() + " contains a face with " + std::to_string(verticesPerFace) + " vertices.\nYou can usually solve this problem by re-exporting the object from a 3D model editor, and selecting the OBJ export option that forces triangle faces.");
             }
 
-            fastObjIndex index = temporaryMesh->indices[3 * faceIndex + group.index_offset];
+            for(unsigned int i = 0; i < verticesPerFace; i++) {
+                fastObjIndex index = temporaryMesh->indices[3 * faceIndex + i + group.index_offset];
 
-            assert(index.p + 2 - 1 <= temporaryMesh->position_count);
-            mesh->geometry.vertices.emplace_back(
-                    temporaryMesh->positions[index.p + 0 - 1],
-                    temporaryMesh->positions[index.p + 1 - 1],
-                    temporaryMesh->positions[index.p + 2 - 1]);
+                mesh->geometry.vertices.emplace_back(
+                        temporaryMesh->positions[3 * index.p + 0],
+                        temporaryMesh->positions[3 * index.p + 1],
+                        temporaryMesh->positions[3 * index.p + 2]);
 
-            if(mesh->geometry.hasTextures) {
-                assert(index.t + 1 - 1 <= temporaryMesh->texcoord_count);
-                mesh->geometry.textureCoordinates.emplace_back(
-                        temporaryMesh->texcoords[index.t + 0 - 1],
-                        temporaryMesh->texcoords[index.t + 1 - 1]);
+                if(mesh->geometry.hasTextures) {
+                    mesh->geometry.textureCoordinates.emplace_back(
+                            temporaryMesh->texcoords[2 * index.t + 0],
+                            temporaryMesh->texcoords[2 * index.t + 1]);
+                }
+
+                if(mesh->geometry.hasNormals) {
+                    mesh->geometry.normals.emplace_back(
+                            temporaryMesh->normals[3 * index.n + 0],
+                            temporaryMesh->normals[3 * index.n + 1],
+                            temporaryMesh->normals[3 * index.n + 2]);
+                }
+
+                mesh->geometry.indices.push_back(mesh->geometry.indices.size());
             }
-
-            if(mesh->geometry.hasNormals) {
-                assert(index.n + 2 - 1 <= temporaryMesh->normal_count);
-                mesh->geometry.normals.emplace_back(
-                        temporaryMesh->normals[index.n + 0 - 1],
-                        temporaryMesh->normals[index.n + 1 - 1],
-                        temporaryMesh->normals[index.n + 2 - 1]);
-            }
-
-            mesh->geometry.indices.push_back(mesh->geometry.indices.size());
         }
 
         fastObjMaterial material = temporaryMesh->materials[temporaryMesh->face_materials[group.face_offset]];
@@ -100,13 +99,13 @@ void ore::resources::MeshResource::load(const ore::filesystem::path &modelFileLo
 
     mesh.geometry.hasNormalMap = false;
     mesh.geometry.hasNormals = temporaryMesh->indices[0].n != 0;
-    mesh.geometry.hasTextures = temporaryMesh->indices[0].t != 0;
+    mesh.geometry.hasTextures = temporaryMesh->indices[0].t != 1;
 
     // Allocate space
-    mesh.geometry.vertices.reserve(temporaryMesh->face_count);
-    mesh.geometry.normals.reserve(temporaryMesh->face_count);
-    mesh.geometry.textureCoordinates.reserve(temporaryMesh->face_count);
-    mesh.geometry.indices.reserve(temporaryMesh->face_count);
+    mesh.geometry.vertices.reserve(3 * temporaryMesh->face_count);
+    mesh.geometry.normals.reserve(3 * temporaryMesh->face_count);
+    mesh.geometry.textureCoordinates.reserve(2 * temporaryMesh->face_count);
+    mesh.geometry.indices.reserve(3 * temporaryMesh->face_count);
 
     // Construct part tree and fill buffers
     visitMeshPart(&modelFileContents["partStructure"], &this->mesh, &this->mesh.rootPart, temporaryMesh, &modelFileLocation, &objectFileLocation);
