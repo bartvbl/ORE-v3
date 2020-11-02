@@ -21,7 +21,12 @@ void ore::InputService::addKeyBindingsFromFile(ore::filesystem::path bindingsFil
 }
 
 void ore::InputService::addKeyBinding(ore::input::InputType key, ore::input::InputMappingType mappingType, ore::input::InputEventTriggerType triggerType, std::string binding) {
-
+    KeyMapping mapping;
+    mapping.inputType = key;
+    mapping.mappingName = binding;
+    mapping.mappingType = mappingType;
+    mapping.triggerType = triggerType;
+    keyBindingMap[key].push_back(mapping);
 }
 
 void ore::InputService::saveKeyBindingsToFile(ore::filesystem::path bindingsFile) {
@@ -62,7 +67,16 @@ unsigned int ore::InputService::attachListener(std::string keyMappingName, int *
 }
 
 void ore::InputService::detachListener(unsigned int reference) {
-
+    const std::string keyMappingContainingListener = listenerRegistrations.at(reference);
+    listenerRegistrations.erase(reference);
+    std::vector<Listener>& listeners = listenerMap.at(keyMappingContainingListener);
+    for(unsigned int i = 0; i < listeners.size(); i++) {
+        if(listeners.at(i).id == reference) {
+            listeners.erase(listeners.begin() + i);
+            return;
+        }
+    }
+    throw std::runtime_error("The listener with type " + keyMappingContainingListener + " and ID " + std::to_string(reference) + " could not be found.");
 }
 
 

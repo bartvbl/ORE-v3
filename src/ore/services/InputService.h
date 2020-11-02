@@ -30,6 +30,7 @@ namespace ore {
         struct KeyMapping {
             ore::input::InputType inputType;
             ore::input::InputMappingType mappingType;
+            ore::input::InputEventTriggerType triggerType;
             std::string mappingName;
         };
 
