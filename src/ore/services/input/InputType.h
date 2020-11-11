@@ -150,61 +150,35 @@ namespace ore {
             MOUSE_AXIS_VERTICAL,
 
             // Generic controller
-            CONTROLLER_BUTTON_1,
-            CONTROLLER_BUTTON_2,
-            CONTROLLER_BUTTON_3,
-            CONTROLLER_BUTTON_4,
-            CONTROLLER_BUTTON_5,
-            CONTROLLER_BUTTON_6,
-            CONTROLLER_BUTTON_7,
-            CONTROLLER_BUTTON_8,
-            CONTROLLER_BUTTON_9,
-            CONTROLLER_BUTTON_10,
-            CONTROLLER_BUTTON_11,
-            CONTROLLER_BUTTON_12,
-            CONTROLLER_BUTTON_13,
-            CONTROLLER_BUTTON_14,
-            CONTROLLER_BUTTON_15,
+            CONTROLLER_BUTTON_A,
+            CONTROLLER_BUTTON_B,
+            CONTROLLER_BUTTON_X,
+            CONTROLLER_BUTTON_Y,
+            CONTROLLER_BUTTON_DPAD_LEFT,
+            CONTROLLER_BUTTON_DPAD_RIGHT,
+            CONTROLLER_BUTTON_DPAD_UP,
+            CONTROLLER_BUTTON_DPAD_DOWN,
+            CONTROLLER_BUTTON_BUMPER_LEFT,
+            CONTROLLER_BUTTON_BUMPER_RIGHT,
+            CONTROLLER_BUTTON_BACK,
+            CONTROLLER_BUTTON_START,
+            CONTROLLER_BUTTON_THUMB_LEFT,
+            CONTROLLER_BUTTON_THUMB_RIGHT,
+            CONTROLLER_BUTTON_GUIDE,
 
-            CONTROLLER_AXIS_1,
-            CONTROLLER_AXIS_2,
-            CONTROLLER_AXIS_3,
-            CONTROLLER_AXIS_4,
-            CONTROLLER_AXIS_5,
-            CONTROLLER_AXIS_6,
-            CONTROLLER_AXIS_7,
-            CONTROLLER_AXIS_8,
-            CONTROLLER_AXIS_9,
-            CONTROLLER_AXIS_10,
-            CONTROLLER_AXIS_11,
-            CONTROLLER_AXIS_12,
-            CONTROLLER_AXIS_13,
-            CONTROLLER_AXIS_14,
-            CONTROLLER_AXIS_15,
-
-            // XBOX ONE controller
-            XBOX_ONE_CONTROLLER_BUTTON_A,
-            XBOX_ONE_CONTROLLER_BUTTON_B,
-            XBOX_ONE_CONTROLLER_BUTTON_X,
-            XBOX_ONE_CONTROLLER_BUTTON_Y,
-            XBOX_ONE_CONTROLLER_BUTTON_DPAD_UP,
-            XBOX_ONE_CONTROLLER_BUTTON_DPAD_DOWN,
-            XBOX_ONE_CONTROLLER_BUTTON_DPAD_LEFT,
-            XBOX_ONE_CONTROLLER_BUTTON_DPAD_RIGHT,
-            XBOX_ONE_CONTROLLER_BUTTON_SELECT,
-            XBOX_ONE_CONTROLLER_BUTTON_START,
-            XBOX_ONE_CONTROLLER_BUTTON_SHOULDER_LEFT,
-            XBOX_ONE_CONTROLLER_BUTTON_SHOULDER_RIGHT,
-            XBOX_ONE_CONTROLLER_BUTTON_STICK_LEFT,
-            XBOX_ONE_CONTROLLER_BUTTON_STICK_RIGHT,
-
-            XBOX_ONE_CONTROLLER_AXIS_STICK_LEFT_HORIZONTAL,
-            XBOX_ONE_CONTROLLER_AXIS_STICK_LEFT_VERTICAL,
-            XBOX_ONE_CONTROLLER_AXIS_STICK_RIGHT_HORIZONTAL,
-            XBOX_ONE_CONTROLLER_AXIS_STICK_RIGHT_VERTICAL,
-            XBOX_ONE_CONTROLLER_AXIS_TRIGGER_LEFT,
-            XBOX_ONE_CONTROLLER_AXIS_TRIGGER_RIGHT,
+            CONTROLLER_AXIS_LEFT_X,
+            CONTROLLER_AXIS_LEFT_Y,
+            CONTROLLER_AXIS_RIGHT_X,
+            CONTROLLER_AXIS_RIGHT_Y,
+            CONTROLLER_AXIS_LEFT_TRIGGER,
+            CONTROLLER_AXIS_RIGHT_TRIGGER
         };
+
+        int toGLFWEnum(ore::input::InputType type);
+        ore::input::InputType fromGLFWKeyboardEnum(int type);
+        ore::input::InputType fromGLFWMouseEnum(int type);
+        ore::input::InputType fromGLFWGamepadButtonEnum(int type);
+        ore::input::InputType fromGLFWGamepadAxisEnum(int type);
 
         std::string inputTypeToString(ore::input::InputType type);
         ore::input::InputType parseInputType(std::string &typeString);
