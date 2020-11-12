@@ -8,6 +8,7 @@
 namespace ore {
     class InputService {
     private:
+
         GLFWwindow* gameWindow;
 
         unsigned int nextListenerID = 0;

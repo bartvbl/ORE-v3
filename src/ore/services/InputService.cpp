@@ -8,11 +8,6 @@ void ore::InputService::init(GLFWwindow* window) {
 void ore::InputService::tick() {
     glfwPollEvents();
 
-    // Use escape key for terminating the GLFW window
-    if (glfwGetKey(gameWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(gameWindow, true);
-    }
 
 }
 
