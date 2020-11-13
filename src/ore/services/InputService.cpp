@@ -1,14 +1,68 @@
 #include <GLFW/glfw3.h>
+#include <iostream>
 #include "InputService.h"
+
+void ore::InputService::scrollCallback(GLFWwindow *window, double xOffset, double yOffset) {
+    ore::input::xScrollOffset += xOffset;
+    ore::input::yScrollOffset += yOffset;
+}
 
 void ore::InputService::init(GLFWwindow* window) {
     this->gameWindow = window;
+    ore::input::xScrollOffset = 0;
+    ore::input::yScrollOffset = 0;
+    glfwSetScrollCallback(window, this->scrollCallback);
 }
 
 void ore::InputService::tick() {
     glfwPollEvents();
 
+    // Fetch updated window and mouse positions
+    double mouseX;
+    double mouseY;
+    glfwGetCursorPos(gameWindow, &mouseX, &mouseY);
 
+    int windowWidth;
+    int windowHeight;
+    glfwGetWindowSize(gameWindow, &windowWidth, &windowHeight);
+
+    // Move mouse origin to window bottom left
+    mouseY = double(windowHeight) - mouseY;
+
+    GLFWgamepadstate state;
+    bool controllerIsPresent = glfwJoystickPresent(GLFW_JOYSTICK_1) && glfwJoystickIsGamepad(GLFW_JOYSTICK_1);
+    if(controllerIsPresent) {
+        glfwGetGamepadState(GLFW_JOYSTICK_1, &state);
+    }
+
+    for(const std::pair<const ore::input::InputType, std::vector<KeyMapping>> &entry : keyBindingMap) {
+        // Obtain state of the input
+        ore::input::InputType type = entry.first;
+        float inputState = 0;
+
+        if(int(type) >= int(ore::input::KEYBOARD_START) && int(type) <= int(ore::input::KEYBOARD_END)) {
+            bool keyState = glfwGetKey(gameWindow, ore::input::toGLFWEnum(type)) == GLFW_PRESS;
+            inputState = keyState ? 1.0 : 0.0;
+        } else if(int(type) >= int(ore::input::MOUSE_BUTTON_START) && int(type) <= int(ore::input::MOUSE_BUTTON_END)) {
+            bool buttonState = glfwGetMouseButton(gameWindow, ore::input::toGLFWEnum(type)) == GLFW_PRESS;
+            inputState = buttonState ? 1.0 : 0.0;
+        } else if(int(type) >= int(ore::input::MOUSE_AXIS_START) && int(type) <= int(ore::input::MOUSE_AXIS_END)) {
+            if(type == ore::input::InputType::MOUSE_AXIS_HORIZONTAL) {
+                double normalisedMousePosition = mouseX / double(windowWidth);
+                inputState = float(normalisedMousePosition);
+            } else if(type == ore::input::InputType::MOUSE_AXIS_VERTICAL) {
+                double normalisedMousePosition = mouseY / double(windowHeight);
+                inputState = float(normalisedMousePosition);
+            } else if(type == ore::input::InputType::MOUSE_AXIS_SCROLL) {
+                inputState = float(ore::input::yScrollOffset);
+            }
+        } else if(int(type) >= int(ore::input::CONTROLLER_BUTTON_START) && int(type) <= int(ore::input::CONTROLLER_BUTTON_END)) {
+            if(controllerIsPresent) {
+                bool buttonState = state.buttons[];
+                inputState = buttonState ? 1.0 : 0.0;
+            }
+        }
+    }
 }
 
 void ore::InputService::addKeyBindingsFromFile(ore::filesystem::path bindingsFile) {
@@ -73,5 +127,7 @@ void ore::InputService::detachListener(unsigned int reference) {
     }
     throw std::runtime_error("The listener with type " + keyMappingContainingListener + " and ID " + std::to_string(reference) + " could not be found.");
 }
+
+
 
 

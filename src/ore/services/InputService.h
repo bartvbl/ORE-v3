@@ -6,6 +6,11 @@
 #include <ore/services/input/InputEventTriggerType.h>
 
 namespace ore {
+    namespace input {
+        static double xScrollOffset;
+        static double yScrollOffset;
+    }
+
     class InputService {
     private:
 
@@ -35,12 +40,15 @@ namespace ore {
             std::string mappingName;
         };
 
+
+
         std::unordered_map<unsigned int, std::string> listenerRegistrations;
         std::unordered_map<std::string, std::vector<Listener>> listenerMap;
 
         std::unordered_map<ore::input::InputType, std::vector<KeyMapping>> keyBindingMap;
 
         unsigned int attachListener(std::string &keyMappingName, Listener listener);
+        static void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 
     public:
         void init(GLFWwindow* gameWindow);
