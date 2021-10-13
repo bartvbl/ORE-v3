@@ -3,9 +3,13 @@
 #include <ore/core/window/Window.h>
 #include <glad/glad.h>
 #include <ore/gl/render/RenderPass.h>
+#include <ore/utilities/Logger.h>
 #include "Ore.h"
 
 void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameState *initialState) {
+    // Initialise logging system
+    ore::Logger::init();
+
     // Create OpenGL context and window
     ore::WindowSettings settings;
     GLFWwindow* window = ore::window::initialise(settings);

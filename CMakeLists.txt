@@ -30,6 +30,8 @@ option (GLFW_BUILD_EXAMPLES OFF)
 option (GLFW_BUILD_TESTS OFF)
 add_subdirectory (lib/glfw)
 
+add_subdirectory(lib/g3log g3log)
+
 #
 # Set include paths
 #
@@ -41,6 +43,7 @@ include_directories (
     lib/stb_image/
     lib/fast_obj/
     lib/json/
+    lib/g3log/src/
 )
 
 #
@@ -57,4 +60,4 @@ file (GLOB_RECURSE PROJECT_SOURCES src/*.cpp
 
 add_definitions(-DGLFW_INCLUDE_NONE)
 add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES} ${PROJECT_HEADERS} ${LIBRARY_SOURCES})
-target_link_libraries (${PROJECT_NAME} glfw stdc++fs ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX)
+target_link_libraries (${PROJECT_NAME} glfw stdc++fs ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log)

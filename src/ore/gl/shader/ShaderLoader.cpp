@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ore/gl/GLError.h>
+#include <ore/utilities/Logger.h>
 #include "ShaderLoader.h"
 
 enum class ShaderType {
@@ -50,7 +51,7 @@ void loadSingleShader(unsigned int shaderProgramID, const std::string &shaderSou
         glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &messageLength);
         std::unique_ptr<char[]> buffer(new char[messageLength]);
         glGetShaderInfoLog(shaderID, messageLength, nullptr, buffer.get());
-        std::cerr << "SHADER COMPILATION FAILED\nShader source:\n" + shaderSource + "\n\nCompilation message:" + std::string(buffer.get()) + "\n" << std::flush;
+        std::cout << "SHADER COMPILATION FAILED\nShader source:\n" + shaderSource + "\n\nCompilation message:" + std::string(buffer.get()) + "\n" << std::flush;
     }
 
     assert(compileStatus);

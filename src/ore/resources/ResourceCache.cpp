@@ -7,6 +7,8 @@
 #include <iostream>
 #include <ore/core/window/Window.h>
 #include <ore/gl/GLError.h>
+#include <g3log/loglevels.hpp>
+#include <g3log/g3log.hpp>
 
 void ore::resources::ResourceCache::init(GLFWwindow* gameWindow) {
     this->window = gameWindow;
