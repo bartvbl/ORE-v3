@@ -20,7 +20,7 @@ void visitMeshPart(nlohmann::json* const partJSON, ore::resources::Mesh* const m
         for(; groupIndex < temporaryMesh->group_count; groupIndex++) {
             fastObjGroup group = temporaryMesh->groups[groupIndex];
             if(group.name == nullptr) {
-                LOG(FATAL) << "The OBJ file located at '" << modelFileLocation->string() << "' does not contain any groups. Please re-export your OBJ file to use groups to denote object parts.";
+                LOG(FATAL) << "The OBJ file located at '" << objectFileLocation->string() << "' does not contain any groups. Please re-export your OBJ file to use groups to denote object parts.";
             }
             if(std::string(group.name) == objGroupName) {
                 break;

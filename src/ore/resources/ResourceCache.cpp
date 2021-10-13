@@ -48,6 +48,8 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
         this->meshes.registerResource(id, priority, fileLocation, new MeshResource());
     } else if(extension == ".shader") {
         this->shaders.registerResource(id, priority, fileLocation, new ShaderResource());
+    } else if(extension == ".obj") {
+
     }
     wakeResourceLoadingThread();
 }
