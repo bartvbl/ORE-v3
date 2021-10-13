@@ -29,10 +29,10 @@ void ore::InputService::tick() {
     // Move mouse origin to window bottom left
     mouseY = double(windowHeight) - mouseY;
 
-    GLFWgamepadstate state;
+    GLFWgamepadstate gamepadState;
     bool controllerIsPresent = glfwJoystickPresent(GLFW_JOYSTICK_1) && glfwJoystickIsGamepad(GLFW_JOYSTICK_1);
     if(controllerIsPresent) {
-        glfwGetGamepadState(GLFW_JOYSTICK_1, &state);
+        glfwGetGamepadState(GLFW_JOYSTICK_1, &gamepadState);
     }
 
     for(const std::pair<const ore::input::InputType, std::vector<KeyMapping>> &entry : keyBindingMap) {
@@ -40,9 +40,12 @@ void ore::InputService::tick() {
         ore::input::InputType type = entry.first;
         float inputState = 0;
 
+        // Keyboard bindings
         if(int(type) >= int(ore::input::KEYBOARD_START) && int(type) <= int(ore::input::KEYBOARD_END)) {
             bool keyState = glfwGetKey(gameWindow, ore::input::toGLFWEnum(type)) == GLFW_PRESS;
             inputState = keyState ? 1.0 : 0.0;
+
+        // Mouse bindings
         } else if(int(type) >= int(ore::input::MOUSE_BUTTON_START) && int(type) <= int(ore::input::MOUSE_BUTTON_END)) {
             bool buttonState = glfwGetMouseButton(gameWindow, ore::input::toGLFWEnum(type)) == GLFW_PRESS;
             inputState = buttonState ? 1.0 : 0.0;
@@ -56,9 +59,11 @@ void ore::InputService::tick() {
             } else if(type == ore::input::InputType::MOUSE_AXIS_SCROLL) {
                 inputState = float(ore::input::yScrollOffset);
             }
+
+        // Controller bindings
         } else if(int(type) >= int(ore::input::CONTROLLER_BUTTON_START) && int(type) <= int(ore::input::CONTROLLER_BUTTON_END)) {
             if(controllerIsPresent) {
-                bool buttonState = state.buttons[];
+                bool buttonState = gamepadState.buttons[int(type) - int(ore::input::CONTROLLER_BUTTON_START)];
                 inputState = buttonState ? 1.0 : 0.0;
             }
         }
