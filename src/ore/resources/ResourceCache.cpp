@@ -52,6 +52,15 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
     wakeResourceLoadingThread();
 }
 
+void checkResourceFileEntry(const ore::filesystem::path &resourceFileLocation, const nlohmann::json &entry) {
+    if(entry.find("id") == entry.end()) {
+        LOG(FATAL) << "Error: entry in resource file '" << resourceFileLocation.string() << "' is missing the property 'id'." << std::endl;
+    }
+    if(entry.find("src") == entry.end()) {
+        LOG(FATAL) << "Error: entry in resource file '" << resourceFileLocation.string() << "' is missing the property 'src'." << std::endl;
+    }
+}
+
 void ore::resources::ResourceCache::enqueueResourceFile(ore::filesystem::path resourceFileLocation) {
     std::cout << "Reading resource file " << resourceFileLocation << std::endl;
     ore::filesystem::path resListDirectory = resourceFileLocation.parent_path();
@@ -63,21 +72,26 @@ void ore::resources::ResourceCache::enqueueResourceFile(ore::filesystem::path re
     assert(resourceFile["meta"]["version"] == 1);
 
     for(const auto& entry : resourceFile["required"]) {
+        checkResourceFileEntry(resourceFileLocation, entry);
         registerSingleEntry(entry["id"],
                 resListDirectory / ore::filesystem::path(entry["src"]),
                 ore::resources::ResourceLoadPriority::REQUIRED);
     }
     for(const auto& entry : resourceFile["streaming"]) {
+        checkResourceFileEntry(resourceFileLocation, entry);
         registerSingleEntry(entry["id"],
                 resListDirectory / ore::filesystem::path(entry["src"]),
                 ore::resources::ResourceLoadPriority::STREAMING);
     }
     for(const auto& entry : resourceFile["onDemand"]) {
+        checkResourceFileEntry(resourceFileLocation, entry);
         registerSingleEntry(entry["id"],
                 resListDirectory / ore::filesystem::path(entry["src"]),
                 ore::resources::ResourceLoadPriority::ON_DEMAND);
     }
 }
+
+
 
 unsigned int ore::resources::ResourceCache::countEnqueuedItems(ore::resources::ResourceLoadPriority threshold) {
     unsigned int totalResourceCount = 0;
