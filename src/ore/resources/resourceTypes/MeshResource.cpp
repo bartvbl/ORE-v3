@@ -25,10 +25,18 @@ void visitMeshPart(nlohmann::json* const partJSON, ore::resources::Mesh* const m
         }
 
         if(groupIndex == temporaryMesh->group_count) {
-            throw std::runtime_error(
-                    "The part named \"" + objGroupName +
-                    "\" listed in the model file \"" + modelFileLocation->string() +
-                    "\" was not found in the OBJ file \"" + objectFileLocation->string() + "\".");
+            std::stringstream errorMessage;
+            errorMessage << "The part named \"" + objGroupName +
+                            "\" listed in the model file \"" + modelFileLocation->string() +
+                            "\" was not found in the OBJ file \"" + objectFileLocation->string() + "\"." << std::endl
+                         << "Candidates are:" << std::endl;
+            for(unsigned int i = 0; i < temporaryMesh->group_count; i++) {
+                fastObjGroup group = temporaryMesh->groups[i];
+                errorMessage << "    - " << std::string(group.name) << std::endl;
+            }
+            LOG(FATAL) << errorMessage.str();
+                       ;
+
         }
 
         fastObjGroup group = temporaryMesh->groups[groupIndex];
