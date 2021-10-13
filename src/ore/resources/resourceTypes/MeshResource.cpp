@@ -4,6 +4,8 @@
 #include <fast_obj.h>
 #include <ore/gl/vao/GeometryBufferGenerator.h>
 #include <thread>
+#include <ore/utilities/Logger.h>
+#include <g3log/g3log.hpp>
 #include "MeshResource.h"
 
 // Not a member function because fast_obj can not be included from MeshResource.h.
@@ -83,10 +85,19 @@ void visitMeshPart(nlohmann::json* const partJSON, ore::resources::Mesh* const m
 }
 
 void ore::resources::MeshResource::load(const ore::filesystem::path &modelFileLocation) {
+    if(!ore::filesystem::exists(modelFileLocation)) {
+        std::cout << "";
+    }
+
     ore::filesystem::path containingDirectory = modelFileLocation.parent_path();
     nlohmann::json modelFileContents;
     std::fstream fileStream(modelFileLocation, std::ios::in);
-    fileStream >> modelFileContents;
+    try {
+        fileStream >> modelFileContents;
+    } catch(nlohmann::detail::exception e) {
+        LOG(FATAL) << "Failed to load mesh located at " << modelFileLocation << std::endl << "Reason:" << std::endl << e.what() << std::endl;
+        throw std::runtime_error("Resource failed to load.");
+    }
     fileStream.close();
     name = modelFileLocation.string();
 
