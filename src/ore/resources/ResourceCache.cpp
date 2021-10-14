@@ -117,13 +117,13 @@ void ore::resources::ResourceCache::flushMainThreadCompletions() {
     customResources.runMainThreadJobs();
 }
 
-void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadScreenRenderer *renderer,
-                                                          ore::resources::ResourceLoadPriority threshold) {
+void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadScreenRenderer *renderer, ore::resources::ResourceLoadPriority threshold) {
 
     renderer->init(this);
     unsigned int totalItemsToLoad = countEnqueuedItems(threshold);
     std::cout << "Initial number of items to load: " << totalItemsToLoad << std::endl;
     unsigned int remainingItemsToLoad = totalItemsToLoad;
+    wakeResourceLoadingThread();
 
     // Do load screen render
     glClearColor(0, 0, 0, 1);
