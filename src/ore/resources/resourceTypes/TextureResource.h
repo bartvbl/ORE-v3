@@ -5,7 +5,7 @@
 
 namespace ore {
     namespace resources {
-        class TextureResource : public ore::resources::ResourceType {
+        class TextureResource final : public ore::resources::ResourceType {
         private:
             int imageWidth = 0;
             int imageHeight = 0;

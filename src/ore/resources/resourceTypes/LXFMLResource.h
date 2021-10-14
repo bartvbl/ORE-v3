@@ -4,7 +4,7 @@
 
 namespace ore {
     namespace resources {
-        class LXFMLResource : public ore::resources::ResourceType {
+        class LXFMLResource final : public ore::resources::ResourceType {
             void load(const ore::filesystem::path &fileLocation) override;
 
             bool requiresMainThread() override;

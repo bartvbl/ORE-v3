@@ -6,7 +6,7 @@
 
 namespace ore {
     namespace resources {
-        class ShaderResource : public ore::resources::ResourceType {
+        class ShaderResource final : public ore::resources::ResourceType {
         private:
             ore::gl::ShaderSource* shaderSources;
             ore::resources::Shader shader;

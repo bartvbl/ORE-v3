@@ -4,7 +4,7 @@
 
 namespace ore {
     namespace resources {
-        class SoundResource : public ore::resources::ResourceType {
+        class SoundResource final : public ore::resources::ResourceType {
             void load(const ore::filesystem::path &fileLocation) override;
 
             bool requiresMainThread() override;

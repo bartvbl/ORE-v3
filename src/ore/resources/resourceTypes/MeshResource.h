@@ -7,7 +7,7 @@
 
 namespace ore {
     namespace resources {
-        class MeshResource : public ore::resources::ResourceType {
+        class MeshResource final : public ore::resources::ResourceType {
         private:
             ore::resources::Mesh mesh;
             ore::gl::GeometryBuffer geometryBuffer;
