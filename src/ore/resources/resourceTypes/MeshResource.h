@@ -4,6 +4,8 @@
 #include <ore/resources/resourceTypes/mesh/Mesh.h>
 #include <chrono>
 #include <ore/gl/vao/GeometryBuffer.h>
+#include <ore/sceneGraph/nodes/MeshNode.h>
+#include <json.hpp>
 
 namespace ore {
     namespace resources {
@@ -12,6 +14,9 @@ namespace ore {
             ore::resources::Mesh mesh;
             ore::gl::GeometryBuffer geometryBuffer;
             std::string name;
+
+            void loadMDLFile(const ore::filesystem::path &modelFileLocation);
+            void loadOBJFile(const ore::filesystem::path &modelFileLocation);
         public:
             void load(const ore::filesystem::path &fileLocation) override;
 
@@ -20,6 +25,8 @@ namespace ore {
             void completeLoadOnMainThread() override;
 
             void destroy() override;
+
+            ore::MeshNode* createInstance();
         };
     }
 }
