@@ -99,12 +99,11 @@ void visitMeshPart(const nlohmann::json &partJSON,
     }
 }
 
-void loadMesh(const ore::filesystem::path &modelFileLocation,
-              const nlohmann::json &modelFileContents,
-              ore::filesystem::path &objectFileLocation,
-              ore::resources::Mesh &mesh) {
-    fastObjMesh* temporaryMesh = fast_obj_read(objectFileLocation.c_str());
-
+void constructMesh(const fastObjMesh* temporaryMesh,
+                   const ore::filesystem::path &modelFileLocation,
+                   const nlohmann::json &modelFileContents,
+                   const ore::filesystem::path &objectFileLocation,
+                   ore::resources::Mesh &mesh) {
     mesh.geometry.hasNormalMap = false;
     mesh.geometry.hasNormals = temporaryMesh->indices[0].n != 0;
     mesh.geometry.hasTextures = temporaryMesh->indices[0].t != 1;
@@ -114,6 +113,7 @@ void loadMesh(const ore::filesystem::path &modelFileLocation,
     mesh.geometry.normals.reserve(3 * temporaryMesh->face_count);
     mesh.geometry.textureCoordinates.reserve(2 * temporaryMesh->face_count);
     mesh.geometry.indices.reserve(3 * temporaryMesh->face_count);
+    mesh.parts.emplace_back();
 
     // Construct part tree and fill buffers
     visitMeshPart(modelFileContents["partStructure"], mesh, 0, temporaryMesh, modelFileLocation, objectFileLocation);
@@ -135,8 +135,6 @@ void loadMesh(const ore::filesystem::path &modelFileLocation,
                 std::string(material.map_bump.path) : "");
         mesh.materials.at(mesh.materials.size() - 1).load();
     }
-
-    fast_obj_destroy(temporaryMesh);
 }
 
 void ore::resources::MeshResource::loadMDLFile(const ore::filesystem::path &modelFileLocation) {
@@ -157,14 +155,33 @@ void ore::resources::MeshResource::loadMDLFile(const ore::filesystem::path &mode
     std::string relativeObjectFileLocation = modelFileContents["modelFile"];
     ore::filesystem::path objectFileLocation = containingDirectory / relativeObjectFileLocation;
 
-    loadMesh(modelFileLocation, modelFileContents, objectFileLocation, this->mesh);
-
+    fastObjMesh* temporaryMesh = fast_obj_read(objectFileLocation.c_str());
+    constructMesh(temporaryMesh, modelFileLocation, modelFileContents, objectFileLocation, this->mesh);
+    fast_obj_destroy(temporaryMesh);
 }
 
 
 
 void ore::resources::MeshResource::loadOBJFile(const ore::filesystem::path &modelFileLocation) {
+    fastObjMesh* temporaryMesh = fast_obj_read(modelFileLocation.c_str());
 
+    nlohmann::json fakeFileContents;
+    fakeFileContents["partStructure"] = {};
+    fakeFileContents["partStructure"]["name"] = "root";
+    fakeFileContents["partStructure"]["nameInObjectFile"] = "";
+    fakeFileContents["partStructure"]["pivot"] = {0, 0, 0};
+    fakeFileContents["partStructure"]["children"];
+
+    for(unsigned int i = 0; i < temporaryMesh->group_count; i++) {
+        fakeFileContents["partStructure"]["children"].emplace_back();
+        fakeFileContents["partStructure"]["children"].at(i)["name"] = std::string(temporaryMesh->groups[i].name);
+        fakeFileContents["partStructure"]["children"].at(i)["nameInObjectFile"] = std::string(temporaryMesh->groups[i].name);
+        fakeFileContents["partStructure"]["children"].at(i)["pivot"] = {0, 0, 0};
+        fakeFileContents["partStructure"]["children"].at(i)["children"];
+    }
+
+    constructMesh(temporaryMesh, ore::filesystem::path("NOT_APPLICABLE"), fakeFileContents, modelFileLocation, this->mesh);
+    fast_obj_destroy(temporaryMesh);
 }
 
 void ore::resources::MeshResource::load(const ore::filesystem::path &modelFileLocation) {
