@@ -39,17 +39,21 @@ void ore::resources::ResourceCache::wakeResourceLoadingThread() {
 }
 
 void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::filesystem::path fileLocation, ore::resources::ResourceLoadPriority priority) {
+    if(!ore::filesystem::exists(fileLocation)) {
+        LOG(FATAL) << "The file of the resource with ID " << id << ", located at " << fileLocation.string() << " could not be found.";
+    }
+
     std::string extension = fileLocation.extension();
     std::transform(extension.begin(), extension.end(), extension.begin(),
                    [](unsigned char c){ return std::tolower(c); });
     if(extension == ".png" || extension == ".bmp" || extension == ".tga" || extension == ".jpg") {
         this->textures.registerResource(id, priority, fileLocation, new TextureResource());
-    } else if(extension == ".mdl") {
+    } else if(extension == ".mdl" || extension == ".obj") {
         this->meshes.registerResource(id, priority, fileLocation, new MeshResource());
     } else if(extension == ".shader") {
         this->shaders.registerResource(id, priority, fileLocation, new ShaderResource());
-    } else if(extension == ".obj") {
-
+    } else {
+        LOG(FATAL) << "The resource with ID " << id << ", located at " << fileLocation << " has an unknown extension, and can therefore not be loaded as a resource." << std::endl;
     }
     wakeResourceLoadingThread();
 }
