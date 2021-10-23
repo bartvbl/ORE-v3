@@ -16,5 +16,8 @@ unsigned int ore::resources::Shader::get() {
 
 void ore::resources::Shader::setUniform(unsigned int ID, float *matrix) {
     glUniformMatrix4fv(ID, 1, GL_FALSE, matrix);
-    //glUniform4f(22, 1, 1, 1, 1);
+}
+
+void ore::resources::Shader::setUniform(unsigned int ID, float x, float y, float z, float w) {
+    glUniform4f(ID, x, y, z, w);
 }

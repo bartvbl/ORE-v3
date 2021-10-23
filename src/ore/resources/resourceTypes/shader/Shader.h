@@ -11,6 +11,7 @@ namespace ore {
             void use();
             unsigned int get();
             void setUniform(unsigned int ID, float* matrix);
+            void setUniform(unsigned int ID, float x, float y, float z, float w);
             void destroy();
         };
     }

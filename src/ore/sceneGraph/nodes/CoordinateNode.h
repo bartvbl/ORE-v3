@@ -7,6 +7,7 @@
 namespace ore {
     namespace scene {
         class CoordinateNode : public ore::scene::ContainerNode {
+        public:
             glm::vec3 position = {0, 0, 0};
             glm::vec3 rotation = {0, 0, 0};
             glm::vec3 scale = {1, 1, 1};
@@ -14,7 +15,7 @@ namespace ore {
 
             glm::mat4 storedModelMatrix;
 
-        public:
+
             CoordinateNode(std::string nodeName) : ore::scene::ContainerNode(nodeName) {}
             CoordinateNode() : ore::scene::ContainerNode("Coordinate Node") {}
 
