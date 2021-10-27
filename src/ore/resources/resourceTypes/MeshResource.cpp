@@ -242,6 +242,11 @@ ore::MeshNode *ore::resources::MeshResource::createInstance() {
     MeshNode* node = new MeshNode(name);
     unsigned int nodeIndex = 0;
 
+    // Allocate space, ensure pointers remain valid
+    node->materialNodes.reserve(mesh.parts.size());
+    node->geometryNodes.reserve(mesh.parts.size());
+    node->intermediateNodes.reserve(mesh.parts.size());
+
     buildInstanceTree(node, node, &nodeIndex);
 
     return node;
