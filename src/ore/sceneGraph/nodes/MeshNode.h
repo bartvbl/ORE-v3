@@ -7,6 +7,9 @@
 namespace ore {
     class MeshNode : public ore::scene::CoordinateNode {
     public:
+        // The notes stored in the vectors use pointers.
+        // These may be invalidated by copying or modification
+
         std::string name;
         std::string meshResourceName;
         std::vector<ore::scene::GeometryNode> geometryNodes;
