@@ -19,13 +19,7 @@ namespace ore {
             CoordinateNode(std::string nodeName) : ore::scene::ContainerNode(nodeName) {}
             CoordinateNode() : ore::scene::ContainerNode("Coordinate Node") {}
 
-            void preRender(RenderState &renderState) override;
-            void render(RenderState &renderState) override;
-            void postRender(RenderState &renderState) override;
-
-            void preUpdate(RenderState &renderState) override;
-
-            void postUpdate(RenderState &renderState) override;
+            void render(RenderState &renderState);
         };
     }
 }

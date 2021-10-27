@@ -7,9 +7,9 @@ namespace ore {
         class ShaderNode : public ore::scene::ContainerNode {
         public:
             ShaderNode() : ore::scene::ContainerNode("Shader Node") {}
-            void preRender(RenderState &renderState) override;
-            void render(RenderState &renderState) override;
-            void postRender(RenderState &renderState) override;
+            void preRender(RenderState &renderState);
+            void render(RenderState &renderState);
+            void postRender(RenderState &renderState);
         };
     }
 }

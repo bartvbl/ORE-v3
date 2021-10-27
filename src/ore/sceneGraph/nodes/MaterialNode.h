@@ -13,12 +13,6 @@ namespace ore {
     public:
         MaterialNode() : ore::scene::ContainerNode("Material Node") {}
         MaterialNode(ore::resources::Material material) : ore::scene::ContainerNode("Material Node"), material(std::move(material)) {}
-
-        void preRender(RenderState &renderState) override;
-
-        void render(RenderState &renderState) override;
-
-        void postRender(RenderState &renderState) override;
     };
     }
 }

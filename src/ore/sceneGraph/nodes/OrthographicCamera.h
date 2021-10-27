@@ -16,7 +16,7 @@ namespace ore {
 
             OrthographicCamera() : ore::scene::ContainerNode("Orthographic Camera") {}
 
-            void preUpdate(RenderState &renderState) override;
+            void update(RenderState &renderState);
         };
     }
 }

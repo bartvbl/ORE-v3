@@ -14,12 +14,9 @@ namespace ore {
             GeometryNode() : ore::scene::CoordinateNode("Geometry Node") {}
             GeometryNode(ore::gl::GeometryBuffer buffer) : ore::scene::CoordinateNode("Geometry Node"), buffer(buffer) {}
 
-            void preUpdate(RenderState &renderState) override;
-            void postUpdate(RenderState &renderState) override;
+            void update(RenderState &renderState);
 
-            void preRender(RenderState &renderState) override;
-            void render(RenderState &renderState) override;
-            void postRender(RenderState &renderState) override;
+            void render(RenderState &renderState);
         };
     }
 }

@@ -1,7 +1,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "PerspectiveCamera.h"
 
-void ore::scene::PerspectiveCamera::preUpdate(ore::RenderState &renderState) {
+void ore::scene::PerspectiveCamera::update(ore::RenderState &renderState) {
     float aspectRatio = float(renderState.window.height) / float(renderState.window.width);
     renderState.transformations.projection = glm::perspective(glm::radians(fovY), aspectRatio, zNear, zFar);
 
@@ -15,4 +15,6 @@ void ore::scene::PerspectiveCamera::preUpdate(ore::RenderState &renderState) {
     positionTransformation = glm::rotate(positionTransformation, rotation.z, glm::vec3(0, 0, 1));
 
     renderState.transformations.perspectiveView = relativeMatrix * positionTransformation;
+
+    SceneNode::update(renderState);
 }

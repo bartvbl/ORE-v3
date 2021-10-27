@@ -9,15 +9,14 @@ namespace ore {
     public:
         virtual std::string getName() = 0;
 
-        virtual void preUpdate(ore::RenderState &renderState) = 0;
-        virtual void postUpdate(ore::RenderState &renderState) = 0;
+        void update(ore::RenderState &renderState);
 
-        virtual void preRender(ore::RenderState &renderState) = 0;
-        virtual void render(ore::RenderState &renderState) = 0;
-        virtual void postRender(ore::RenderState &renderState) = 0;
+        void preRender(ore::RenderState &renderState);
+        void render(ore::RenderState &renderState);
+        void postRender(ore::RenderState &renderState);
 
         virtual std::vector<SceneNode*>* getChildren() = 0;
 
-        virtual void destroy() = 0;
+        void destroy();
     };
 }
