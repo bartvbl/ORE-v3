@@ -209,8 +209,42 @@ void ore::resources::MeshResource::destroy() {
 
 }
 
+void ore::resources::MeshResource::buildInstanceTree(ore::SceneNode* parentNode, ore::MeshNode* meshNode, unsigned int* nodeIndex) {
+    // Create a coordinate node to contain the part itself
+    MeshPart* part = &mesh.parts.at(*nodeIndex);
+    meshNode->intermediateNodes.emplace_back(part->name);
+    ore::SceneNode* currentNode = &meshNode->intermediateNodes.back();
+    parentNode->getChildren()->push_back(currentNode);
+
+    // Add material and geometry nodes if the part contains geometry that should be drawn
+    if(part->containsGeometry) {
+        ore::scene::MaterialNode materialNode(&mesh.materials.at(part->materialIndex));
+        meshNode->materialNodes.push_back(materialNode);
+        currentNode->getChildren()->push_back(&meshNode->materialNodes.back());
+
+        ore::scene::GeometryNode geometryNode(geometryBuffer,
+                                              part->indexBufferStartIndex,
+                                              part->indexCount);
+        meshNode->geometryNodes.push_back(geometryNode);
+        materialNode.getChildren()->push_back(&meshNode->geometryNodes.back());
+    }
+
+    // iterate over its children
+    unsigned int childCount = mesh.parts.at(*nodeIndex).childNodeCount;
+    for(unsigned int i = 0; i < childCount; i++) {
+        *nodeIndex++;
+        buildInstanceTree(currentNode, meshNode, nodeIndex);
+    }
+}
+
 ore::MeshNode *ore::resources::MeshResource::createInstance() {
-    return new MeshNode();
+    registerInstanceCreation();
+    MeshNode* node = new MeshNode(name);
+    unsigned int nodeIndex = 0;
+
+    buildInstanceTree(node, node, &nodeIndex);
+
+    return node;
 }
 
 

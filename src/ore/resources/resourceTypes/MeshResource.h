@@ -17,6 +17,7 @@ namespace ore {
 
             void loadMDLFile(const ore::filesystem::path &modelFileLocation);
             void loadOBJFile(const ore::filesystem::path &modelFileLocation);
+            void buildInstanceTree(ore::SceneNode* node, ore::MeshNode* meshNode, unsigned int* nodeIndex);
         public:
             void load(const ore::filesystem::path &fileLocation) override;
 

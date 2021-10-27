@@ -8,13 +8,14 @@ namespace ore {
     namespace scene {
         class GeometryNode : public ore::scene::CoordinateNode {
         private:
-            glm::mat4 modelMatrix = glm::mat4(1.0);
             ore::gl::GeometryBuffer buffer;
+            unsigned int startIndex = 0;
+            unsigned int indexCount = 0;
         public:
             GeometryNode() : ore::scene::CoordinateNode("Geometry Node") {}
-            GeometryNode(ore::gl::GeometryBuffer buffer) : ore::scene::CoordinateNode("Geometry Node"), buffer(buffer) {}
-
-            void update(RenderState &renderState);
+            GeometryNode(ore::gl::GeometryBuffer buffer, unsigned int startIndex = 0, unsigned int indexCount = 0)
+                : ore::scene::CoordinateNode("Geometry Node"),
+                  buffer(buffer), startIndex(startIndex), indexCount(indexCount) {}
 
             void render(RenderState &renderState);
         };
