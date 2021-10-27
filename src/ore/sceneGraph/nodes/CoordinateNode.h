@@ -15,7 +15,6 @@ namespace ore {
 
             glm::mat4 storedModelMatrix;
 
-
             CoordinateNode(std::string nodeName) : ore::scene::ContainerNode(nodeName) {}
             CoordinateNode() : ore::scene::ContainerNode("Coordinate Node") {}
 
