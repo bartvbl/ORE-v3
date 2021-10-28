@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ore/utilities/filesystem.h>
+#include <ore/resources/resourceTypes/ResourceType.h>
 #include <ore/resources/loadScreen/LoadScreenRenderer.h>
 #include <ore/resources/resourceTypes/TextureResource.h>
 #include <ore/resources/resourceTypes/MeshResource.h>

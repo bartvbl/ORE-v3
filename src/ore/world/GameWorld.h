@@ -6,6 +6,7 @@
 #include <ore/services/InputService.h>
 #include <ore/services/SoundService.h>
 #include <ore/sceneGraph/Scene.h>
+#include <ore/world/Actors.h>
 #include <GLFW/glfw3.h>
 
 namespace ore {
@@ -21,6 +22,7 @@ namespace ore {
         ore::resources::ResourceCache resourceCache;
         ore::WorldServices services;
         ore::Scene scene;
+        ore::Actors actors;
 
         GameWorld() : resourceCache(5) {}
 
