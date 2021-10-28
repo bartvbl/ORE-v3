@@ -2,7 +2,7 @@
 #include "PerspectiveCamera.h"
 
 void ore::scene::PerspectiveCamera::render(ore::RenderState &renderState) {
-    float aspectRatio = float(renderState.window.height) / float(renderState.window.width);
+    float aspectRatio = float(renderState.window.width) / float(renderState.window.height);
     renderState.transformations.projection = glm::perspective(glm::radians(fovY), aspectRatio, zNear, zFar);
 
     // Camera allows itself to be
