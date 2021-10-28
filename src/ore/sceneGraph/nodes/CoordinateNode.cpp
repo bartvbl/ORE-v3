@@ -2,7 +2,7 @@
 #include "CoordinateNode.h"
 #include <glm/gtx/transform.hpp>
 
-void ore::scene::CoordinateNode::render(ore::RenderState &renderState) {
+void ore::scene::CoordinateNode::preRender(ore::RenderState &renderState) {
     // Create a backup copy of the current model matrix
     storedModelMatrix = renderState.transformations.model;
 
@@ -17,8 +17,8 @@ void ore::scene::CoordinateNode::render(ore::RenderState &renderState) {
     relativeTransformation = glm::translate(relativeTransformation, -pivot);
 
     renderState.transformations.model = relativeTransformation * renderState.transformations.model;
+}
 
-    SceneNode::render(renderState);
-
+void ore::scene::CoordinateNode::postRender(ore::RenderState &renderState) {
     renderState.transformations.model = storedModelMatrix;
 }
