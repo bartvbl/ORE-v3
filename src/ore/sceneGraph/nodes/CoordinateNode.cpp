@@ -18,7 +18,7 @@ void ore::scene::CoordinateNode::render(ore::RenderState &renderState) {
 
     renderState.transformations.model = relativeTransformation * renderState.transformations.model;
 
-    SceneNode::update(renderState);
+    SceneNode::render(renderState);
 
     renderState.transformations.model = storedModelMatrix;
 }

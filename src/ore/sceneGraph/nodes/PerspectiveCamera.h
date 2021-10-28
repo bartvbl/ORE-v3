@@ -16,7 +16,7 @@ namespace ore {
 
             PerspectiveCamera() : ore::scene::ContainerNode("Perspective Camera") {}
 
-            void update(RenderState &renderState);
+            void render(RenderState &renderState);
         };
     }
 }

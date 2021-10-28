@@ -11,9 +11,7 @@ namespace ore {
 
         void update(ore::RenderState &renderState);
 
-        void preRender(ore::RenderState &renderState);
         void render(ore::RenderState &renderState);
-        void postRender(ore::RenderState &renderState);
 
         virtual std::vector<SceneNode*>* getChildren() = 0;
 
