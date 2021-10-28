@@ -135,6 +135,18 @@ void constructMesh(const fastObjMesh* temporaryMesh,
                 std::string(material.map_bump.path) : "");
         mesh.materials.at(mesh.materials.size() - 1).load();
     }
+
+    if(temporaryMesh->material_count == 0) {
+        mesh.materials.emplace_back(
+                "default material",
+                ore::geom::vec3(0.2, 0.2, 0.2),
+                ore::geom::vec3(1.0, 1.0, 1.0),
+                ore::geom::vec3(1.0, 1.0, 1.0),
+                ore::geom::vec3(0.0, 0.0, 0.0),
+                1,
+                "",
+                "");
+    }
 }
 
 void ore::resources::MeshResource::loadMDLFile(const ore::filesystem::path &modelFileLocation) {
