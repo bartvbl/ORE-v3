@@ -15,7 +15,11 @@ namespace ore {
             GeometryNode() : ore::scene::CoordinateNode("Geometry Node") {}
             GeometryNode(ore::gl::GeometryBuffer buffer, unsigned int startIndex = 0, unsigned int indexCount = 0)
                 : ore::scene::CoordinateNode("Geometry Node"),
-                  buffer(buffer), startIndex(startIndex), indexCount(indexCount) {}
+                  buffer(buffer), startIndex(startIndex), indexCount(indexCount) {
+                if(indexCount == 0) {
+                    this->indexCount = buffer.indexCount;
+                }
+            }
 
             void render(RenderState &renderState);
         };

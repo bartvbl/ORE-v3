@@ -9,7 +9,7 @@ namespace ore {
     public:
         virtual std::string getName() = 0;
 
-        void update(ore::RenderState &renderState);
+        virtual void update(ore::RenderState &renderState);
 
         virtual void preRender(ore::RenderState &renderState);
 
@@ -19,6 +19,6 @@ namespace ore {
 
         virtual std::vector<SceneNode*>* getChildren() = 0;
 
-        void destroy();
+        virtual void destroy();
     };
 }
