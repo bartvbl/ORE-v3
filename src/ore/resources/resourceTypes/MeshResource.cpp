@@ -238,7 +238,7 @@ void ore::resources::MeshResource::buildInstanceTree(ore::SceneNode* parentNode,
                                               part->indexBufferStartIndex,
                                               part->indexCount);
         meshNode->geometryNodes.push_back(geometryNode);
-        materialNode.getChildren()->push_back(&meshNode->geometryNodes.back());
+        meshNode->materialNodes.back().getChildren()->push_back(&meshNode->geometryNodes.back());
     }
 
     // iterate over its children
