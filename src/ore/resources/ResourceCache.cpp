@@ -81,19 +81,19 @@ void ore::resources::ResourceCache::enqueueResourceFile(ore::filesystem::path re
     for(const auto& entry : resourceFile["required"]) {
         checkResourceFileEntry(resourceFileLocation, entry);
         registerSingleEntry(entry["id"],
-                resListDirectory / ore::filesystem::path(entry["src"]),
+                resListDirectory / ore::filesystem::path(std::string(entry["src"])),
                 ore::resources::ResourceLoadPriority::REQUIRED);
     }
     for(const auto& entry : resourceFile["streaming"]) {
         checkResourceFileEntry(resourceFileLocation, entry);
         registerSingleEntry(entry["id"],
-                resListDirectory / ore::filesystem::path(entry["src"]),
+                resListDirectory / ore::filesystem::path(std::string(entry["src"])),
                 ore::resources::ResourceLoadPriority::STREAMING);
     }
     for(const auto& entry : resourceFile["onDemand"]) {
         checkResourceFileEntry(resourceFileLocation, entry);
         registerSingleEntry(entry["id"],
-                resListDirectory / ore::filesystem::path(entry["src"]),
+                resListDirectory / ore::filesystem::path(std::string(entry["src"])),
                 ore::resources::ResourceLoadPriority::ON_DEMAND);
     }
 }

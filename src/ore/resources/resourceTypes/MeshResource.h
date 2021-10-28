@@ -13,7 +13,6 @@ namespace ore {
         private:
             ore::resources::Mesh mesh;
             ore::gl::GeometryBuffer geometryBuffer;
-            std::string name;
 
             void loadMDLFile(const ore::filesystem::path &modelFileLocation);
             void loadOBJFile(const ore::filesystem::path &modelFileLocation);

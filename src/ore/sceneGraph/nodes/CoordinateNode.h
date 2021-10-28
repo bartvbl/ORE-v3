@@ -20,6 +20,7 @@ namespace ore {
 
             void preRender(RenderState &renderState);
             void postRender(RenderState &renderState);
+            std::string getName();
         };
     }
 }

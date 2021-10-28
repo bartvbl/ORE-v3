@@ -22,3 +22,7 @@ void ore::scene::CoordinateNode::preRender(ore::RenderState &renderState) {
 void ore::scene::CoordinateNode::postRender(ore::RenderState &renderState) {
     renderState.transformations.model = storedModelMatrix;
 }
+
+std::string ore::scene::CoordinateNode::getName() {
+    return "Container node - " + name;
+}

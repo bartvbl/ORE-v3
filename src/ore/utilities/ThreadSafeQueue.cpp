@@ -2,13 +2,13 @@
 
 template<typename ContentsType>
 void ore::utilities::ThreadSafeQueue<ContentsType>::put(const ContentsType &entry) {
-    std::unique_lock lock(queueMutex);
+    std::unique_lock<std::mutex> lock(queueMutex);
     queue.push(entry);
 }
 
 template<typename ContentsType>
 ContentsType ore::utilities::ThreadSafeQueue<ContentsType>::get() {
-    std::unique_lock lock(queueMutex);
+    std::unique_lock<std::mutex> lock(queueMutex);
     ContentsType* entry = queue.front();
     queue.pop();
     return entry;
