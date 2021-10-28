@@ -18,6 +18,9 @@ namespace ore {
 
         MeshNode(std::string &name) : name(name) {}
 
+        // Since we do some pointer stuff, disallow copying
+        MeshNode(const MeshNode &node) = delete;
+
         std::string getName();
 
         void destroy();
