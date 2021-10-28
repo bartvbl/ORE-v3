@@ -7,7 +7,8 @@ void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
     glm::mat4 mvpMatrix = renderState.transformations.projection * renderState.transformations.view * renderState.transformations.model;
     glUniformMatrix4fv(6, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
     glBindVertexArray(buffer.vaoID);
-    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
+    const unsigned int* zeroptr = nullptr;
+    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void*) (zeroptr + startIndex));
 
     CoordinateNode::render(renderState);
 
