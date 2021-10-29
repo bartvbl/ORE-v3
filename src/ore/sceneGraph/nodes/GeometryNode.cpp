@@ -14,3 +14,7 @@ void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
 
     CoordinateNode::postRender(renderState);
 }
+
+void ore::scene::GeometryNode::destroyGeometryBuffer() {
+    buffer.destroy();
+}

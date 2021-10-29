@@ -22,6 +22,7 @@ namespace ore {
             }
 
             void render(RenderState &renderState);
+            void destroyGeometryBuffer();
         };
     }
 }
