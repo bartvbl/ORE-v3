@@ -1,11 +1,11 @@
 #pragma once
 
 
-#include "ContainerNode.h"
+#include "CoordinateNode.h"
 
 namespace ore {
     namespace scene {
-        class PerspectiveCamera : public ore::scene::ContainerNode {
+        class PerspectiveCamera : public ore::scene::CoordinateNode {
         public:
             float fovY = 90;
             float zNear = 0.01;
@@ -14,7 +14,7 @@ namespace ore {
             glm::vec3 position = {0, 0, 0};
             glm::vec3 rotation = {0, 0, 0};
 
-            PerspectiveCamera() : ore::scene::ContainerNode("Perspective Camera") {}
+            PerspectiveCamera() : ore::scene::CoordinateNode("Perspective Camera") {}
 
             void render(RenderState &renderState);
         };
