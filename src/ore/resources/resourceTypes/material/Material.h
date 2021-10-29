@@ -22,13 +22,13 @@ namespace ore {
 
             Material(
                     std::string materialName,
-                    ore::geom::vec3 materialAmbientColour,
-                    ore::geom::vec3 materialDiffuseColour,
-                    ore::geom::vec3 materialSpecularColour,
-                    ore::geom::vec3 materialEmissionColour,
-                    float materialTransparency,
-                    std::string materialDiffuseTexturePath,
-                    std::string materialNormalMapTexturePath)
+                    ore::geom::vec3 materialAmbientColour = ore::geom::vec3(0, 0, 0),
+                    ore::geom::vec3 materialDiffuseColour = ore::geom::vec3(1, 1, 1),
+                    ore::geom::vec3 materialSpecularColour = ore::geom::vec3(1, 1, 1),
+                    ore::geom::vec3 materialEmissionColour = ore::geom::vec3(0, 0, 0),
+                    float materialTransparency = 1.0,
+                    std::string materialDiffuseTexturePath = "",
+                    std::string materialNormalMapTexturePath = "")
                     : name(std::move(materialName)),
                       ambientColour(materialAmbientColour),
                       diffuseColour(materialDiffuseColour),
