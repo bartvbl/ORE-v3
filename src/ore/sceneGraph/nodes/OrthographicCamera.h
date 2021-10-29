@@ -17,6 +17,8 @@ namespace ore {
             OrthographicCamera() : ore::scene::ContainerNode("Orthographic Camera") {}
 
             void render(RenderState &renderState);
+
+            void setBounds(float _left, float _right, float _bottom, float _top, float _near, float _far);
         };
     }
 }
