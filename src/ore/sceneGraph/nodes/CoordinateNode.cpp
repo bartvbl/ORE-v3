@@ -8,13 +8,13 @@ void ore::scene::CoordinateNode::preRender(ore::RenderState &renderState) {
 
     // Compute and apply relative transformation matrix
     glm::mat4 relativeTransformation(1.0);
-    relativeTransformation = glm::translate(relativeTransformation, position);
-    relativeTransformation = glm::translate(relativeTransformation, pivot);
+    relativeTransformation = glm::translate(relativeTransformation, position.asglm());
+    relativeTransformation = glm::translate(relativeTransformation, pivot.asglm());
     relativeTransformation = glm::rotate(relativeTransformation, rotation.y, glm::vec3(0, 1, 0));
     relativeTransformation = glm::rotate(relativeTransformation, rotation.x, glm::vec3(1, 0, 0));
     relativeTransformation = glm::rotate(relativeTransformation, rotation.z, glm::vec3(0, 0, 1));
-    relativeTransformation = glm::scale(relativeTransformation, scale);
-    relativeTransformation = glm::translate(relativeTransformation, -pivot);
+    relativeTransformation = glm::scale(relativeTransformation, scale.asglm());
+    relativeTransformation = glm::translate(relativeTransformation, -pivot.asglm());
 
     renderState.transformations.model = relativeTransformation * renderState.transformations.model;
 }
