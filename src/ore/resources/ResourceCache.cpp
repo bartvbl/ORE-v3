@@ -39,7 +39,7 @@ void ore::resources::ResourceCache::wakeResourceLoadingThread() {
 }
 
 void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::filesystem::path fileLocation, ore::resources::ResourceLoadPriority priority) {
-    std::string extension = fileLocation.extension();
+    std::string extension = fileLocation.extension().string();
 
     if(!ore::filesystem::exists(fileLocation) && extension != ".shader") {
         LOG(FATAL) << "The file of the resource with ID " << id << ", located at " << fileLocation.string() << " could not be found.";

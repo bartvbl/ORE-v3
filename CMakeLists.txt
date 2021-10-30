@@ -60,4 +60,10 @@ file (GLOB_RECURSE PROJECT_SOURCES src/*.cpp
 
 add_definitions(-DGLFW_INCLUDE_NONE)
 add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES} ${PROJECT_HEADERS} ${LIBRARY_SOURCES})
-target_link_libraries (${PROJECT_NAME} glfw stdc++fs ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log)
+
+
+if(WIN32)
+  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log)
+else()
+  target_link_libraries (${PROJECT_NAME} glfw stdc++fs ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log)
+endif()

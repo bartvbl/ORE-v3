@@ -5,7 +5,7 @@
 #include "stb_image.h"
 
 void ore::resources::TextureResource::load(const ore::filesystem::path &fileLocation) {
-    imageData = stbi_load(fileLocation.c_str(), &imageWidth, &imageHeight, &channelCount, 4);
+    imageData = stbi_load(fileLocation.string().c_str(), &imageWidth, &imageHeight, &channelCount, 4);
 
     // Unfortunately, images usually have their origin at the top left.
     // OpenGL instead defines the origin to be on the _bottom_ left instead, so

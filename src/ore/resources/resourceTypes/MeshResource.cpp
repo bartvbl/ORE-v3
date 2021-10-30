@@ -167,7 +167,7 @@ void ore::resources::MeshResource::loadMDLFile(const ore::filesystem::path &mode
     std::string relativeObjectFileLocation = modelFileContents["modelFile"];
     ore::filesystem::path objectFileLocation = containingDirectory / relativeObjectFileLocation;
 
-    fastObjMesh* temporaryMesh = fast_obj_read(objectFileLocation.c_str());
+    fastObjMesh* temporaryMesh = fast_obj_read(objectFileLocation.string().c_str());
     constructMesh(temporaryMesh, modelFileLocation, modelFileContents, objectFileLocation, this->mesh);
     fast_obj_destroy(temporaryMesh);
 }
@@ -175,7 +175,7 @@ void ore::resources::MeshResource::loadMDLFile(const ore::filesystem::path &mode
 
 
 void ore::resources::MeshResource::loadOBJFile(const ore::filesystem::path &modelFileLocation) {
-    fastObjMesh* temporaryMesh = fast_obj_read(modelFileLocation.c_str());
+    fastObjMesh* temporaryMesh = fast_obj_read(modelFileLocation.string().c_str());
 
     nlohmann::json fakeFileContents;
     fakeFileContents["partStructure"] = {};
@@ -197,7 +197,7 @@ void ore::resources::MeshResource::loadOBJFile(const ore::filesystem::path &mode
 }
 
 void ore::resources::MeshResource::load(const ore::filesystem::path &modelFileLocation) {
-    std::string extension = modelFileLocation.extension();
+    std::string extension = modelFileLocation.extension().string();
     if(extension == ".mdl") {
         loadMDLFile(modelFileLocation);
     } else if(extension == ".obj") {
