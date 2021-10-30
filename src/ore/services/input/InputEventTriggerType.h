@@ -1,14 +1,19 @@
 #pragma once
 
+#include <string>
+
 namespace ore {
     namespace input {
         enum class InputEventTriggerType {
             ON_FRAME_UPDATE,
             ON_CHANGE,
             ON_PRESS,
+            ON_HOLD,
             ON_RELEASE,
             ON_INCREASING,
-            ON_DECREASING,
+            ON_DECREASING
         };
+
+        InputEventTriggerType parseEventTriggerType(std::string triggerTypeString);
     }
 }

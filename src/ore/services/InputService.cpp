@@ -1,6 +1,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <g3log/g3log.hpp>
+#include <json.hpp>
+#include <fstream>
 #include "InputService.h"
 
 void ore::InputService::scrollCallback(GLFWwindow *window, double xOffset, double yOffset) {
@@ -77,6 +79,30 @@ void ore::InputService::addKeyBindingsFromFile(ore::filesystem::path bindingsFil
         return;
     }
     LOG(INFO) << "Adding keybindings from file " << bindingsFile.string() << std::endl;
+
+    nlohmann::json bindingsFileContents;
+    std::ifstream fileStream(bindingsFile);
+    try {
+        fileStream >> bindingsFileContents;
+    } catch(nlohmann::detail::exception &e) {
+        LOG(FATAL) << "Failed to load key bindings file located at " << bindingsFile << std::endl << "Reason:" << std::endl << e.what() << std::endl;
+        throw std::runtime_error("Resource failed to load.");
+    }
+    fileStream.close();
+
+    for(const nlohmann::json& binding : bindingsFileContents["bindings"]) {
+        std::string inputTypeString = std::string(binding["key"]);
+        ore::input::InputType inputType = input::parseInputType(inputTypeString);
+
+        std::string keyBinding = binding["binding"];
+
+        ore::input::InputMappingType mappingType = binding["mapping"] == "absolute" ?
+                ore::input::InputMappingType::ABSOLUTE : ore::input::InputMappingType::RELATIVE;
+
+        ore::input::InputEventTriggerType triggerType = ore::input::parseEventTriggerType(binding["trigger"]);
+
+        addKeyBinding(inputType, mappingType, triggerType, keyBinding);
+    }
 }
 
 void ore::InputService::addKeyBinding(ore::input::InputType key, ore::input::InputMappingType mappingType, ore::input::InputEventTriggerType triggerType, std::string binding) {
