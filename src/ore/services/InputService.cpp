@@ -1,5 +1,6 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <g3log/g3log.hpp>
 #include "InputService.h"
 
 void ore::InputService::scrollCallback(GLFWwindow *window, double xOffset, double yOffset) {
@@ -71,7 +72,11 @@ void ore::InputService::tick() {
 }
 
 void ore::InputService::addKeyBindingsFromFile(ore::filesystem::path bindingsFile) {
-
+    if(!ore::filesystem::exists(bindingsFile)) {
+        LOG(WARNING) << "The input configuration file at " << bindingsFile.string() << " was not found, and will be ignored." << std::endl;
+        return;
+    }
+    LOG(INFO) << "Adding keybindings from file " << bindingsFile.string() << std::endl;
 }
 
 void ore::InputService::addKeyBinding(ore::input::InputType key, ore::input::InputMappingType mappingType, ore::input::InputEventTriggerType triggerType, std::string binding) {
@@ -131,6 +136,12 @@ void ore::InputService::detachListener(unsigned int reference) {
         }
     }
     throw std::runtime_error("The listener with type " + keyMappingContainingListener + " and ID " + std::to_string(reference) + " could not be found.");
+}
+
+void ore::InputService::addKeyBindingsFromFiles(std::vector<ore::filesystem::path> &configurationFilePaths) {
+    for(const ore::filesystem::path& path : configurationFilePaths) {
+        addKeyBindingsFromFile(path);
+    }
 }
 
 

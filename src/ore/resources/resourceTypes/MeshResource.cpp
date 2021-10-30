@@ -3,7 +3,6 @@
 #include <fstream>
 #include <fast_obj.h>
 #include <ore/gl/vao/GeometryBufferGenerator.h>
-#include <thread>
 #include <ore/utilities/Logger.h>
 #include <g3log/g3log.hpp>
 #include "MeshResource.h"

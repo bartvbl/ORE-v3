@@ -6,6 +6,7 @@ void ore::GameWorld::init(GLFWwindow* window) {
     services.inputService.init(window);
     services.animationService.init();
     services.aiService.init();
+    services.configService.init();
 }
 
 void ore::GameWorld::frameTick() {

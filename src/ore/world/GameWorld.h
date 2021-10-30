@@ -5,6 +5,7 @@
 #include <ore/services/AnimationService.h>
 #include <ore/services/InputService.h>
 #include <ore/services/SoundService.h>
+#include <ore/services/ConfigService.h>
 #include <ore/sceneGraph/Scene.h>
 #include <ore/world/Actors.h>
 #include <GLFW/glfw3.h>
@@ -15,6 +16,7 @@ namespace ore {
         ore::AnimationService animationService;
         ore::InputService inputService;
         ore::SoundService soundService;
+        ore::ConfigService configService;
     };
 
     class GameWorld {

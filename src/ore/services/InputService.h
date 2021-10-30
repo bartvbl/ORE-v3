@@ -65,6 +65,8 @@ namespace ore {
         void detachListener(unsigned int reference);
         void removeKeyBinding(ore::input::InputType type);
         void removeAllKeyBindings();
+
+        void addKeyBindingsFromFiles(std::vector<filesystem::path> &configurationFilePaths);
     };
 }
 
