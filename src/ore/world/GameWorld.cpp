@@ -12,6 +12,7 @@ void ore::GameWorld::init(GLFWwindow* window) {
 void ore::GameWorld::frameTick() {
     resourceCache.flushMainThreadCompletions();
     services.inputService.tick();
+    actors.update();
 }
 
 void ore::GameWorld::shutdown() {

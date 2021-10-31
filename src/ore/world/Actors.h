@@ -10,6 +10,7 @@ namespace ore {
         std::vector<ore::GameObject*> gameObjects;
     public:
         void spawn(ore::GameObject* actor);
+        void update();
         void destroy();
     };
 }
