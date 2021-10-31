@@ -2,6 +2,9 @@
 #include "PerspectiveCamera.h"
 
 void ore::scene::PerspectiveCamera::render(ore::RenderState &renderState) {
+    glm::mat4 previousViewMatrix = renderState.transformations.view;
+    glm::mat4 previousProjectionMatrix = renderState.transformations.projection;
+
     float aspectRatio = float(renderState.window.width) / float(renderState.window.height);
     renderState.transformations.projection = glm::perspective(glm::radians(fovY), aspectRatio, zNear, zFar);
 
@@ -17,4 +20,7 @@ void ore::scene::PerspectiveCamera::render(ore::RenderState &renderState) {
     renderState.transformations.view = relativeMatrix * positionTransformation;
 
     SceneNode::render(renderState);
+
+    renderState.transformations.view = previousViewMatrix;
+    renderState.transformations.projection = previousProjectionMatrix;
 }
