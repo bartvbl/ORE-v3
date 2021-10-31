@@ -11,9 +11,6 @@ namespace ore {
             float zNear = 0.01;
             float zFar = 1000.0;
 
-            glm::vec3 position = {0, 0, 0};
-            glm::vec3 rotation = {0, 0, 0};
-
             PerspectiveCamera() : ore::scene::CoordinateNode("Perspective Camera") {}
 
             void render(RenderState &renderState);

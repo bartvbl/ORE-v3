@@ -5,9 +5,9 @@
 #include <ore/services/InputService.h>
 
 namespace ore {
-    class FreePerspectiveCameraController : public ore::GameObject {
+    class NodeController : public ore::GameObject {
     private:
-        ore::scene::PerspectiveCamera* camera;
+        ore::scene::CoordinateNode* node;
         float movementX = 0;
         float movementY = 0;
         float movementUp = 0;
@@ -15,7 +15,7 @@ namespace ore {
         float lookHorizontal = 0;
         float lookVertical = 0;
     public:
-        FreePerspectiveCameraController(ore::InputService* inputService, ore::scene::PerspectiveCamera* camera) : camera(camera) {
+        NodeController(ore::InputService* inputService, ore::scene::CoordinateNode* node) : node(node) {
             inputService->attachListener("moveRight", &movementX);
             inputService->attachListener("moveForward", &movementY);
             inputService->attachListener("moveDownward", &movementDown);

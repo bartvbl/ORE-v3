@@ -15,7 +15,7 @@ namespace ore {
             vec3() = default;
 
             // Allow automatic type conversions to glm::vec3
-            glm::vec3 asglm() const {
+            [[nodiscard]] glm::vec3 asglm() const {
                 glm::vec3 out(x, y, z);
                 return out;
             }
