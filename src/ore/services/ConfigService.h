@@ -9,6 +9,8 @@ namespace ore {
 
     class ConfigService {
     public:
+        bool gameShouldShutdown = false;
+
         void init();
         void load(ore::filesystem::path &configFile);
 

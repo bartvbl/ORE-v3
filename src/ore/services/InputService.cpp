@@ -218,7 +218,6 @@ void ore::InputService::tick() {
                     // triggers vary between -1 and 1, therefore we map it from 0 to 1
                     axisState = 0.5f * (axisState + 1);
                 }
-                std::cout << int(type) << ": " << axisState << std::endl;
                 handleInputState(type, axisState, &entry.second);
             }
         }

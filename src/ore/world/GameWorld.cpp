@@ -1,4 +1,5 @@
 #include "GameWorld.h"
+#include <ore/gameObjects/input/BuiltinEngineKeybinds.h>
 
 void ore::GameWorld::init(GLFWwindow* window) {
     resourceCache.init(window);
@@ -7,6 +8,8 @@ void ore::GameWorld::init(GLFWwindow* window) {
     services.animationService.init();
     services.aiService.init();
     services.configService.init();
+
+    actors.spawn(new ore::BuiltinEngineKeybinds(&services));
 }
 
 void ore::GameWorld::frameTick() {
