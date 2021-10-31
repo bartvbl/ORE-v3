@@ -80,7 +80,7 @@ void ore::InputService::handleInputState(ore::input::InputType type, float curre
 
     for(const KeyMapping& mapping : *mappings) {
         switch(mapping.triggerType) {
-            case input::InputEventTriggerType::ON_FRAME_UPDATE:
+            case input::InputEventTriggerType::ON_FRAME_START:
                 fireInputEvent(mapping, previousState, currentState);
                 break;
             case input::InputEventTriggerType::ON_CHANGE:
@@ -136,12 +136,18 @@ void ore::InputService::tick() {
     mouseY = double(windowHeight) - mouseY;
 
     std::array<unsigned char, 16> controllerButtons;
+    std::array<float, 16> controllerAxes;
     bool controllerIsPresent = glfwJoystickPresent(GLFW_JOYSTICK_1);
     if(controllerIsPresent) {
         int count;
         const unsigned char* buttonState = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &count);
-        for(unsigned int i = 0; i < count; i++) {
+        for(int i = 0; i < count; i++) {
             controllerButtons.at(i) = buttonState[i];
+        }
+
+        const float* axesState = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &count);
+        for(int i = 0; i < count; i++) {
+            controllerAxes.at(i) = axesState[i];
         }
     }
 
@@ -201,8 +207,13 @@ void ore::InputService::tick() {
                 int buttonIndex = int(type) - int(ore::input::CONTROLLER_BUTTON_START);
                 bool buttonState = controllerButtons.at(buttonIndex);
                 inputState = buttonState ? 1.0 : 0.0;
-
                 handleInputState(type, inputState, &entry.second);
+            }
+        } else if(int(type) >= int(ore::input::CONTROLLER_AXIS_START) && int(type) <= int(ore::input::CONTROLLER_AXIS_END)) {
+            if(controllerIsPresent) {
+                int axisIndex = int(type) - int(ore::input::CONTROLLER_AXIS_START);
+                float axisState = controllerAxes.at(axisIndex);
+                handleInputState(type, axisState, &entry.second);
             }
         }
     }
