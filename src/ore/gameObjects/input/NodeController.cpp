@@ -2,11 +2,16 @@
 
 const float rotationSpeed = 0.08f;
 const float cameraSpeed = 0.03f;
+// Controller specific, but because keyboard inputs are binary it automatically doesn't apply to those
 const float deadZone = 0.3;
 
+float applyDeadzone(float input) {
+    return std::abs(input) > deadZone ? input : 0;
+}
+
 void ore::NodeController::update() {
-    float horizontalRotation = (std::abs(lookHorizontal) > deadZone) ? lookHorizontal : 0;
-    float verticalRotation = (std::abs(lookVertical) > deadZone) ? lookVertical : 0;
+    float horizontalRotation = applyDeadzone(lookHorizontal);
+    float verticalRotation = applyDeadzone(lookVertical);
 
     node->rotation.y += horizontalRotation * rotationSpeed;
     node->rotation.x += verticalRotation * rotationSpeed;
@@ -14,8 +19,8 @@ void ore::NodeController::update() {
     float angleYRadiansForward = node->rotation.y;
     float angleYRadiansSideways = (node->rotation.y + float(M_PI / 2.0));
 
-    float moveRight = (std::abs(movementX) > deadZone) ? movementX : 0;
-    float moveForward = (std::abs(movementY) > deadZone) ? movementY : 0;
+    float moveRight = applyDeadzone(movementRight) - applyDeadzone(movementLeft);
+    float moveForward = applyDeadzone(movementForward) - applyDeadzone(movementBackward);
 
     node->position.x += moveForward * std::sin(angleYRadiansForward) * cameraSpeed;
     node->position.z -= moveForward * std::cos(angleYRadiansForward) * cameraSpeed;
