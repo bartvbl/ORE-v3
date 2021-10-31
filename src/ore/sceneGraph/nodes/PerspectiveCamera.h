@@ -13,7 +13,7 @@ namespace ore {
 
             PerspectiveCamera() : ore::scene::CoordinateNode("Perspective Camera") {}
 
-            void render(RenderState &renderState);
+            void render(RenderState &renderState) override;
         };
     }
 }

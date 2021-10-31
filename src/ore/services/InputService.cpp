@@ -171,6 +171,7 @@ void ore::InputService::tick() {
     for(const std::pair<const ore::input::InputType, std::vector<KeyMapping>> &entry : keyBindingMap) {
         // Obtain state of the input
         ore::input::InputType type = entry.first;
+
         float inputState = 0;
 
         // Keyboard bindings
@@ -207,6 +208,7 @@ void ore::InputService::tick() {
                 int buttonIndex = int(type) - int(ore::input::CONTROLLER_BUTTON_START);
                 bool buttonState = controllerButtons.at(buttonIndex);
                 inputState = buttonState ? 1.0 : 0.0;
+
                 handleInputState(type, inputState, &entry.second);
             }
         } else if(int(type) >= int(ore::input::CONTROLLER_AXIS_START) && int(type) <= int(ore::input::CONTROLLER_AXIS_END)) {
