@@ -17,6 +17,8 @@ void ore::InputService::init(GLFWwindow* window) {
     glfwSetScrollCallback(window, this->scrollCallback);
 }
 
+
+
 void ore::InputService::fireInputEvent(const ore::InputService::KeyMapping &mapping, float previousState, float currentState) {
     std::vector<Listener>* listeners = &listenerMap[mapping.mappingName];
 
@@ -37,6 +39,24 @@ void ore::InputService::fireInputEvent(const ore::InputService::KeyMapping &mapp
                 break;
             case PointerType::INT:
                 *listener.target.asInt = eventIntValue;
+                break;
+        }
+    }
+}
+
+void ore::InputService::resetListenerValues(const ore::InputService::KeyMapping &mapping) {
+    std::vector<Listener>* listeners = &listenerMap[mapping.mappingName];
+
+    for(Listener& listener : *listeners) {
+        switch(listener.targetType) {
+            case PointerType::BOOL:
+                *listener.target.asBoolean = false;
+                break;
+            case PointerType::FLOAT:
+                *listener.target.asFloat = 0;
+                break;
+            case PointerType::INT:
+                *listener.target.asInt = 0;
                 break;
         }
     }
@@ -65,32 +85,44 @@ void ore::InputService::handleInputState(ore::input::InputType type, float curre
                 break;
             case input::InputEventTriggerType::ON_CHANGE:
                 if(onChange) {
-                    fireInputEvent(mapping, previousState, currentState);
+                    fireInputEvent(mapping, 0, 1);
+                } else {
+                    resetListenerValues(mapping);
                 }
                 break;
             case input::InputEventTriggerType::ON_PRESS:
                 if(onPress) {
-                    fireInputEvent(mapping, previousState, currentState);
+                    fireInputEvent(mapping, 0, 1);
+                } else {
+                    resetListenerValues(mapping);
                 }
                 break;
             case input::InputEventTriggerType::ON_HOLD:
                 if(onHold) {
                     fireInputEvent(mapping, previousState, currentState);
+                } else {
+                    resetListenerValues(mapping);
                 }
                 break;
             case input::InputEventTriggerType::ON_RELEASE:
                 if(onRelease) {
-                    fireInputEvent(mapping, previousState, currentState);
+                    fireInputEvent(mapping, 0, 1);
+                } else {
+                    resetListenerValues(mapping);
                 }
                 break;
             case input::InputEventTriggerType::ON_INCREASING:
                 if(onIncreasing) {
                     fireInputEvent(mapping, previousState, currentState);
+                } else {
+                    resetListenerValues(mapping);
                 }
                 break;
             case input::InputEventTriggerType::ON_DECREASING:
                 if(onDecreasing) {
                     fireInputEvent(mapping, previousState, currentState);
+                } else {
+                    resetListenerValues(mapping);
                 }
                 break;
         }
@@ -137,15 +169,21 @@ void ore::InputService::tick() {
         } else if(int(type) >= int(ore::input::MOUSE_BUTTON_START) && int(type) <= int(ore::input::MOUSE_BUTTON_END)) {
             bool buttonState = glfwGetMouseButton(gameWindow, ore::input::toGLFWEnum(type)) == GLFW_PRESS;
             inputState = buttonState ? 1.0 : 0.0;
+
+            handleInputState(type, inputState, &entry.second);
+
         } else if(int(type) >= int(ore::input::MOUSE_AXIS_START) && int(type) <= int(ore::input::MOUSE_AXIS_END)) {
             if(type == ore::input::InputType::MOUSE_AXIS_HORIZONTAL) {
                 double normalisedMousePosition = mouseX / double(windowWidth);
                 inputState = float(normalisedMousePosition);
+                handleInputState(type, inputState, &entry.second);
             } else if(type == ore::input::InputType::MOUSE_AXIS_VERTICAL) {
                 double normalisedMousePosition = mouseY / double(windowHeight);
                 inputState = float(normalisedMousePosition);
+                handleInputState(type, inputState, &entry.second);
             } else if(type == ore::input::InputType::MOUSE_AXIS_SCROLL) {
                 inputState = float(ore::input::yScrollOffset);
+                handleInputState(type, inputState, &entry.second);
             }
 
         // Controller bindings
@@ -153,6 +191,8 @@ void ore::InputService::tick() {
             if(controllerIsPresent) {
                 bool buttonState = gamepadState.buttons[int(type) - int(ore::input::CONTROLLER_BUTTON_START)];
                 inputState = buttonState ? 1.0 : 0.0;
+
+                handleInputState(type, inputState, &entry.second);
             }
         }
     }
@@ -254,6 +294,8 @@ void ore::InputService::addKeyBindingsFromFiles(std::vector<ore::filesystem::pat
         addKeyBindingsFromFile(path);
     }
 }
+
+
 
 
 

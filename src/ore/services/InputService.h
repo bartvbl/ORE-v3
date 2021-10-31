@@ -53,6 +53,7 @@ namespace ore {
         void handleInputState(input::InputType type, float state, const std::vector<KeyMapping> *mappings);
 
         void fireInputEvent(const KeyMapping &mapping, float previousState, float currentState);
+        void resetListenerValues(const KeyMapping &mapping);
 
     public:
         void init(GLFWwindow* gameWindow);
@@ -71,6 +72,7 @@ namespace ore {
         void removeAllKeyBindings();
 
         void addKeyBindingsFromFiles(std::vector<filesystem::path> &configurationFilePaths);
+
 
 
     };
