@@ -41,7 +41,7 @@ namespace ore {
         };
 
 
-
+        std::unordered_map<ore::input::InputType, float> previousInputStateMap;
         std::unordered_map<unsigned int, std::string> listenerRegistrations;
         std::unordered_map<std::string, std::vector<Listener>> listenerMap;
 
@@ -49,6 +49,10 @@ namespace ore {
 
         unsigned int attachListener(std::string &keyMappingName, Listener listener);
         static void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
+
+        void handleInputState(input::InputType type, float state, const std::vector<KeyMapping> *mappings);
+
+        void fireInputEvent(const KeyMapping &mapping, float previousState, float currentState);
 
     public:
         void init(GLFWwindow* gameWindow);
@@ -67,6 +71,8 @@ namespace ore {
         void removeAllKeyBindings();
 
         void addKeyBindingsFromFiles(std::vector<filesystem::path> &configurationFilePaths);
+
+
     };
 }
 

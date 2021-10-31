@@ -17,6 +17,89 @@ void ore::InputService::init(GLFWwindow* window) {
     glfwSetScrollCallback(window, this->scrollCallback);
 }
 
+void ore::InputService::fireInputEvent(const ore::InputService::KeyMapping &mapping, float previousState, float currentState) {
+    std::vector<Listener>* listeners = &listenerMap[mapping.mappingName];
+
+    float eventValue = currentState;
+    if(mapping.mappingType == input::InputMappingType::RELATIVE) {
+        eventValue = currentState - previousState;
+    }
+    bool eventBoolValue = eventValue != 0;
+    int eventIntValue = (int) currentState;
+
+    for(Listener& listener : *listeners) {
+        switch(listener.targetType) {
+            case PointerType::BOOL:
+                *listener.target.asBoolean = eventBoolValue;
+                break;
+            case PointerType::FLOAT:
+                *listener.target.asFloat = eventValue;
+                break;
+            case PointerType::INT:
+                *listener.target.asInt = eventIntValue;
+                break;
+        }
+    }
+}
+
+void ore::InputService::handleInputState(ore::input::InputType type, float currentState, const std::vector<KeyMapping> *mappings) {
+    auto entry = previousInputStateMap.find(type);
+    if(entry == previousInputStateMap.end()) {
+        previousInputStateMap[type] = 0;
+        entry = previousInputStateMap.find(type);
+    }
+
+    float previousState = entry->second;
+
+    bool onChange = previousState != currentState;
+    bool onPress = currentState != 0 && previousState == 0;
+    bool onHold = currentState != 0;
+    bool onRelease = currentState == 0 && previousState != 0;
+    bool onIncreasing = currentState > previousState;
+    bool onDecreasing = currentState < previousState;
+
+    for(const KeyMapping& mapping : *mappings) {
+        switch(mapping.triggerType) {
+            case input::InputEventTriggerType::ON_FRAME_UPDATE:
+                fireInputEvent(mapping, previousState, currentState);
+                break;
+            case input::InputEventTriggerType::ON_CHANGE:
+                if(onChange) {
+                    fireInputEvent(mapping, previousState, currentState);
+                }
+                break;
+            case input::InputEventTriggerType::ON_PRESS:
+                if(onPress) {
+                    fireInputEvent(mapping, previousState, currentState);
+                }
+                break;
+            case input::InputEventTriggerType::ON_HOLD:
+                if(onHold) {
+                    fireInputEvent(mapping, previousState, currentState);
+                }
+                break;
+            case input::InputEventTriggerType::ON_RELEASE:
+                if(onRelease) {
+                    fireInputEvent(mapping, previousState, currentState);
+                }
+                break;
+            case input::InputEventTriggerType::ON_INCREASING:
+                if(onIncreasing) {
+                    fireInputEvent(mapping, previousState, currentState);
+                }
+                break;
+            case input::InputEventTriggerType::ON_DECREASING:
+                if(onDecreasing) {
+                    fireInputEvent(mapping, previousState, currentState);
+                }
+                break;
+        }
+    }
+
+    entry->second = currentState;
+}
+
+
 void ore::InputService::tick() {
     glfwPollEvents();
 
@@ -47,6 +130,8 @@ void ore::InputService::tick() {
         if(int(type) >= int(ore::input::KEYBOARD_START) && int(type) <= int(ore::input::KEYBOARD_END)) {
             bool keyState = glfwGetKey(gameWindow, ore::input::toGLFWEnum(type)) == GLFW_PRESS;
             inputState = keyState ? 1.0 : 0.0;
+
+            handleInputState(type, inputState, &entry.second);
 
         // Mouse bindings
         } else if(int(type) >= int(ore::input::MOUSE_BUTTON_START) && int(type) <= int(ore::input::MOUSE_BUTTON_END)) {
@@ -169,6 +254,9 @@ void ore::InputService::addKeyBindingsFromFiles(std::vector<ore::filesystem::pat
         addKeyBindingsFromFile(path);
     }
 }
+
+
+
 
 
 
