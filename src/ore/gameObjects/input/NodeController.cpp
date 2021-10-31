@@ -2,29 +2,26 @@
 
 const float rotationSpeed = 0.08f;
 const float cameraSpeed = 0.03f;
+const float deadZone = 0.3;
 
 void ore::NodeController::update() {
-    float deltaX = movementX;
-    float deltaY = -1 * movementY;
-    float deltaRotationX = std::abs(lookHorizontal) > 0.3 ? lookHorizontal : 0;
-    float deltaRotationY = std::abs(lookVertical) > 0.3 ? -1.0f * lookVertical : 0;
+    float horizontalRotation = (std::abs(lookHorizontal) > deadZone) ? lookHorizontal : 0;
+    float verticalRotation = (std::abs(lookVertical) > deadZone) ? lookVertical : 0;
 
-    if (std::abs(deltaRotationX) < 0.15) { deltaRotationX = 0; }
-    if (std::abs(deltaRotationY) < 0.15) { deltaRotationY = 0; }
-    if (std::abs(deltaX) < 0.15) { deltaX = 0; }
-    if (std::abs(deltaY) < 0.15) { deltaY = 0; }
+    node->rotation.y += horizontalRotation * rotationSpeed;
+    node->rotation.x += verticalRotation * rotationSpeed;
 
-    node->rotation.x += deltaRotationX * rotationSpeed;
-    node->rotation.y -= deltaRotationY * rotationSpeed;
+    float angleYRadiansForward = node->rotation.y;
+    float angleYRadiansSideways = (node->rotation.y + float(M_PI / 2.0));
 
-    float angleYRadiansForward = node->rotation.x;
-    float angleYRadiansSideways = (node->rotation.x + float(M_PI / 2.0));
+    float moveRight = (std::abs(movementX) > deadZone) ? movementX : 0;
+    float moveForward = (std::abs(movementY) > deadZone) ? movementY : 0;
 
-    node->position.x -= deltaY * std::sin(angleYRadiansForward) * cameraSpeed;
-    node->position.z += deltaY * std::cos(angleYRadiansForward) * cameraSpeed;
+    node->position.x += moveForward * std::sin(angleYRadiansForward) * cameraSpeed;
+    node->position.z -= moveForward * std::cos(angleYRadiansForward) * cameraSpeed;
 
-    node->position.x -= deltaX * std::sin(angleYRadiansSideways) * cameraSpeed;;
-    node->position.z += deltaX * std::cos(angleYRadiansSideways) * cameraSpeed;
+    node->position.x -= moveRight * std::sin(angleYRadiansSideways) * cameraSpeed;;
+    node->position.z += moveRight * std::cos(angleYRadiansSideways) * cameraSpeed;
 
-    node->position.y += (((movementUp + 1.0f) / 2.0f) - ((movementDown + 1.0f) / 2.0f)) * cameraSpeed;
+    node->position.y += (movementDown - movementUp) * cameraSpeed;
 }
