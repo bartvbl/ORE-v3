@@ -5,6 +5,10 @@
 #include "stb_image.h"
 
 void ore::resources::TextureResource::load(const ore::filesystem::path &fileLocation) {
+    if(!ore::filesystem::exists(fileLocation)) {
+        LOG(FATAL) << "The texture file at " << fileLocation.string() << " was not found." << std::endl;
+    }
+
     imageData = stbi_load(fileLocation.string().c_str(), &imageWidth, &imageHeight, &channelCount, 4);
 
     // Unfortunately, images usually have their origin at the top left.
@@ -18,6 +22,8 @@ void ore::resources::TextureResource::load(const ore::filesystem::path &fileLoca
             std::swap(imageData[row * widthBytes + col], imageData[(imageHeight - 1 - row) * widthBytes + col]);
         }
     }
+
+    textureIsLoaded = true;
 }
 
 bool ore::resources::TextureResource::requiresMainThread() {
@@ -31,4 +37,12 @@ void ore::resources::TextureResource::completeLoadOnMainThread() {
 
 void ore::resources::TextureResource::destroy() {
 
+}
+
+bool ore::resources::TextureResource::isLoaded() {
+    return textureIsLoaded;
+}
+
+ore::resources::Texture ore::resources::TextureResource::getInstance() {
+    return texture;
 }

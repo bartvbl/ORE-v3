@@ -13,6 +13,7 @@ namespace ore {
     public:
         MaterialNode() : ore::scene::ContainerNode("Material Node") {}
         MaterialNode(ore::resources::Material* material) : ore::scene::ContainerNode("Material Node - " + material->name), material(material) {}
+        void render(RenderState& state);
     };
     }
 }

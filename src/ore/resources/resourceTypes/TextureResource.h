@@ -11,6 +11,7 @@ namespace ore {
             int imageHeight = 0;
             int channelCount = 0;
             unsigned char* imageData = nullptr;
+            bool textureIsLoaded = false;
 
             ore::resources::Texture texture;
 
@@ -22,6 +23,9 @@ namespace ore {
             void completeLoadOnMainThread() override;
 
             void destroy() override;
+
+            bool isLoaded();
+            ore::resources::Texture getInstance();
         };
     }
 }

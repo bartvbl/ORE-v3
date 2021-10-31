@@ -1,6 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <ore/resources/resourceTypes/shader/Shader.h>
+#include <ore/resources/resourceTypes/texture/Texture.h>
 
 namespace ore {
     struct WindowDimensionsRenderState {
@@ -15,14 +17,17 @@ namespace ore {
     };
 
     class ShaderUniformRenderState {
+    public:
         void setModelMatrix(glm::mat4 modelMatrix);
         void setModelViewMatrix(glm::mat4 modelMatrix);
         void setProjection(glm::mat4 projectionMatrix);
+        void setTexture(unsigned int ID, resources::Texture texture);
     };
 
     struct RenderState {
         TransformationRenderState transformations;
         WindowDimensionsRenderState window;
         ShaderUniformRenderState uniforms;
+        ore::resources::Shader currentActiveShader;
     };
 }
