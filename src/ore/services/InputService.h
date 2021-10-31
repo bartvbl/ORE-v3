@@ -4,6 +4,7 @@
 #include <ore/services/input/InputMappingType.h>
 #include <unordered_map>
 #include <ore/services/input/InputEventTriggerType.h>
+#include <GLFW/glfw3.h>
 
 namespace ore {
     namespace input {

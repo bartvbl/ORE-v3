@@ -168,9 +168,9 @@ namespace ore {
 
             CONTROLLER_AXIS_LEFT_X = 148,
             CONTROLLER_AXIS_LEFT_Y = 149,
-            CONTROLLER_AXIS_RIGHT_X = 150,
-            CONTROLLER_AXIS_RIGHT_Y = 151,
-            CONTROLLER_AXIS_LEFT_TRIGGER = 152,
+            CONTROLLER_AXIS_LEFT_TRIGGER = 150,
+            CONTROLLER_AXIS_RIGHT_X = 151,
+            CONTROLLER_AXIS_RIGHT_Y = 152,
             CONTROLLER_AXIS_RIGHT_TRIGGER = 153
         };
 

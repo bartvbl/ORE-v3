@@ -213,6 +213,12 @@ void ore::InputService::tick() {
             if(controllerIsPresent) {
                 int axisIndex = int(type) - int(ore::input::CONTROLLER_AXIS_START);
                 float axisState = controllerAxes.at(axisIndex);
+                if(type == input::InputType::CONTROLLER_AXIS_LEFT_TRIGGER ||
+                   type == input::InputType::CONTROLLER_AXIS_RIGHT_TRIGGER) {
+                    // triggers vary between -1 and 1, therefore we map it from 0 to 1
+                    axisState = 0.5f * (axisState + 1);
+                }
+                std::cout << int(type) << ": " << axisState << std::endl;
                 handleInputState(type, axisState, &entry.second);
             }
         }
