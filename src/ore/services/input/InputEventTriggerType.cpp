@@ -2,8 +2,8 @@
 #include "InputEventTriggerType.h"
 
 ore::input::InputEventTriggerType ore::input::parseEventTriggerType(std::string triggerTypeString) {
-    if(triggerTypeString == "onFrameUpdate") {
-        return InputEventTriggerType::ON_FRAME_UPDATE;
+    if(triggerTypeString == "onFrameStart") {
+        return InputEventTriggerType::ON_FRAME_START;
     } else if(triggerTypeString == "onChange") {
         return InputEventTriggerType::ON_CHANGE;
     } else if(triggerTypeString == "onPress") {

@@ -5,7 +5,7 @@
 namespace ore {
     namespace input {
         enum class InputEventTriggerType {
-            ON_FRAME_UPDATE,
+            ON_FRAME_START,
             ON_CHANGE,
             ON_PRESS,
             ON_HOLD,
