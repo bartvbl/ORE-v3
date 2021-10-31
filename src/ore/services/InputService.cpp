@@ -86,43 +86,31 @@ void ore::InputService::handleInputState(ore::input::InputType type, float curre
             case input::InputEventTriggerType::ON_CHANGE:
                 if(onChange) {
                     fireInputEvent(mapping, 0, 1);
-                } else {
-                    resetListenerValues(mapping);
                 }
                 break;
             case input::InputEventTriggerType::ON_PRESS:
                 if(onPress) {
                     fireInputEvent(mapping, 0, 1);
-                } else {
-                    resetListenerValues(mapping);
                 }
                 break;
             case input::InputEventTriggerType::ON_HOLD:
                 if(onHold) {
                     fireInputEvent(mapping, previousState, currentState);
-                } else {
-                    resetListenerValues(mapping);
                 }
                 break;
             case input::InputEventTriggerType::ON_RELEASE:
                 if(onRelease) {
                     fireInputEvent(mapping, 0, 1);
-                } else {
-                    resetListenerValues(mapping);
                 }
                 break;
             case input::InputEventTriggerType::ON_INCREASING:
                 if(onIncreasing) {
                     fireInputEvent(mapping, previousState, currentState);
-                } else {
-                    resetListenerValues(mapping);
                 }
                 break;
             case input::InputEventTriggerType::ON_DECREASING:
                 if(onDecreasing) {
                     fireInputEvent(mapping, previousState, currentState);
-                } else {
-                    resetListenerValues(mapping);
                 }
                 break;
         }
@@ -147,10 +135,31 @@ void ore::InputService::tick() {
     // Move mouse origin to window bottom left
     mouseY = double(windowHeight) - mouseY;
 
-    GLFWgamepadstate gamepadState;
-    bool controllerIsPresent = glfwJoystickPresent(GLFW_JOYSTICK_1) && glfwJoystickIsGamepad(GLFW_JOYSTICK_1);
+    std::array<unsigned char, 16> controllerButtons;
+    bool controllerIsPresent = glfwJoystickPresent(GLFW_JOYSTICK_1);
     if(controllerIsPresent) {
-        glfwGetGamepadState(GLFW_JOYSTICK_1, &gamepadState);
+        int count;
+        const unsigned char* buttonState = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &count);
+        for(unsigned int i = 0; i < count; i++) {
+            controllerButtons.at(i) = buttonState[i];
+        }
+    }
+
+    // Reset listener values
+    for(const std::pair<std::string, std::vector<Listener>> registrations : listenerMap) {
+        for(const Listener &listener : registrations.second) {
+            switch(listener.targetType) {
+                case PointerType::BOOL:
+                    *listener.target.asBoolean = false;
+                    break;
+                case PointerType::FLOAT:
+                    *listener.target.asFloat = 0;
+                    break;
+                case PointerType::INT:
+                    *listener.target.asInt = 0;
+                    break;
+            }
+        }
     }
 
     for(const std::pair<const ore::input::InputType, std::vector<KeyMapping>> &entry : keyBindingMap) {
@@ -189,7 +198,8 @@ void ore::InputService::tick() {
         // Controller bindings
         } else if(int(type) >= int(ore::input::CONTROLLER_BUTTON_START) && int(type) <= int(ore::input::CONTROLLER_BUTTON_END)) {
             if(controllerIsPresent) {
-                bool buttonState = gamepadState.buttons[int(type) - int(ore::input::CONTROLLER_BUTTON_START)];
+                int buttonIndex = int(type) - int(ore::input::CONTROLLER_BUTTON_START);
+                bool buttonState = controllerButtons.at(buttonIndex);
                 inputState = buttonState ? 1.0 : 0.0;
 
                 handleInputState(type, inputState, &entry.second);
