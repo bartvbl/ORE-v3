@@ -12,7 +12,9 @@ void ore::SceneNode::preRender(ore::RenderState &renderState) {
 
 void ore::SceneNode::render(ore::RenderState &renderState) {
     for(SceneNode* node : *getChildren()) {
+        node->preRender(renderState);
         node->render(renderState);
+        node->postRender(renderState);
     }
 }
 
