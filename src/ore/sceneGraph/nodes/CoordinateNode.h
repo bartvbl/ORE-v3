@@ -8,10 +8,10 @@ namespace ore {
     namespace scene {
         class CoordinateNode : public ore::scene::ContainerNode {
         public:
-            ore::geom::vec3 position = {0, 0, 0};
-            ore::geom::vec3 rotation = {0, 0, 0};
-            ore::geom::vec3 scale = {1, 1, 1};
-            ore::geom::vec3 pivot = {0, 0, 0};
+            glm::vec3 position = {0, 0, 0};
+            glm::vec3 rotation = {0, 0, 0};
+            glm::vec3 scale = {1, 1, 1};
+            glm::vec3 pivot = {0, 0, 0};
 
             glm::mat4 storedModelMatrix;
 

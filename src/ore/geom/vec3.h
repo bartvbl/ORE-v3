@@ -33,7 +33,7 @@ namespace ore {
             }
 
             vec3 operator- (vec3 other) const {
-                return {x - other.x, y - other.y, z - other.z};
+                return {other.x - x, other.y - y, other.z - z};
             }
 
             vec3 operator+ (vec3 other) const {

@@ -22,7 +22,7 @@ bool ore::animation::BasicAnimation::animate(double timeDelta) {
         case ore::TransitionType::INSTANT:
             target->position = end.position;
             target->rotation = end.rotation;
-            target->scale = ore::geom::vec3(end.scale, end.scale, end.scale);
+            target->scale = glm::vec3(end.scale, end.scale, end.scale);
             return true;
         case ore::TransitionType::EASE_IN:
             fractionComplete = 1 - pow(1 - fractionComplete, 3);
@@ -55,7 +55,7 @@ bool ore::animation::BasicAnimation::animate(double timeDelta) {
     target->position = start.position + delta.position * fractionComplete;
     target->rotation = start.rotation + delta.rotation * fractionComplete;
     float newScale = start.scale + delta.scale * fractionComplete;
-    target->scale = ore::geom::vec3(newScale, newScale, newScale);
+    target->scale = glm::vec3(newScale, newScale, newScale);
 
     return unboundedFractionComplete >= 1;
 }
