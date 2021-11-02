@@ -1,23 +1,29 @@
 #pragma once
 
 #include <ore/animation/TransitionType.h>
+#include <ore/geom/RelativeTransformation.h>
+#include <ore/sceneGraph/nodes/CoordinateNode.h>
+#include "Transition.h"
 
 namespace ore {
     namespace animation {
         struct BasicAnimation {
-            ore::geom::vec3 startPosition = {0, 0, 0};
-            ore::geom::vec3 startRotation = {0, 0, 0};
-            ore::geom::vec3 startScale = {0, 0, 0};
+            ore::RelativeTransformation start;
+            ore::RelativeTransformation end;
 
-            ore::geom::vec3 endPosition = {0, 0, 0};
-            ore::geom::vec3 endRotation = {0, 0, 0};
-            ore::geom::vec3 endScale = {0, 0, 0};
-
-            double durationSeconds = 1.0;
+            ore::Transition transition;
             double progressionSeconds = 0.0;
-            ore::TransitionType type = ore::TransitionType::LINEAR;
 
             ore::scene::CoordinateNode* target = nullptr;
+
+            BasicAnimation(ore::scene::CoordinateNode* target, ore::RelativeTransformation destination, ore::Transition transition)
+                : end(destination), transition(transition), target(target) {
+                start.position = target->position;
+                start.rotation = target->rotation;
+                start.scale = target->scale.x;
+            }
+
+            bool animate(double timeDelta);
         };
     }
 }
