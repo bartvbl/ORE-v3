@@ -4,7 +4,7 @@
 void ore::scene::OrthographicCamera::render(ore::RenderState &renderState) {
     renderState.transformations.projection = glm::ortho(left, right, bottom, top, zNear, zFar);
 
-    SceneNode::render(renderState);
+    ContainerNode::render(renderState);
 }
 
 void ore::scene::OrthographicCamera::setBounds(float _left, float _right, float _bottom, float _top, float _near, float _far) {
