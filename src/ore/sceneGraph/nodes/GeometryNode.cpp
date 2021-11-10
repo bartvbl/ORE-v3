@@ -11,9 +11,6 @@ void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void*) (zeroptr + startIndex));
 
     CoordinateNode::render(renderState);
-
-
-
     CoordinateNode::postRender(renderState);
 }
 

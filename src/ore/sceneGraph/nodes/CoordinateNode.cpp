@@ -12,13 +12,13 @@ void ore::scene::CoordinateNode::preRender(ore::RenderState &renderState) {
 
     // Compute and apply relative transformation matrix
     glm::mat4 relativeTransformation(1.0);
-    relativeTransformation = glm::translate(relativeTransformation, position);
-    relativeTransformation = glm::translate(relativeTransformation, pivot);
-    relativeTransformation = glm::rotate(relativeTransformation, glm::radians(rotation.x), glm::vec3(1, 0, 0));
-    relativeTransformation = glm::rotate(relativeTransformation, glm::radians(rotation.y), glm::vec3(0, 1, 0));
-    relativeTransformation = glm::rotate(relativeTransformation, glm::radians(rotation.z), glm::vec3(0, 0, 1));
-    relativeTransformation = glm::scale(relativeTransformation, scale);
-    relativeTransformation = glm::translate(relativeTransformation, -pivot);
+    relativeTransformation *= glm::translate(glm::mat4(1.0), position);
+    relativeTransformation *= glm::translate(glm::mat4(1.0), pivot);
+    relativeTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.x), glm::vec3(1, 0, 0));
+    relativeTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.y), glm::vec3(0, 1, 0));
+    relativeTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.z), glm::vec3(0, 0, 1));
+    relativeTransformation *= glm::scale(glm::mat4(1.0), scale);
+    relativeTransformation *= glm::translate(glm::mat4(1.0), -pivot);
 
     renderState.transformations.model = relativeTransformation * renderState.transformations.model;
 }

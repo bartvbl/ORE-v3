@@ -2,7 +2,9 @@
 #include "PerspectiveCamera.h"
 
 void ore::scene::PerspectiveCamera::render(ore::RenderState &renderState) {
-    CoordinateNode::preRender(renderState);
+    // Disable default behaviour: modifies model matrix
+    // CoordinateNode::preRender(renderState);
+
     glm::mat4 previousViewMatrix = renderState.transformations.view;
     glm::mat4 previousProjectionMatrix = renderState.transformations.projection;
 
@@ -13,17 +15,18 @@ void ore::scene::PerspectiveCamera::render(ore::RenderState &renderState) {
     glm::mat4 relativeMatrix = glm::inverse(renderState.transformations.model);
 
     glm::mat4 positionTransformation(1.0);
-    positionTransformation = glm::rotate(positionTransformation, glm::radians(rotation.z), glm::vec3(0, 0, 1));
-    positionTransformation = glm::rotate(positionTransformation, glm::radians(rotation.x), glm::vec3(1, 0, 0));
-    positionTransformation = glm::rotate(positionTransformation, glm::radians(rotation.y), glm::vec3(0, 1, 0));
-    positionTransformation = glm::translate(positionTransformation, position);
+    positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.z), glm::vec3(0, 0, 1));
+    positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.y), glm::vec3(0, 1, 0));
+    positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.x), glm::vec3(1, 0, 0));
+    positionTransformation *= glm::translate(glm::mat4(1.0), position);
 
-    renderState.transformations.view = relativeMatrix * positionTransformation;
+    renderState.transformations.view = /*relativeMatrix * */ positionTransformation;
 
     CoordinateNode::render(renderState);
 
     renderState.transformations.view = previousViewMatrix;
     renderState.transformations.projection = previousProjectionMatrix;
 
-    CoordinateNode::postRender(renderState);
+    // Disable default behaviour: modifies model matrix
+    //CoordinateNode::postRender(renderState);
 }
