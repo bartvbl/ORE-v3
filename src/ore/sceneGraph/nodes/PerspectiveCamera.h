@@ -8,8 +8,8 @@ namespace ore {
         class PerspectiveCamera : public ore::scene::CoordinateNode {
         public:
             float fovY = 90;
-            float zNear = 0.01;
-            float zFar = 1000.0;
+            float zNear = 0.1;
+            float zFar = 100.0;
 
             PerspectiveCamera() : ore::scene::CoordinateNode("Perspective Camera") {}
 

@@ -16,8 +16,8 @@ void ore::scene::PerspectiveCamera::render(ore::RenderState &renderState) {
 
     glm::mat4 positionTransformation(1.0);
     positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.z), glm::vec3(0, 0, 1));
-    positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.y), glm::vec3(0, 1, 0));
     positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.x), glm::vec3(1, 0, 0));
+    positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.y), glm::vec3(0, 1, 0));
     positionTransformation *= glm::translate(glm::mat4(1.0), position);
 
     renderState.transformations.view = /*relativeMatrix * */ positionTransformation;
