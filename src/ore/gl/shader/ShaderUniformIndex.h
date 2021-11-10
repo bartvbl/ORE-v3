@@ -23,6 +23,10 @@ namespace ore {
             static const unsigned int materialColourSpecular = 21;
             static const unsigned int materialColourEmission = 22;
             static const unsigned int materialShininess = 23;
+
+            static const unsigned int modelViewProjectionMatrix = 30;
+            static const unsigned int modelViewMatrix = 31;
+            static const unsigned int normalMatrix = 32;
         };
     }
 }
