@@ -3,8 +3,8 @@
 namespace ore {
     namespace gl {
         struct ShaderUniformIndex {
-            static const unsigned int diffuseTextureID = 3;
-            static const unsigned int texturesEnabled = 5;
+            static const unsigned int diffuseTextureID = 0;
+            static const unsigned int diffuseTextureEnabled = 1;
 
             static const unsigned int cameraPosition = 12;
 
@@ -27,6 +27,10 @@ namespace ore {
             static const unsigned int modelViewProjectionMatrix = 30;
             static const unsigned int modelViewMatrix = 31;
             static const unsigned int normalMatrix = 32;
+
+            // Arrays require one uniform per index. Thus, the next ID must be past the max number of lights
+            static const unsigned int lightPositionArrayCount = 49;
+            static const unsigned int lightPositionArrayID = 50;
         };
     }
 }

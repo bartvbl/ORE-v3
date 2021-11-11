@@ -1,10 +1,17 @@
 #include "LightNode.h"
 #include <g3log/g3log.hpp>
+#include <ore/gl/shader/ShaderUniformIndex.h>
+#include <glad/glad.h>
 
 void ore::LightNode::preRender(ore::RenderState &state) {
+    glm::mat4 modelViewMatrix = state.transformations.view * state.transformations.model;
+    std::array<glm::vec3, ore::MAX_LIGHT_SOURCES> transformedLightPositions;
     for(unsigned int i = 0; i < lightSourceCount; i++) {
-        
+        transformedLightPositions.at(i) = modelViewMatrix * glm::vec4(lightSources.at(i).position, 1.0);
     }
+    state.uniforms.setLightPositions(ore::gl::ShaderUniformIndex::lightPositionArrayID,
+                                     reinterpret_cast<GLfloat*>(transformedLightPositions.data()),
+                                     lightSourceCount);
 }
 
 void ore::LightNode::render(ore::RenderState &state) {

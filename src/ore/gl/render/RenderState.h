@@ -22,6 +22,8 @@ namespace ore {
         void setModelViewMatrix(glm::mat4 modelMatrix);
         void setProjection(glm::mat4 projectionMatrix);
         void setTexture(unsigned int ID, resources::Texture texture);
+
+        void setLightPositions(const unsigned int baseUniformID, float *positionList, unsigned int count);
     };
 
     struct RenderState {
