@@ -263,5 +263,9 @@ ore::MeshNode *ore::resources::MeshResource::createInstance() {
     return node;
 }
 
+ore::resources::Mesh ore::resources::MeshResource::getLoadedMesh() {
+    return mesh;
+}
+
 
 

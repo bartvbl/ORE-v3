@@ -18,5 +18,5 @@ ore::scene::GeometryNode ore::gl::PlaneGenerator::generatePlaneBuffer() {
     geometry.hasTextures = true;
     geometry.indices = {0, 1, 2, 0, 2, 3};
     ore::gl::GeometryBuffer planeBuffer = ore::gl::generateGeometryBuffer(geometry);
-    return planeBuffer;
+    return {planeBuffer};
 }

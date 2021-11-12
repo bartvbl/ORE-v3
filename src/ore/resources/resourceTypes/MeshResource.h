@@ -27,6 +27,7 @@ namespace ore {
             void destroy() override;
 
             ore::MeshNode* createInstance();
+            ore::resources::Mesh getLoadedMesh();
         };
     }
 }
