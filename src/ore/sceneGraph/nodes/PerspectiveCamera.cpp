@@ -11,7 +11,7 @@ void ore::scene::PerspectiveCamera::render(ore::RenderState &renderState) {
     float aspectRatio = float(renderState.window.width) / float(renderState.window.height);
     renderState.transformations.projection = glm::perspective(glm::radians(fovY), aspectRatio, zNear, zFar);
 
-    // Camera allows itself to be
+    // Camera allows itself to be attached to another node
     glm::mat4 relativeMatrix = glm::inverse(renderState.transformations.model);
 
     glm::mat4 positionTransformation(1.0);
@@ -20,7 +20,7 @@ void ore::scene::PerspectiveCamera::render(ore::RenderState &renderState) {
     positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.y), glm::vec3(0, 1, 0));
     positionTransformation *= glm::translate(glm::mat4(1.0), position);
 
-    renderState.transformations.view = /*relativeMatrix * */ positionTransformation;
+    renderState.transformations.view = relativeMatrix * positionTransformation;
 
     CoordinateNode::render(renderState);
 

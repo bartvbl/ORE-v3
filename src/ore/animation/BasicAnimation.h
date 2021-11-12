@@ -20,7 +20,7 @@ namespace ore {
                 : end(destination), transition(transition), target(target) {
                 start.position = target->position;
                 start.rotation = target->rotation;
-                start.scale = target->scale.x;
+                start.scale = target->scale;
             }
 
             bool animate(double timeDelta);

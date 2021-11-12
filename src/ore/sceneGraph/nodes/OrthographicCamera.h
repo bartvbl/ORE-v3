@@ -1,11 +1,11 @@
 #pragma once
 
 
-#include "ContainerNode.h"
+#include "CoordinateNode.h"
 
 namespace ore {
     namespace scene {
-        class OrthographicCamera : public ore::scene::ContainerNode {
+        class OrthographicCamera : public ore::scene::CoordinateNode {
         public:
             float left = 0;
             float right = 1;
@@ -16,7 +16,7 @@ namespace ore {
 
             bool depthTestingEnabled = true;
 
-            OrthographicCamera() : ore::scene::ContainerNode("Orthographic Camera") {}
+            OrthographicCamera() : ore::scene::CoordinateNode("Orthographic Camera") {}
 
             void render(RenderState &renderState);
 
