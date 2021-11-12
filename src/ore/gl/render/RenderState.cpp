@@ -10,4 +10,5 @@ void ore::ShaderUniformRenderState::setTexture(unsigned int ID, ore::resources::
 
 void ore::ShaderUniformRenderState::setLightPositions(const unsigned int baseUniformID, float* positionList, unsigned int count) {
     glUniform3fv(baseUniformID, count, positionList);
+    glUniform1i(ore::gl::ShaderUniformIndex::lightPositionArrayCount, count);
 }
