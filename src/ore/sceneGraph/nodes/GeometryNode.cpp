@@ -5,8 +5,15 @@
 
 void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
     CoordinateNode::preRender(renderState);
-    glm::mat4 mvpMatrix = renderState.transformations.projection * renderState.transformations.view * renderState.transformations.model;
+    
+    glm::mat4 mvMatrix = renderState.transformations.view * renderState.transformations.model;
+    glm::mat4 mvpMatrix = renderState.transformations.projection * mvMatrix;
+    glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(mvMatrix));
+
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::modelViewProjectionMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+    glUniformMatrix4fv(ore::gl::ShaderUniformIndex::modelViewMatrix, 1, GL_FALSE, glm::value_ptr(mvMatrix));
+    glUniformMatrix4fv(ore::gl::ShaderUniformIndex::normalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
     glBindVertexArray(buffer.vaoID);
     const unsigned int* zeroptr = nullptr;
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void*) (zeroptr + startIndex));
