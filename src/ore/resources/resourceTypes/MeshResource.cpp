@@ -123,10 +123,10 @@ void constructMesh(const fastObjMesh* temporaryMesh,
         fastObjMaterial material = temporaryMesh->materials[materialIndex];
         mesh.materials.emplace_back(
                 std::string(material.name),
-                ore::geom::vec3(material.Ka),
-                ore::geom::vec3(material.Kd),
-                ore::geom::vec3(material.Ks),
-                ore::geom::vec3(material.Ke),
+                ore::geom::vec4(material.Ka, 1.0),
+                ore::geom::vec4(material.Kd, 1.0),
+                ore::geom::vec4(material.Ks, 1.0),
+                ore::geom::vec4(material.Ke, 1.0),
                 material.d,
                 material.map_Kd.path != nullptr ?
                 std::string(material.map_Kd.path) : "",
@@ -138,10 +138,10 @@ void constructMesh(const fastObjMesh* temporaryMesh,
     if(temporaryMesh->material_count == 0) {
         mesh.materials.emplace_back(
                 "default material",
-                ore::geom::vec3(0.2, 0.2, 0.2),
-                ore::geom::vec3(1.0, 1.0, 1.0),
-                ore::geom::vec3(1.0, 1.0, 1.0),
-                ore::geom::vec3(0.0, 0.0, 0.0),
+                ore::geom::vec4(0.2, 0.2, 0.2, 1.0),
+                ore::geom::vec4(1.0, 1.0, 1.0, 1.0),
+                ore::geom::vec4(1.0, 1.0, 1.0, 1.0),
+                ore::geom::vec4(0.0, 0.0, 0.0, 1.0),
                 1,
                 "",
                 "");
