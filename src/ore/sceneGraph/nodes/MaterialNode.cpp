@@ -6,5 +6,7 @@ void ore::scene::MaterialNode::render(ore::RenderState &state) {
         state.uniforms.setTexture(ore::gl::ShaderUniformIndex::diffuseTextureID, material->diffuseTexture.getInstance());
     }
 
+    state.uniforms.setColour(ore::gl::ShaderUniformIndex::materialColourDiffuse, material->diffuseColour);
+
     ContainerNode::render(state);
 }

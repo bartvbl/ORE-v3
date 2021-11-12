@@ -5,7 +5,7 @@
 
 void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
     CoordinateNode::preRender(renderState);
-    
+
     glm::mat4 mvMatrix = renderState.transformations.view * renderState.transformations.model;
     glm::mat4 mvpMatrix = renderState.transformations.projection * mvMatrix;
     glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(mvMatrix));

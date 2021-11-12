@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <ore/resources/resourceTypes/shader/Shader.h>
 #include <ore/resources/resourceTypes/texture/Texture.h>
+#include <ore/geom/vec4.h>
 
 namespace ore {
     struct WindowDimensionsRenderState {
@@ -24,6 +25,8 @@ namespace ore {
         void setTexture(unsigned int ID, resources::Texture texture);
 
         void setLightPositions(const unsigned int baseUniformID, float *positionList, unsigned int count);
+
+        void setColour(const unsigned int uniformID, ore::geom::vec4 colour);
     };
 
     struct RenderState {
