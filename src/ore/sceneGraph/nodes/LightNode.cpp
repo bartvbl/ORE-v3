@@ -3,7 +3,7 @@
 #include <ore/gl/shader/ShaderUniformIndex.h>
 #include <glad/glad.h>
 
-void ore::LightNode::preRender(ore::RenderState &state) {
+void ore::scene::LightNode::preRender(ore::RenderState &state) {
     glm::mat4 modelViewMatrix = state.transformations.view * state.transformations.model;
     std::array<glm::vec3, ore::MAX_LIGHT_SOURCES> transformedLightPositions;
     for(unsigned int i = 0; i < lightSourceCount; i++) {
@@ -14,13 +14,13 @@ void ore::LightNode::preRender(ore::RenderState &state) {
                                      lightSourceCount);
 }
 
-void ore::LightNode::render(ore::RenderState &state) {
+void ore::scene::LightNode::render(ore::RenderState &state) {
     preRender(state);
 
     ContainerNode::render(state);
 }
 
-void ore::LightNode::addLight(ore::gl::Light &light) {
+void ore::scene::LightNode::addLight(ore::gl::Light &light) {
     if(lightSourceCount >= ore::MAX_LIGHT_SOURCES) {
         LOG(FATAL) << "Attempted to add light, but this would exceed the maximum number of light sources supported!" << std::endl;
     }
@@ -28,6 +28,6 @@ void ore::LightNode::addLight(ore::gl::Light &light) {
     lightSourceCount++;
 }
 
-void ore::LightNode::clearLights() {
+void ore::scene::LightNode::clearLights() {
     lightSourceCount = 0;
 }
