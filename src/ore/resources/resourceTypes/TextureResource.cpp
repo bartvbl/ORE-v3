@@ -26,6 +26,11 @@ void ore::resources::TextureResource::load(const ore::filesystem::path &fileLoca
     textureIsLoaded = true;
 }
 
+void ore::resources::TextureResource::load(ore::resources::Texture alreadyLoadedTexture) {
+    this->texture = alreadyLoadedTexture;
+    textureIsLoaded = true;
+}
+
 bool ore::resources::TextureResource::requiresMainThread() {
     return true;
 }
@@ -46,3 +51,5 @@ bool ore::resources::TextureResource::isLoaded() {
 ore::resources::Texture ore::resources::TextureResource::getInstance() {
     return texture;
 }
+
+

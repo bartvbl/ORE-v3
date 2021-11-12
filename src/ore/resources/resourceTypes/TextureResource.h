@@ -17,6 +17,7 @@ namespace ore {
 
         public:
             void load(const ore::filesystem::path &fileLocation) override;
+            void load(ore::resources::Texture alreadyLoadedTexture);
 
             bool requiresMainThread() override;
 
