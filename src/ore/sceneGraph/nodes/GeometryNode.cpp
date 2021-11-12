@@ -2,6 +2,7 @@
 #include "GeometryNode.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <ore/gl/shader/ShaderUniformIndex.h>
+#include <ore/gl/render/RenderMode.h>
 
 void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
     CoordinateNode::preRender(renderState);
@@ -16,7 +17,16 @@ void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
 
     glBindVertexArray(buffer.vaoID);
     const unsigned int* zeroptr = nullptr;
-    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void*) (zeroptr + startIndex));
+    unsigned int drawMode = 0;
+    switch(mode) {
+        case gl::RenderMode::TRIANGLES:
+            drawMode = GL_TRIANGLES;
+            break;
+        case gl::RenderMode::LINES:
+            drawMode = GL_LINES;
+            break;
+    }
+    glDrawElements(drawMode, indexCount, GL_UNSIGNED_INT, (void*) (zeroptr + startIndex));
 
     CoordinateNode::render(renderState);
     CoordinateNode::postRender(renderState);
@@ -24,4 +34,8 @@ void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
 
 void ore::scene::GeometryNode::destroyGeometryBuffer() {
     buffer.destroy();
+}
+
+void ore::scene::GeometryNode::setRenderMode(ore::gl::RenderMode mode) {
+    this->mode = mode;
 }
