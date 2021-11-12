@@ -1,6 +1,6 @@
 #include "NodeController.h"
 
-const float rotationSpeed = 0.08f;
+const float rotationSpeed = 2.5f;
 const float cameraSpeed = 0.03f;
 // Controller specific, but because keyboard inputs are binary it automatically doesn't apply to those
 const float deadZone = 0.3;
@@ -16,8 +16,8 @@ void ore::NodeController::update() {
     node->rotation.y += horizontalRotation * rotationSpeed;
     node->rotation.x += verticalRotation * rotationSpeed;
 
-    float angleYRadiansForward = node->rotation.y;
-    float angleYRadiansSideways = (node->rotation.y + float(M_PI / 2.0));
+    float angleYRadiansForward = glm::radians(node->rotation.y);
+    float angleYRadiansSideways = (glm::radians(node->rotation.y) + float(M_PI / 2.0));
 
     float moveRight = applyDeadzone(movementRight) - applyDeadzone(movementLeft);
     float moveForward = applyDeadzone(movementForward) - applyDeadzone(movementBackward);
