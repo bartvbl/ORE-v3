@@ -3,7 +3,7 @@
 
 namespace ore {
     namespace gl {
-        namespace PlaneGenerator {
+        namespace PrimitiveGenerator {
             ore::scene::GeometryNode generatePlaneBuffer();
         };
     }

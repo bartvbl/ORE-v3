@@ -1,8 +1,8 @@
 #include <ore/resources/resourceTypes/mesh/MeshGeometry.h>
 #include <ore/gl/vao/GeometryBufferGenerator.h>
-#include "PlaneGenerator.h"
+#include "PrimitiveGenerator.h"
 
-ore::scene::GeometryNode ore::gl::PlaneGenerator::generatePlaneBuffer() {
+ore::scene::GeometryNode ore::gl::PrimitiveGenerator::generatePlaneBuffer() {
     ore::resources::MeshGeometry geometry;
     geometry.vertices = {
             glm::vec3(0, 0, 0),
