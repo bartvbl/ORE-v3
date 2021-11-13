@@ -1,5 +1,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "PerspectiveCamera.h"
+#include <ore/gl/camera/TripodCameraTransform.h>
 
 void ore::scene::PerspectiveCamera::render(ore::RenderState &renderState) {
     // Disable default behaviour: modifies model matrix
@@ -14,11 +15,7 @@ void ore::scene::PerspectiveCamera::render(ore::RenderState &renderState) {
     // Camera allows itself to be attached to another node
     glm::mat4 relativeMatrix = glm::inverse(renderState.transformations.model);
 
-    glm::mat4 positionTransformation(1.0);
-    positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.z), glm::vec3(0, 0, 1));
-    positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.x), glm::vec3(1, 0, 0));
-    positionTransformation *= glm::rotate(glm::mat4(1.0), glm::radians(rotation.y), glm::vec3(0, 1, 0));
-    positionTransformation *= glm::translate(glm::mat4(1.0), position);
+    glm::mat4 positionTransformation = ore::gl::computeTripodViewTransformation(position, rotation);
 
     renderState.transformations.view = relativeMatrix * positionTransformation;
 

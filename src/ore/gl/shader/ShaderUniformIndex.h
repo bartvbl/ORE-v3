@@ -3,7 +3,10 @@
 namespace ore {
     namespace gl {
         struct ShaderUniformIndex {
+            // Texture bindings
             static const unsigned int diffuseTextureID = 0;
+            static const unsigned int shadowDepthMapTextureID = 5;
+
             static const unsigned int diffuseTextureEnabled = 1;
 
             static const unsigned int cameraPosition = 12;
