@@ -9,12 +9,7 @@ void ore::scene::OrthographicCamera::render(ore::RenderState &renderState) {
 
     renderState.transformations.projection = glm::ortho(left, right, bottom, top, zNear, zFar);
 
-    // Camera allows itself to be attached to another node
-    glm::mat4 relativeMatrix = glm::inverse(renderState.transformations.model);
-
-    glm::mat4 positionTransformation = ore::gl::computeTripodViewTransformation(position, rotation);
-
-    renderState.transformations.view = relativeMatrix * positionTransformation;
+    renderState.transformations.view = ore::gl::computeTripodViewTransformation(renderState.transformations.model, position, rotation);
 
     if(depthTestingEnabled) {
         glEnable(GL_DEPTH_TEST);

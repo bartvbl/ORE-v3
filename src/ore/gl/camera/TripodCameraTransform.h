@@ -3,6 +3,6 @@
 
 namespace ore {
     namespace gl {
-        glm::mat4 computeTripodViewTransformation(glm::vec3 position, glm::vec3 rotation);
+        glm::mat4 computeTripodViewTransformation(glm::mat4 &modelMatrix, glm::vec3 position, glm::vec3 rotation);
     }
 }

@@ -4,6 +4,7 @@
 #include <ore/sceneGraph/nodes/ShaderNode.h>
 #include <ore/gl/frameBuffer/FrameBuffer.h>
 #include <ore/gl/lighting/Light.h>
+#include <ore/world/GameWorld.h>
 #include <ore/resources/resourceTypes/texture/ShadowTexture.h>
 
 namespace ore {
@@ -19,7 +20,10 @@ namespace ore {
             ore::gl::Light lightSource;
             ore::resources::ShadowTexture texture;
         public:
-            ShadowNode() : ore::scene::ContainerNode("Shadow Node") {
+            ShadowNode(ore::GameWorld* world)
+                : ore::scene::ContainerNode("Shadow Node"),
+                  depthPassShaderNode (world->resourceCache.shaders.getResource_Blocking("shadowDepthPassShader")->getInstance()),
+                  shadowShaderNode (world->resourceCache.shaders.getResource_Blocking("shadowRenderShader")->getInstance()){
                 texture.create(SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
                 frameBuffer.create();
                 frameBuffer.makeShadowMapFramebuffer(texture);
@@ -29,7 +33,7 @@ namespace ore {
                 shadowShaderNode.getChildren()->push_back(&shadowedSceneContentsNode);
             }
 
-            void setLightSource(ore::gl::Light lightSource);
+            void setLightSource(ore::gl::Light updatedLightSource);
             void render(ore::RenderState &state) override;
             std::vector<SceneNode*>* getChildren() override;
         };
