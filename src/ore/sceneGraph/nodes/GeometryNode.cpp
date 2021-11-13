@@ -10,11 +10,12 @@ void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
     glm::mat4 mvMatrix = renderState.transformations.view * renderState.transformations.model;
     glm::mat4 mvpMatrix = renderState.transformations.projection * mvMatrix;
     glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(mvMatrix));
+    glm::mat4 shadowMVP = renderState.transformations.shadowVP * renderState.transformations.model;
 
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::modelViewProjectionMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::modelViewMatrix, 1, GL_FALSE, glm::value_ptr(mvMatrix));
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::normalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
-    glUniformMatrix4fv(ore::gl::ShaderUniformIndex::shadowMapMVP, 1, GL_FALSE, glm::value_ptr(renderState.transformations.shadowMVP));
+    glUniformMatrix4fv(ore::gl::ShaderUniformIndex::shadowMapMVP, 1, GL_FALSE, glm::value_ptr(shadowMVP));
 
     glBindVertexArray(buffer.vaoID);
     const unsigned int* zeroptr = nullptr;

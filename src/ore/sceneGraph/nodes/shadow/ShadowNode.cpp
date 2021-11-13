@@ -28,7 +28,7 @@ void ore::scene::ShadowNode::render(ore::RenderState &state) {
     depthPassShaderNode.render(state);
 
     // Restore original camera position
-    state.transformations.shadowMVP = state.transformations.projection * state.transformations.view;
+    state.transformations.shadowVP = state.transformations.projection * state.transformations.view;
     state.transformations.view = previousViewMatrix;
     state.transformations.projection = previousProjectionMatrix;
 
