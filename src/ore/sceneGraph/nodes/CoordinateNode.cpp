@@ -3,7 +3,7 @@
 #include <glm/gtx/transform.hpp>
 
 std::string ore::scene::CoordinateNode::getName() {
-    return "Container node - " + name;
+    return "Coordinate node - " + name;
 }
 
 void ore::scene::CoordinateNode::preRender(ore::RenderState &renderState) {

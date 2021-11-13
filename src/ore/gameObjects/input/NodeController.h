@@ -6,8 +6,9 @@
 
 namespace ore {
     class NodeController : public ore::GameObject {
-    private:
+    protected:
         ore::scene::CoordinateNode* node;
+    private:
         float movementLeft = 0;
         float movementRight = 0;
         float movementBackward = 0;

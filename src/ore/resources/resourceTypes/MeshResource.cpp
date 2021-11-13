@@ -183,6 +183,8 @@ void ore::resources::MeshResource::loadOBJFile(const ore::filesystem::path &mode
     fakeFileContents["partStructure"]["pivot"] = {0, 0, 0};
     fakeFileContents["partStructure"]["children"];
 
+
+
     for(unsigned int i = 0; i < temporaryMesh->group_count; i++) {
         fakeFileContents["partStructure"]["children"].emplace_back();
         fakeFileContents["partStructure"]["children"].at(i)["name"] = std::string(temporaryMesh->groups[i].name);

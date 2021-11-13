@@ -11,7 +11,7 @@ namespace ore {
             bool isShaderSet = false;
         public:
             ShaderNode() : ore::scene::ContainerNode("Shader Node") {}
-            ShaderNode(ore::resources::Shader shader) : shader(shader) {
+            ShaderNode(ore::resources::Shader shader) : ore::scene::ContainerNode("Shader Node"), shader(shader) {
                 isShaderSet = true;
             }
             void render(RenderState &renderState);

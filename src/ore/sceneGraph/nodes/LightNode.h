@@ -12,6 +12,8 @@ namespace ore {
             std::array<ore::gl::Light, ore::MAX_LIGHT_SOURCES> lightSources;
             unsigned int lightSourceCount = 0;
         public:
+            LightNode() : ore::scene::ContainerNode("Light Node") {}
+
             void preRender(ore::RenderState &state) override;
 
             void render(ore::RenderState &state) override;

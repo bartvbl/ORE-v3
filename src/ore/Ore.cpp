@@ -5,6 +5,7 @@
 #include <ore/gl/render/RenderPass.h>
 #include <ore/utilities/Logger.h>
 #include <ore/geom/int2.h>
+#include <ore/utilities/SceneGraphPrinter.h>
 #include "Ore.h"
 
 void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameState *initialState) {
@@ -32,6 +33,7 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
         ore::window::newFrame(window);
         this->currentGameState->update();
         this->world.frameTick();
+        ore::utilities::printSceneGraph(&this->world.scene.rootNode);
         ore::RenderPass::render(&this->world.scene.rootNode, window);
         glfwSwapBuffers(window);
     }
