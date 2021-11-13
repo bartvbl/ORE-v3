@@ -94,7 +94,7 @@ void visitMeshPart(const nlohmann::json &partJSON,
 
     for(unsigned int i = 0; i < partJSON["children"].size(); i++) {
         mesh.parts.emplace_back();
-        visitMeshPart(partJSON["children"][i], mesh, i, temporaryMesh, modelFileLocation, objectFileLocation);
+        visitMeshPart(partJSON["children"][i], mesh, mesh.parts.size() - 1, temporaryMesh, modelFileLocation, objectFileLocation);
     }
 }
 
@@ -245,7 +245,7 @@ void ore::resources::MeshResource::buildInstanceTree(ore::SceneNode* parentNode,
     // iterate over its children
     unsigned int childCount = mesh.parts.at(*nodeIndex).childNodeCount;
     for(unsigned int i = 0; i < childCount; i++) {
-        *nodeIndex++;
+        (*nodeIndex)++;
         buildInstanceTree(currentNode, meshNode, nodeIndex);
     }
 }
