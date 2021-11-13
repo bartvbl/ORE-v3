@@ -30,6 +30,7 @@ namespace ore {
             static const unsigned int modelViewProjectionMatrix = 30;
             static const unsigned int modelViewMatrix = 31;
             static const unsigned int normalMatrix = 32;
+            static const unsigned int shadowMapMVP = 33;
 
             // Arrays require one uniform per index. Thus, the next ID must be past the max number of lights
             static const unsigned int lightPositionArrayCount = 49;
