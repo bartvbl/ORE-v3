@@ -104,8 +104,8 @@ void constructMesh(const fastObjMesh* temporaryMesh,
                    const ore::filesystem::path &objectFileLocation,
                    ore::resources::Mesh &mesh) {
     mesh.geometry.hasNormalMap = false;
-    mesh.geometry.hasNormals = temporaryMesh->indices[0].n != 0;
-    mesh.geometry.hasTextures = temporaryMesh->indices[0].t != 1;
+    mesh.geometry.hasNormals = temporaryMesh->normal_count != 0;
+    mesh.geometry.hasTextures = temporaryMesh->texcoord_count != 0;
 
     // Allocate space
     mesh.geometry.vertices.reserve(3 * temporaryMesh->face_count);
