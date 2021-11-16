@@ -18,7 +18,7 @@ void ore::scene::ShadowNode::render(ore::RenderState &state) {
     glm::mat4 previousViewMatrix = state.transformations.view;
     glm::mat4 previousProjectionMatrix = state.transformations.projection;
 
-    state.transformations.view = ore::gl::computeTripodViewTransformation(state.transformations.model, lightSource.position, lightSource.lightDirection);
+    state.transformations.view = ore::gl::computeTripodViewTransformation(state.transformations.model, -lightSource.position, lightSource.lightDirection);
     state.transformations.projection = glm::perspective(glm::radians(lightSource.spotLightAngleDegrees), float(SHADOW_MAP_WIDTH) / float(SHADOW_MAP_HEIGHT), 0.1f, 1000.0f);
 
     // Depth pass

@@ -32,6 +32,9 @@ add_subdirectory (lib/glfw)
 
 add_subdirectory(lib/g3log g3log)
 
+find_package(Freetype REQUIRED)
+include_directories( ${FREETYPE_INCLUDE_DIRS} )
+
 #
 # Set include paths
 #
@@ -63,7 +66,7 @@ add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES} ${PROJECT_HEADERS} ${LIBRA
 
 
 if(WIN32)
-  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log)
+  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES})
 else()
-  target_link_libraries (${PROJECT_NAME} glfw stdc++fs ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log)
+  target_link_libraries (${PROJECT_NAME} glfw stdc++fs ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES})
 endif()

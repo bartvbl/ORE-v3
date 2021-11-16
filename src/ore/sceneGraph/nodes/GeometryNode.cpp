@@ -4,21 +4,25 @@
 #include <ore/gl/shader/ShaderUniformIndex.h>
 #include <ore/gl/render/RenderMode.h>
 
-void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
-    CoordinateNode::preRender(renderState);
+void ore::scene::GeometryNode::preRender(ore::RenderState &state) {
+    CoordinateNode::preRender(state);
 
-    glm::mat4 mvMatrix = renderState.transformations.view * renderState.transformations.model;
-    glm::mat4 mvpMatrix = renderState.transformations.projection * mvMatrix;
+    glm::mat4 mvMatrix = state.transformations.view * state.transformations.model;
+    glm::mat4 mvpMatrix = state.transformations.projection * mvMatrix;
     glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(mvMatrix));
-    glm::mat4 shadowMVP = renderState.transformations.shadowVP * renderState.transformations.model;
+    glm::mat4 shadowMVP = state.transformations.shadowVP * state.transformations.model;
 
-    glUniform1i(ore::gl::ShaderUniformIndex::lightingEnabled, renderState.shading.enableLighting ? 1 : 0);
-    glUniform1i(ore::gl::ShaderUniformIndex::shadowsEnabled, renderState.shading.enableShadows ? 1 : 0);
+    glUniform1i(ore::gl::ShaderUniformIndex::lightingEnabled, state.shading.enableLighting ? 1 : 0);
+    glUniform1i(ore::gl::ShaderUniformIndex::shadowsEnabled, state.shading.enableShadows ? 1 : 0);
 
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::modelViewProjectionMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::modelViewMatrix, 1, GL_FALSE, glm::value_ptr(mvMatrix));
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::normalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::shadowMapMVP, 1, GL_FALSE, glm::value_ptr(shadowMVP));
+}
+
+void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
+    preRender(renderState);
 
     glBindVertexArray(buffer.vaoID);
     const unsigned int* zeroptr = nullptr;
@@ -44,3 +48,5 @@ void ore::scene::GeometryNode::destroyGeometryBuffer() {
 void ore::scene::GeometryNode::setRenderMode(ore::gl::RenderMode mode) {
     this->mode = mode;
 }
+
+

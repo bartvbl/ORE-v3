@@ -32,6 +32,8 @@ void ore::resources::ResourceCache::wakeResourceLoadingThread() {
             anItemWasLoaded = anItemWasLoaded
                 || this->shaders.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
             anItemWasLoaded = anItemWasLoaded
+                || this->fonts.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            anItemWasLoaded = anItemWasLoaded
                 || this->customResources.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
         }
     };
@@ -53,6 +55,8 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
         this->meshes.registerResource(id, priority, fileLocation, new MeshResource());
     } else if(extension == ".shader") {
         this->shaders.registerResource(id, priority, fileLocation, new ShaderResource());
+    } else if(extension == ".ttf") {
+        this->fonts.registerResource(id, priority, fileLocation, new FontResource());
     } else {
         LOG(FATAL) << "The resource with ID " << id << ", located at " << fileLocation << " has an unknown extension, and can therefore not be loaded as a resource." << std::endl;
     }
@@ -108,6 +112,7 @@ unsigned int ore::resources::ResourceCache::countEnqueuedItems(ore::resources::R
     totalResourceCount += meshes.getEnqueuedItemCount(threshold);
     totalResourceCount += lxfmlMeshes.getEnqueuedItemCount(threshold);
     totalResourceCount += shaders.getEnqueuedItemCount(threshold);
+    totalResourceCount += fonts.getEnqueuedItemCount(threshold);
     totalResourceCount += customResources.getEnqueuedItemCount(threshold);
     return totalResourceCount;
 }
@@ -119,6 +124,7 @@ void ore::resources::ResourceCache::flushMainThreadCompletions() {
     meshes.runMainThreadJobs();
     lxfmlMeshes.runMainThreadJobs();
     shaders.runMainThreadJobs();
+    fonts.runMainThreadJobs();
     customResources.runMainThreadJobs();
 }
 

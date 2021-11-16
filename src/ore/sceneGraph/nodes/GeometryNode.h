@@ -14,7 +14,7 @@ namespace ore {
             unsigned int indexCount = 0;
             ore::gl::RenderMode mode = ore::gl::RenderMode::TRIANGLES;
 
-            GeometryNode() : ore::scene::CoordinateNode("Geometry Node") {}
+            GeometryNode(std::string name = "Geometry Node") : ore::scene::CoordinateNode(std::move(name)) {}
             GeometryNode(ore::gl::GeometryBuffer buffer, unsigned int startIndex = 0, unsigned int indexCount = 0)
                 : ore::scene::CoordinateNode("Geometry Node"),
                   buffer(buffer), startIndex(startIndex), indexCount(indexCount) {
@@ -23,7 +23,8 @@ namespace ore {
                 }
             }
 
-            void render(RenderState &renderState);
+            void preRender(RenderState &state) override;
+            void render(RenderState &renderState) override;
             void destroyGeometryBuffer();
             void setRenderMode(ore::gl::RenderMode mode);
         };
