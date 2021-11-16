@@ -4,6 +4,7 @@
 #include <ore/resources/resourceTypes/shader/Shader.h>
 #include <ore/resources/resourceTypes/texture/Texture.h>
 #include <ore/geom/vec4.h>
+#include <ore/gl/shader/ShadingConfiguration.h>
 
 namespace ore {
     struct WindowDimensionsRenderState {
@@ -36,5 +37,6 @@ namespace ore {
         WindowDimensionsRenderState window;
         ShaderUniformRenderState uniforms;
         ore::resources::Shader currentActiveShader;
+        ore::gl::ShadingConfiguration shading;
     };
 }

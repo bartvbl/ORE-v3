@@ -8,6 +8,8 @@ namespace ore {
             static const unsigned int shadowDepthMapTextureID = 5;
 
             static const unsigned int diffuseTextureEnabled = 1;
+            static const unsigned int lightingEnabled = 2;
+            static const unsigned int shadowsEnabled = 3;
 
             static const unsigned int cameraPosition = 12;
 

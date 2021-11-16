@@ -12,6 +12,9 @@ void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
     glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(mvMatrix));
     glm::mat4 shadowMVP = renderState.transformations.shadowVP * renderState.transformations.model;
 
+    glUniform1i(ore::gl::ShaderUniformIndex::lightingEnabled, renderState.shading.enableLighting ? 1 : 0);
+    glUniform1i(ore::gl::ShaderUniformIndex::shadowsEnabled, renderState.shading.enableShadows ? 1 : 0);
+
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::modelViewProjectionMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::modelViewMatrix, 1, GL_FALSE, glm::value_ptr(mvMatrix));
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::normalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));

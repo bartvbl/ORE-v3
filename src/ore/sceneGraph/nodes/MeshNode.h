@@ -3,6 +3,7 @@
 #include "CoordinateNode.h"
 #include "MaterialNode.h"
 #include <ore/sceneGraph/nodes/GeometryNode.h>
+#include <ore/gl/shader/ShadingConfiguration.h>
 
 namespace ore {
     class MeshNode : public ore::scene::CoordinateNode {
@@ -15,6 +16,7 @@ namespace ore {
         std::vector<ore::scene::GeometryNode> geometryNodes;
         std::vector<ore::scene::MaterialNode> materialNodes;
         std::vector<ore::scene::CoordinateNode> intermediateNodes;
+        ore::gl::ShadingConfiguration shading;
 
         MeshNode(std::string &name) : name(name) {}
 
@@ -26,5 +28,7 @@ namespace ore {
         std::string getName();
 
         void destroy();
+
+
     };
 }
