@@ -21,6 +21,8 @@ namespace ore {
         // Since we do some pointer stuff, disallow copying
         MeshNode(const MeshNode &node) = delete;
 
+        void render(ore::RenderState &state) override;
+
         std::string getName();
 
         void destroy();
