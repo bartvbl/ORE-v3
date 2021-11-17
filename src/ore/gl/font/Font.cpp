@@ -22,7 +22,7 @@ ore::gl::GeometryBuffer ore::gl::Font::createRenderableText(std::string &text, u
         FontCharacter characterInfo = characterList->second.at((unsigned int) characterInText);
 
         float positionX = baseXCoordinate + characterInfo.bearingPixels.x;
-        float positionY = characterInfo.sizePixels.y - characterInfo.bearingPixels.y;
+        float positionY = characterInfo.bearingPixels.y - characterInfo.sizePixels.y;
         float width = characterInfo.sizePixels.x;
         float height = characterInfo.sizePixels.y;
 
