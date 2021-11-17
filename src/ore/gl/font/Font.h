@@ -1,21 +1,23 @@
 #pragma once
 #include <string>
+#include <utility>
+#include <vector>
 #include <glm/glm.hpp>
 #include <ore/resources/resourceTypes/texture/Texture.h>
 #include <unordered_map>
 #include <ore/gl/vao/GeometryBuffer.h>
+#include <ore/gl/font/FontCharacter.h>
 
 namespace ore {
     namespace gl {
         class Font {
         private:
-            std::unordered_map<unsigned int, ore::resources::Texture> textureMap;
-            ore::gl::GeometryBuffer renderBuffer;
+            std::unordered_map<unsigned int, std::vector<ore::gl::FontCharacter>>* characterMap = nullptr;
         public:
-            explicit Font() = default;
-            void init();
-            void registerTexture(unsigned int size, ore::resources::Texture texture);
-            void drawText(std::string &text, unsigned int fontSize = 16, glm::vec3 position = {0, 0, 0});
+            ore::resources::Texture textureMap;
+
+            explicit Font(ore::resources::Texture texture, std::unordered_map<unsigned int, std::vector<ore::gl::FontCharacter>>* characterMap) : characterMap(characterMap), textureMap(texture) {};
+            ore::gl::GeometryBuffer createRenderableText(std::string &text, unsigned int fontSize = 16);
         };
     }
 }

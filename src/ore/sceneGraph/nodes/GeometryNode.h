@@ -25,6 +25,7 @@ namespace ore {
 
             void preRender(RenderState &state) override;
             void render(RenderState &renderState) override;
+            void drawBuffer() const;
             void destroyGeometryBuffer();
             void setRenderMode(ore::gl::RenderMode mode);
         };

@@ -24,6 +24,21 @@ void ore::scene::GeometryNode::preRender(ore::RenderState &state) {
 void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
     preRender(renderState);
 
+    drawBuffer();
+
+    CoordinateNode::render(renderState);
+    CoordinateNode::postRender(renderState);
+}
+
+void ore::scene::GeometryNode::destroyGeometryBuffer() {
+    buffer.destroy();
+}
+
+void ore::scene::GeometryNode::setRenderMode(ore::gl::RenderMode mode) {
+    this->mode = mode;
+}
+
+void ore::scene::GeometryNode::drawBuffer() const {
     glBindVertexArray(buffer.vaoID);
     const unsigned int* zeroptr = nullptr;
     unsigned int drawMode = 0;
@@ -36,17 +51,6 @@ void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
             break;
     }
     glDrawElements(drawMode, indexCount, GL_UNSIGNED_INT, (void*) (zeroptr + startIndex));
-
-    CoordinateNode::render(renderState);
-    CoordinateNode::postRender(renderState);
-}
-
-void ore::scene::GeometryNode::destroyGeometryBuffer() {
-    buffer.destroy();
-}
-
-void ore::scene::GeometryNode::setRenderMode(ore::gl::RenderMode mode) {
-    this->mode = mode;
 }
 
 

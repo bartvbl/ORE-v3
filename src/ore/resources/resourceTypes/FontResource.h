@@ -9,7 +9,11 @@ namespace ore {
         class FontResource final : public ore::resources::ResourceType {
         private:
             ore::gl::Font* font = nullptr;
-            std::vector<unsigned int> characterTextureData;
+            std::vector<unsigned char> characterTextureDataRGBA;
+            unsigned int fontTextureWidthPixels = 0;
+            unsigned int fontTextureHeightPixels = 0;
+            std::unordered_map<unsigned int, std::vector<ore::gl::FontCharacter>> characterMap;
+
         public:
             void load(const ore::filesystem::path &fileLocation) override;
 
