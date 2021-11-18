@@ -124,7 +124,7 @@ void constructMesh(const fastObjMesh* temporaryMesh,
         mesh.materials.emplace_back(
                 std::string(material.name),
                 ore::geom::vec4(material.Ka, 1.0),
-                ore::geom::vec4(material.Kd, 1.0),
+                ore::geom::vec4(material.Kd, material.d),
                 ore::geom::vec4(material.Ks, 1.0),
                 ore::geom::vec4(material.Ke, 1.0),
                 material.d,

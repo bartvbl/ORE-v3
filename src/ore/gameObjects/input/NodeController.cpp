@@ -1,4 +1,5 @@
 #include "NodeController.h"
+#include <iostream>
 
 const float rotationSpeed = 2.5f;
 const float cameraSpeed = 0.03f;
