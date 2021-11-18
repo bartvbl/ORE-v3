@@ -2,18 +2,24 @@
 
 void ore::resources::Material::load() {
     if(!diffuseTexturePath.empty()) {
-        diffuseTexture.load(diffuseTexturePath);
+        diffuseTextureResource.load(diffuseTexturePath);
     }
     if(!normalMapTexturePath.empty()) {
-        normalMapTexture.load(normalMapTexturePath);
+        normalMapTextureResource.load(normalMapTexturePath);
     }
 }
 
 void ore::resources::Material::completeOnMainThread() {
     if(!diffuseTexturePath.empty()) {
-        diffuseTexture.completeLoadOnMainThread();
+        diffuseTextureResource.completeLoadOnMainThread();
+        diffuseTexture = diffuseTextureResource.getInstance();
     }
     if(!normalMapTexturePath.empty()) {
-        normalMapTexture.completeLoadOnMainThread();
+        normalMapTextureResource.completeLoadOnMainThread();
+        normalMapTexture = normalMapTextureResource.getInstance();
     }
+}
+
+bool ore::resources::Material::hasDiffuseTexture() {
+    return diffuseTexture.id > 0;
 }

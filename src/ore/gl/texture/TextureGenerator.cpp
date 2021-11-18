@@ -11,5 +11,5 @@ ore::resources::Texture ore::gl::generateTexture(const unsigned char* imageDataR
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    return ore::resources::Texture(textureID);
+    return ore::resources::Texture(textureID, width, height);
 }

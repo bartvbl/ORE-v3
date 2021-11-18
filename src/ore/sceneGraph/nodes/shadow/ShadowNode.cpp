@@ -35,7 +35,7 @@ void ore::scene::ShadowNode::render(ore::RenderState &state) {
     // Shadow pass
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, state.window.width, state.window.height);
-    state.uniforms.setTexture(ore::gl::ShaderUniformIndex::shadowDepthMapTextureID, texture.id);
+    state.uniforms.setTexture(ore::gl::ShaderUniformIndex::shadowDepthMapTextureID, texture);
     shadowShaderNode.render(state);
 
 

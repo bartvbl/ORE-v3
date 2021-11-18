@@ -8,7 +8,12 @@
 
 namespace ore {
     namespace resources {
-        struct Material {
+        class Material {
+        private:
+            ore::resources::TextureResource diffuseTextureResource;
+            ore::resources::TextureResource normalMapTextureResource;
+        public:
+
             std::string name;
             ore::geom::vec4 ambientColour;
             ore::geom::vec4 diffuseColour;
@@ -17,8 +22,8 @@ namespace ore {
             float transparency = 1;
             std::string diffuseTexturePath;
             std::string normalMapTexturePath;
-            ore::resources::TextureResource diffuseTexture;
-            ore::resources::TextureResource normalMapTexture;
+            ore::resources::Texture diffuseTexture;
+            ore::resources::Texture normalMapTexture;
 
             Material(
                     std::string materialName,
@@ -41,6 +46,8 @@ namespace ore {
 
             void load();
             void completeOnMainThread();
+
+            bool hasDiffuseTexture();
         };
     }
 }
