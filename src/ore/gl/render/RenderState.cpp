@@ -8,9 +8,9 @@ void ore::ShaderUniformRenderState::setTexture(unsigned int ID, ore::resources::
     glUniform1i(ore::gl::ShaderUniformIndex::diffuseTextureEnabled, 1);
 }
 
-void ore::ShaderUniformRenderState::setLightPositions(const unsigned int baseUniformID, float* positionList, unsigned int count) {
+void ore::ShaderUniformRenderState::setLightPositions(const unsigned int baseUniformID, const unsigned int arrayLengthUniformID, float* positionList, unsigned int count) {
     glUniform3fv(baseUniformID, count, positionList);
-    glUniform1i(ore::gl::ShaderUniformIndex::lightPositionArrayCount, count);
+    glUniform1i(arrayLengthUniformID, count);
 }
 
 void ore::ShaderUniformRenderState::setColour(const unsigned int uniformID, ore::geom::vec4 colour) {

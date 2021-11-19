@@ -52,10 +52,22 @@ void ore::scene::ShadowNode::render(ore::RenderState &state) {
         case 1:
             state.uniforms.setTexture(ore::gl::ShaderUniformIndex::shadowDepthMapTextureID0, textures.at(0));
     }
-    state.uniforms.setInteger(ore::gl::ShaderUniformIndex::shadowLightCount, lightSourceCount);
-    if(lightSourceCount == 0) {
+
+    if(lightSourceCount != 0) {
+        state.shading.enableShadows = true;
+    } else {
         state.shading.enableShadows = false;
     }
+
+    glm::mat4 modelViewMatrix = state.transformations.view * state.transformations.model;
+    std::array<glm::vec3, ore::MAX_SHADOW_LIGHT_SOURCES> transformedLightPositions;
+    for(unsigned int i = 0; i < lightSourceCount; i++) {
+        transformedLightPositions.at(i) = modelViewMatrix * glm::vec4(lightSources.at(i).position, 1.0);
+    }
+    state.uniforms.setLightPositions(ore::gl::ShaderUniformIndex::shadowLightPositionArray,
+                                     ore::gl::ShaderUniformIndex::shadowLightCount,
+                                     reinterpret_cast<GLfloat*>(transformedLightPositions.data()),
+                                     lightSourceCount);
 
     shadowShaderNode.render(state);
 

@@ -29,7 +29,7 @@ namespace ore {
         void setProjection(glm::mat4 projectionMatrix);
         void setTexture(unsigned int ID, resources::Texture texture);
 
-        void setLightPositions(const unsigned int baseUniformID, float *positionList, unsigned int count);
+        void setLightPositions(const unsigned int baseUniformID, const unsigned int arrayLengthUniformID, float *positionList, unsigned int count);
 
         void setColour(const unsigned int uniformID, ore::geom::vec4 colour);
 

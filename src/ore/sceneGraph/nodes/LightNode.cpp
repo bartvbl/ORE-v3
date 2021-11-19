@@ -10,6 +10,7 @@ void ore::scene::LightNode::preRender(ore::RenderState &state) {
         transformedLightPositions.at(i) = modelViewMatrix * glm::vec4(lightSources.at(i).position, 1.0);
     }
     state.uniforms.setLightPositions(ore::gl::ShaderUniformIndex::lightPositionArrayID,
+                                     ore::gl::ShaderUniformIndex::lightPositionArrayCount,
                                      reinterpret_cast<GLfloat*>(transformedLightPositions.data()),
                                      lightSourceCount);
 }
