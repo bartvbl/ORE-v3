@@ -4,6 +4,8 @@
 #include <ore/resources/resourceTypes/shader/Shader.h>
 #include <ore/resources/resourceTypes/texture/Texture.h>
 #include <ore/geom/vec4.h>
+#include <array>
+#include <ore/core/Constants.h>
 #include <ore/gl/shader/ShadingConfiguration.h>
 
 namespace ore {
@@ -17,7 +19,7 @@ namespace ore {
         glm::mat4 view = glm::mat4(1.0);
         glm::mat4 projection = glm::mat4(1.0);
 
-        glm::mat4 shadowVP = glm::mat4(1.0);
+        std::array<glm::mat4, ore::MAX_SHADOW_LIGHT_SOURCES> shadowVP = {glm::mat4(1.0), glm::mat4(1.0), glm::mat4(1.0), glm::mat4(1.0)};
     };
 
     class ShaderUniformRenderState {
@@ -30,6 +32,8 @@ namespace ore {
         void setLightPositions(const unsigned int baseUniformID, float *positionList, unsigned int count);
 
         void setColour(const unsigned int uniformID, ore::geom::vec4 colour);
+
+        void setInteger(const unsigned int uniformID, unsigned int value);
     };
 
     struct RenderState {

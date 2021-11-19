@@ -9,34 +9,70 @@ std::vector<ore::SceneNode*> *ore::scene::ShadowNode::getChildren() {
     return shadowedSceneContentsNode.getChildren();
 }
 
-void ore::scene::ShadowNode::setLightSource(ore::gl::Light updatedLightSource) {
-    this->lightSource = updatedLightSource;
-}
-
 void ore::scene::ShadowNode::render(ore::RenderState &state) {
     // Move camera to light source view point
     glm::mat4 previousViewMatrix = state.transformations.view;
     glm::mat4 previousProjectionMatrix = state.transformations.projection;
 
-    state.transformations.view = ore::gl::computeTripodViewTransformation(state.transformations.model, -lightSource.position, lightSource.lightDirection);
-    state.transformations.projection = glm::perspective(glm::radians(lightSource.spotLightAngleDegrees), float(SHADOW_MAP_WIDTH) / float(SHADOW_MAP_HEIGHT), 0.1f, 1000.0f);
+    for(unsigned int lightSourceIndex = 0; lightSourceIndex < lightSourceCount; lightSourceIndex++) {
 
-    // Depth pass
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer.id);
-    glViewport(0, 0, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
-    glClear(GL_DEPTH_BUFFER_BIT);
-    depthPassShaderNode.render(state);
+        state.transformations.view = ore::gl::computeTripodViewTransformation(state.transformations.model,
+                                                                              -lightSources.at(
+                                                                                      lightSourceIndex).position,
+                                                                              lightSources.at(
+                                                                                      lightSourceIndex).lightDirection);
+        state.transformations.projection = glm::perspective(
+                glm::radians(lightSources.at(lightSourceIndex).spotLightAngleDegrees),
+                float(SHADOW_MAP_WIDTH) / float(SHADOW_MAP_HEIGHT), 0.1f,
+                1000.0f);
+
+        // Depth pass
+        glBindFramebuffer(GL_FRAMEBUFFER, frameBuffers.at(lightSourceIndex).id);
+        glViewport(0, 0, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        depthPassShaderNode.render(state);
+
+        state.transformations.shadowVP.at(lightSourceIndex) = state.transformations.projection * state.transformations.view;
+    }
 
     // Restore original camera position
-    state.transformations.shadowVP = state.transformations.projection * state.transformations.view;
     state.transformations.view = previousViewMatrix;
     state.transformations.projection = previousProjectionMatrix;
 
     // Shadow pass
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, state.window.width, state.window.height);
-    state.uniforms.setTexture(ore::gl::ShaderUniformIndex::shadowDepthMapTextureID, texture);
+    switch(lightSourceCount) {
+        case 4:
+            state.uniforms.setTexture(ore::gl::ShaderUniformIndex::shadowDepthMapTextureID3, textures.at(3));
+        case 3:
+            state.uniforms.setTexture(ore::gl::ShaderUniformIndex::shadowDepthMapTextureID2, textures.at(2));
+        case 2:
+            state.uniforms.setTexture(ore::gl::ShaderUniformIndex::shadowDepthMapTextureID1, textures.at(1));
+        case 1:
+            state.uniforms.setTexture(ore::gl::ShaderUniformIndex::shadowDepthMapTextureID0, textures.at(0));
+    }
+    state.uniforms.setInteger(ore::gl::ShaderUniformIndex::shadowLightCount, lightSourceCount);
+    if(lightSourceCount == 0) {
+        state.shading.enableShadows = false;
+    }
+
     shadowShaderNode.render(state);
 
 
+}
+
+void ore::scene::ShadowNode::addLight(ore::gl::Light &light) {
+    if(lightSourceCount >= ore::MAX_SHADOW_LIGHT_SOURCES) {
+        LOG(FATAL) << "Tried to add too many shadow light sources!" << std::endl;
+    }
+    if(light.type != ore::gl::LightType::DIRECTIONAL_LIGHT) {
+        LOG(FATAL) << "Shadow light sources must be of type 'directional light'." << std::endl;
+    }
+    lightSources.at(lightSourceCount) = light;
+    lightSourceCount++;
+}
+
+void ore::scene::ShadowNode::clearLights() {
+    lightSourceCount = 0;
 }

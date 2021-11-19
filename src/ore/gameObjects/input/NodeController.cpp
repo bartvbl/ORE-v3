@@ -30,4 +30,6 @@ void ore::NodeController::update() {
     node->position.z += moveRight * std::cos(angleYRadiansSideways) * cameraSpeed;
 
     node->position.y += (movementDown - movementUp) * cameraSpeed;
+
+    //std::cout << node->position.x << ", " << node->position.y << ", " << node->position.z << " - " << node->rotation.x << ", " << node->rotation.y << ", " << node->rotation.z << std::endl;
 }

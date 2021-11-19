@@ -5,7 +5,12 @@ namespace ore {
         struct ShaderUniformIndex {
             // Texture bindings
             static const unsigned int diffuseTextureID = 0;
-            static const unsigned int shadowDepthMapTextureID = 5;
+            static const unsigned int shadowDepthMapTextureID0 = 5;
+            static const unsigned int shadowDepthMapTextureID1 = 6;
+            static const unsigned int shadowDepthMapTextureID2 = 7;
+            static const unsigned int shadowDepthMapTextureID3 = 8;
+
+            // Uniforms
 
             static const unsigned int diffuseTextureEnabled = 1;
             static const unsigned int lightingEnabled = 2;
@@ -37,6 +42,8 @@ namespace ore {
             // Arrays require one uniform per index. Thus, the next ID must be past the max number of lights
             static const unsigned int lightPositionArrayCount = 49;
             static const unsigned int lightPositionArrayID = 50;
+
+            static const unsigned int shadowLightCount = 80;
         };
     }
 }
