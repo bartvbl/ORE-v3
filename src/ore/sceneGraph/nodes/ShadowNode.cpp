@@ -27,13 +27,18 @@ void ore::scene::ShadowNode::render(ore::RenderState &state) {
                 1000.0f);
 
         // Depth pass
+        state.shading.isShadowDepthPass = true;
         glBindFramebuffer(GL_FRAMEBUFFER, frameBuffers.at(lightSourceIndex).id);
         glViewport(0, 0, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
         glClear(GL_DEPTH_BUFFER_BIT);
         depthPassShaderNode.render(state);
+        state.shading.isShadowDepthPass = false;
 
         state.transformations.shadowVP.at(lightSourceIndex) = state.transformations.projection * state.transformations.view;
     }
+
+    // Swap to the main shadow render shader
+    shadowShaderNode.render(state);
 
     // Restore original camera position
     state.transformations.view = previousViewMatrix;
@@ -69,8 +74,7 @@ void ore::scene::ShadowNode::render(ore::RenderState &state) {
                                      reinterpret_cast<GLfloat*>(transformedLightPositions.data()),
                                      lightSourceCount);
 
-    shadowShaderNode.render(state);
-
+    shadowedSceneContentsNode.render(state);
 
 }
 

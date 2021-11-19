@@ -16,6 +16,7 @@ void ore::scene::GeometryNode::preRender(ore::RenderState &state) {
         shadowMVPs.at(i) = state.transformations.shadowVP.at(i) * state.transformations.model;
     }
 
+    glUniform1i(ore::gl::ShaderUniformIndex::diffuseTextureEnabled, state.shading.enableTexturing ? 1 : 0);
     glUniform1i(ore::gl::ShaderUniformIndex::lightingEnabled, state.shading.enableLighting ? 1 : 0);
     glUniform1i(ore::gl::ShaderUniformIndex::shadowsEnabled, state.shading.enableShadows ? 1 : 0);
 
@@ -28,7 +29,12 @@ void ore::scene::GeometryNode::preRender(ore::RenderState &state) {
 void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
     preRender(renderState);
 
-    drawBuffer();
+    bool isTransparentObjectInShadowPass = renderState.shading.isShadowDepthPass && renderState.uniforms.diffuseColour.a < 1.0;
+
+    if(!isTransparentObjectInShadowPass) {
+        drawBuffer();
+    }
+
 
     CoordinateNode::render(renderState);
     CoordinateNode::postRender(renderState);

@@ -13,8 +13,9 @@ void ore::ShaderUniformRenderState::setLightPositions(const unsigned int baseUni
     glUniform1i(arrayLengthUniformID, count);
 }
 
-void ore::ShaderUniformRenderState::setColour(const unsigned int uniformID, ore::geom::vec4 colour) {
+void ore::ShaderUniformRenderState::setDiffuseColour(const unsigned int uniformID, glm::vec4 colour) {
     glUniform4f(uniformID, colour.x, colour.y, colour.z, colour.w);
+    diffuseColour = colour;
 }
 
 void ore::ShaderUniformRenderState::setInteger(const unsigned int uniformID, unsigned int value) {

@@ -35,9 +35,7 @@ namespace ore {
                     frameBuffers.at(i).makeShadowMapFramebuffer(textures.at(i));
                 }
 
-                // Both render the same scene
                 depthPassShaderNode.getChildren()->push_back(&shadowedSceneContentsNode);
-                shadowShaderNode.getChildren()->push_back(&shadowedSceneContentsNode);
             }
             void addLight(ore::gl::Light &light);
             void clearLights();

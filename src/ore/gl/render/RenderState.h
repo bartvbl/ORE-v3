@@ -24,14 +24,13 @@ namespace ore {
 
     class ShaderUniformRenderState {
     public:
-        void setModelMatrix(glm::mat4 modelMatrix);
-        void setModelViewMatrix(glm::mat4 modelMatrix);
-        void setProjection(glm::mat4 projectionMatrix);
+        glm::vec4 diffuseColour = {1, 1, 1, 1};
+
         void setTexture(unsigned int ID, resources::Texture texture);
 
         void setLightPositions(const unsigned int baseUniformID, const unsigned int arrayLengthUniformID, float *positionList, unsigned int count);
 
-        void setColour(const unsigned int uniformID, ore::geom::vec4 colour);
+        void setDiffuseColour(const unsigned int uniformID, glm::vec4 colour);
 
         void setInteger(const unsigned int uniformID, unsigned int value);
     };
