@@ -17,6 +17,7 @@ namespace ore {
         float movementDown = 0;
         float lookHorizontal = 0;
         float lookVertical = 0;
+        bool printCameraOrientation = false;
     public:
         NodeController(ore::InputService* inputService, ore::scene::CoordinateNode* node) : node(node) {
             inputService->attachListener("moveLeft", &movementLeft);
@@ -27,6 +28,7 @@ namespace ore {
             inputService->attachListener("moveUpward", &movementUp);
             inputService->attachListener("lookRight", &lookHorizontal);
             inputService->attachListener("lookUpward", &lookVertical);
+            inputService->attachListener("debug_printCameraOrientation", &printCameraOrientation);
         }
 
         void update();
