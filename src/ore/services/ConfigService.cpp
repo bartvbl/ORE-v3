@@ -32,4 +32,27 @@ void ore::ConfigService::load(ore::filesystem::path &configFile) {
         configuration.keyBindingConfigurationFiles.emplace_back(containingDirectory / std::string(entry));
     }
 
+    if(configFileContents.contains("display")) {
+        if(configFileContents["display"].contains("width")) {
+            configuration.windowSettings.width = configFileContents["display"]["width"];
+        }
+        if(configFileContents["display"].contains("height")) {
+            configuration.windowSettings.height = configFileContents["display"]["height"];
+        }
+        if(configFileContents["display"].contains("resizable")) {
+            configuration.windowSettings.resizable = configFileContents["display"]["resizable"];
+        }
+        if(configFileContents["display"].contains("fullscreen")) {
+            configuration.windowSettings.fullscreen = configFileContents["display"]["fullscreen"];
+        }
+        if(configFileContents["display"].contains("monitorIndex")) {
+            configuration.windowSettings.monitorIndex = configFileContents["display"]["monitorIndex"];
+        }
+        if(configFileContents["display"].contains("MSAASamplesPerPixel")) {
+            configuration.windowSettings.MSAASamplesPerPixel = configFileContents["display"]["MSAASamplesPerPixel"];
+        }
+        if(configFileContents["display"].contains("windowTitle")) {
+            configuration.windowSettings.windowTitle = configFileContents["display"]["windowTitle"];
+        }
+    }
 }

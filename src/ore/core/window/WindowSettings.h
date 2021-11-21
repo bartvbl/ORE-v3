@@ -10,6 +10,8 @@ namespace ore {
         unsigned int width = 1024;
         unsigned int height = 768;
         bool resizable = true;
+        bool fullscreen = false;
+        unsigned int monitorIndex = 0;
         unsigned int MSAASamplesPerPixel = 1;
         std::string windowTitle = "ORE V3";
     };

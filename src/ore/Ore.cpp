@@ -12,15 +12,16 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
     // Initialise logging system
     ore::Logger::init();
 
+    // Load configuration file
+    this->world.services.configService.load(engineConfigFileLocation);
+
     // Create OpenGL context and window
-    ore::WindowSettings settings;
-    GLFWwindow* window = ore::window::initialise(settings);
+    GLFWwindow* window = ore::window::initialise(this->world.services.configService.configuration.windowSettings);
 
     // After context creation we can initialise services
     this->world.init(window);
 
     // Configure services
-    this->world.services.configService.load(engineConfigFileLocation);
     this->world.services.inputService.addKeyBindingsFromFiles(this->world.services.configService.configuration.keyBindingConfigurationFiles);
 
     this->currentGameState = initialState;

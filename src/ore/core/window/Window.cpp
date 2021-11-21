@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include "Window.h"
 #include "WindowSettings.h"
+#include <array>
+#include <g3log/g3log.hpp>
 
 // A callback which allows GLFW to report errors whenever they occur
 static void glfwErrorCallback(int error, const char *description)
@@ -32,10 +34,23 @@ GLFWwindow* ore::window::initialise(ore::WindowSettings settings)
     glfwWindowHint(GLFW_SAMPLES, settings.MSAASamplesPerPixel);
 
     // Create window using GLFW
+    GLFWmonitor* monitor = nullptr;
+    GLFWmonitor** monitors;
+    if(settings.fullscreen) {
+        int monitorCount = 0;
+        monitors = glfwGetMonitors(&monitorCount);
+        if((int)settings.monitorIndex >= monitorCount) {
+            monitor = glfwGetPrimaryMonitor();
+            LOG(WARNING) << "The requested monitor index " << settings.monitorIndex << " is out of range because this system only has " << monitorCount << " monitors available. Falling back to the default monitor instead." << std::endl;
+        } else {
+            monitor = monitors[settings.monitorIndex];
+        }
+    }
+
     GLFWwindow* window = glfwCreateWindow(settings.width,
                                           settings.height,
                                           settings.windowTitle.c_str(),
-                                          nullptr,
+                                          monitor,
                                           nullptr);
 
     // Ensure the window is set up correctly
