@@ -30,7 +30,6 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
     // Rendering Loop
     while (!glfwWindowShouldClose(window) && !this->world.services.configService.gameShouldShutdown)
     {
-        glClearColor(0.3f, 0.5f, 0.8f, 1.0f);
         ore::window::newFrame(window);
         this->currentGameState->update();
         this->world.frameTick();

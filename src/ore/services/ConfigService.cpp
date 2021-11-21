@@ -54,5 +54,10 @@ void ore::ConfigService::load(ore::filesystem::path &configFile) {
         if(configFileContents["display"].contains("windowTitle")) {
             configuration.windowSettings.windowTitle = configFileContents["display"]["windowTitle"];
         }
+        if(configFileContents["display"].contains("clearColour")) {
+            configuration.windowSettings.clearColour = { configFileContents["display"]["clearColour"][0],
+                                                         configFileContents["display"]["clearColour"][1],
+                                                         configFileContents["display"]["clearColour"][2]};
+        }
     }
 }

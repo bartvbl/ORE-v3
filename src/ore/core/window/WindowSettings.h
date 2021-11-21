@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <glm/glm.hpp>
 
 namespace ore {
     struct WindowSettings {
@@ -14,5 +15,6 @@ namespace ore {
         unsigned int monitorIndex = 0;
         unsigned int MSAASamplesPerPixel = 1;
         std::string windowTitle = "ORE V3";
+        glm::vec3 clearColour = {0.3f, 0.5f, 0.8f};
     };
 }
