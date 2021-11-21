@@ -41,10 +41,12 @@ namespace ore {
 
             // Arrays require one uniform per index. Thus, the next ID must be past the max number of lights
             static const unsigned int lightPositionArrayCount = 49;
-            static const unsigned int lightPositionArrayID = 50;
+            static const unsigned int lightPositionArrayID = 50; // + 16
+            static const unsigned int lightAttenuationArrayID = 66; // + 16
 
-            static const unsigned int shadowLightCount = 80;
-            static const unsigned int shadowLightPositionArray = 81;
+            static const unsigned int shadowLightCount = 90;
+            static const unsigned int shadowLightPositionArray = 91; // + 4
+            static const unsigned int shadowLightAttenuationArray = 95; // + 4
         };
     }
 }

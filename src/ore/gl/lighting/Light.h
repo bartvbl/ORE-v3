@@ -11,6 +11,7 @@ namespace ore {
             glm::vec3 lightDirection = {0, 0, 0};
             float spotLightAngleDegrees = 90;
             float attenuation = 5;
+            float directionalLightRadius = 5;
         };
     }
 }
