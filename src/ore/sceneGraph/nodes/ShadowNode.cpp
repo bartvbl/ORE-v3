@@ -15,16 +15,23 @@ void ore::scene::ShadowNode::render(ore::RenderState &state) {
     glm::mat4 previousProjectionMatrix = state.transformations.projection;
 
     for(unsigned int lightSourceIndex = 0; lightSourceIndex < lightSourceCount; lightSourceIndex++) {
-
         state.transformations.view = ore::gl::computeTripodViewTransformation(state.transformations.model,
                                                                               -lightSources.at(
                                                                                       lightSourceIndex).position,
                                                                               lightSources.at(
                                                                                       lightSourceIndex).lightDirection);
-        state.transformations.projection = glm::perspective(
-                glm::radians(lightSources.at(lightSourceIndex).spotLightAngleDegrees),
-                float(SHADOW_MAP_WIDTH) / float(SHADOW_MAP_HEIGHT), 0.1f,
-                1000.0f);
+        if(lightSources.at(lightSourceIndex).type == ore::gl::LightType::SPOT_LIGHT) {
+            state.transformations.projection = glm::perspective(
+                    glm::radians(lightSources.at(lightSourceIndex).spotLightAngleDegrees),
+                    float(SHADOW_MAP_WIDTH) / float(SHADOW_MAP_HEIGHT), 0.001f,
+                    1000.0f);
+        } else {
+            float radius = lightSources.at(lightSourceIndex).directionalLightRadius;
+            state.transformations.projection = glm::ortho(
+                    -radius, radius, -radius, radius, 0.1f,
+                    10.0f);
+        }
+
 
         // Depth pass
         state.shading.isShadowDepthPass = true;
