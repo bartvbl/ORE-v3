@@ -2,13 +2,13 @@
 #include <ore/gl/vao/GeometryBufferGenerator.h>
 #include "PrimitiveGenerator.h"
 
-ore::scene::GeometryNode ore::gl::PrimitiveGenerator::generatePlaneBuffer() {
+ore::scene::GeometryNode ore::gl::PrimitiveGenerator::generatePlaneBuffer(glm::vec2 bottomLeft, glm::vec2 topRight) {
     ore::resources::MeshGeometry geometry;
     geometry.vertices = {
-            glm::vec3(0, 0, 0),
-            glm::vec3(1, 0, 0),
-            glm::vec3(1, 1, 0),
-            glm::vec3(0, 1, 0)};
+            glm::vec3(bottomLeft.x, bottomLeft.y, 0),
+            glm::vec3(topRight.x, bottomLeft.y, 0),
+            glm::vec3(topRight.x, topRight.y, 0),
+            glm::vec3(bottomLeft.x, topRight.y, 0)};
     geometry.textureCoordinates = {
             glm::vec2(0, 0),
             glm::vec2(1, 0),

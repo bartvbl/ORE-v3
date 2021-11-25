@@ -27,7 +27,7 @@ void ore::scene::GeometryNode::preRender(ore::RenderState &state) {
 }
 
 void ore::scene::GeometryNode::render(ore::RenderState &renderState) {
-    preRender(renderState);
+    this->preRender(renderState);
 
     bool isTransparentObjectInShadowPass = renderState.shading.isShadowDepthPass && renderState.uniforms.diffuseColour.a < 1.0;
 

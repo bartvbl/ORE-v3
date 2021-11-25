@@ -4,7 +4,7 @@
 namespace ore {
     namespace gl {
         namespace PrimitiveGenerator {
-            ore::scene::GeometryNode generatePlaneBuffer();
+            ore::scene::GeometryNode generatePlaneBuffer(glm::vec2 bottomLeft = {0, 0}, glm::vec2 topRight = {1, 1});
         };
     }
 }
