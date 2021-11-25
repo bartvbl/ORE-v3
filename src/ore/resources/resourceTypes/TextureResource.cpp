@@ -3,6 +3,7 @@
 #include "TextureResource.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include <glad/glad.h>
 
 void ore::resources::TextureResource::load(const ore::filesystem::path &fileLocation) {
     if(!ore::filesystem::exists(fileLocation)) {
@@ -41,7 +42,9 @@ void ore::resources::TextureResource::completeLoadOnMainThread() {
 }
 
 void ore::resources::TextureResource::destroy() {
-
+    if(textureIsLoaded) {
+        glDeleteTextures(1, &texture.id);
+    }
 }
 
 bool ore::resources::TextureResource::isLoaded() {
