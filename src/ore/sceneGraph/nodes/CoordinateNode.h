@@ -21,7 +21,7 @@ namespace ore {
             void preRender(RenderState &renderState) override;
             void render(RenderState &renderState) override;
             void postRender(RenderState &renderState) override;
-            std::string getName();
+            std::string getName() override;
         };
     }
 }

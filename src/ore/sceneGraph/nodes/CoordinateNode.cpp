@@ -23,10 +23,10 @@ void ore::scene::CoordinateNode::preRender(ore::RenderState &renderState) {
     renderState.transformations.model = relativeTransformation * renderState.transformations.model;
 }
 
-void ore::scene::CoordinateNode::render(ore::RenderState &renderState) {
-    ContainerNode::render(renderState);
-}
-
 void ore::scene::CoordinateNode::postRender(ore::RenderState &renderState) {
     renderState.transformations.model = storedModelMatrix;
+}
+
+void ore::scene::CoordinateNode::render(ore::RenderState &renderState) {
+    ContainerNode::render(renderState);
 }
