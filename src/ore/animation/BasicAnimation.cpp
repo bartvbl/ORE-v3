@@ -50,6 +50,9 @@ bool ore::animation::BasicAnimation::animate(double timeDelta) {
         case ore::TransitionType::LINEAR:
             // No change
             break;
+        case TransitionType::EASE_IN_OUT_SINE:
+            fractionComplete = -(std::cos(M_PI * fractionComplete) - 1.0f) / 2.0f;
+            break;
     }
 
     target->position = start.position + delta.position * fractionComplete;
