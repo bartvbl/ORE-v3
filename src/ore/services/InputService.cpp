@@ -119,6 +119,8 @@ void ore::InputService::handleInputState(ore::input::InputType type, float curre
     entry->second = currentState;
 }
 
+const unsigned int targetJoystick = GLFW_JOYSTICK_3;
+
 
 void ore::InputService::tick() {
     glfwPollEvents();
@@ -135,17 +137,17 @@ void ore::InputService::tick() {
     // Move mouse origin to window bottom left
     mouseY = double(windowHeight) - mouseY;
 
-    std::array<unsigned char, 16> controllerButtons;
-    std::array<float, 16> controllerAxes;
-    bool controllerIsPresent = glfwJoystickPresent(GLFW_JOYSTICK_1);
+    std::array<unsigned char, 32> controllerButtons;
+    std::array<float, 32> controllerAxes;
+    bool controllerIsPresent = glfwJoystickPresent(targetJoystick);
     if(controllerIsPresent) {
         int count;
-        const unsigned char* buttonState = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &count);
+        const unsigned char* buttonState = glfwGetJoystickButtons(targetJoystick, &count);
         for(int i = 0; i < count; i++) {
             controllerButtons.at(i) = buttonState[i];
         }
 
-        const float* axesState = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &count);
+        const float* axesState = glfwGetJoystickAxes(targetJoystick, &count);
         for(int i = 0; i < count; i++) {
             controllerAxes.at(i) = axesState[i];
         }
