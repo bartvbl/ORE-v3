@@ -142,12 +142,10 @@ void ore::InputService::tick() {
     bool controllerIsPresent = glfwJoystickPresent(targetJoystick);
     if(controllerIsPresent) {
         int count;
-        const unsigned char* buttonState = glfwGetJoystickButtons(targetJoystick, &count);
         for(int i = 0; i < count; i++) {
             controllerButtons.at(i) = buttonState[i];
         }
 
-        const float* axesState = glfwGetJoystickAxes(targetJoystick, &count);
         for(int i = 0; i < count; i++) {
             controllerAxes.at(i) = axesState[i];
         }
