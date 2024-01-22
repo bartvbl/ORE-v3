@@ -67,6 +67,7 @@ GLFWwindow* ore::window::initialise(ore::WindowSettings settings)
 
     // Print various OpenGL information to stdout
     std::cout << glGetString(GL_VENDOR) << ": " << glGetString(GL_RENDERER) <<std::endl;
+    std::cout << "Display" << settings.width << "x" << settings.height << std::endl;
     std::cout << "GLFW: " << glfwGetVersionString() << std::endl;
     std::cout << "OpenGL: " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
