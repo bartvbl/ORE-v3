@@ -132,6 +132,15 @@ std::string tryFileLoad(const ore::filesystem::path& file) {
     }
 }
 
+bool allSourcesEmpty(const ore::gl::ShaderSource* sources) {
+    return sources->computeShaderSource.empty()
+        && sources->fragmentShaderSource.empty()
+        && sources->geometryShaderSource.empty()
+        && sources->tesselationControlShaderSource.empty()
+        && sources->tesselationEvaluationShaderSource.empty()
+        && sources->vertexShaderSource.empty();
+}
+
 ore::gl::ShaderSource *ore::gl::loadShaderSources(const ore::filesystem::path& directory, const std::string& fileName) {
     ore::gl::ShaderSource* sources = new ore::gl::ShaderSource;
     sources->vertexShaderSource = tryFileLoad(directory / (fileName + ".vert"));
@@ -140,6 +149,9 @@ ore::gl::ShaderSource *ore::gl::loadShaderSources(const ore::filesystem::path& d
     sources->computeShaderSource = tryFileLoad(directory / (fileName + ".comp"));
     sources->tesselationControlShaderSource = tryFileLoad(directory / (fileName + ".tcs"));
     sources->tesselationEvaluationShaderSource = tryFileLoad(directory / (fileName + ".tes"));
+    if(allSourcesEmpty(sources)) {
+        throw std::runtime_error("No shader sources found for shader " + fileName + " in directory " + directory.string());
+    }
     return sources;
 }
 
