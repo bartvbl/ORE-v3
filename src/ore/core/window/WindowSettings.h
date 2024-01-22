@@ -8,8 +8,8 @@ namespace ore {
         unsigned int openGLMajor = 4;
         unsigned int openGLMinor = 5;
 
-        unsigned int width = 1024;
-        unsigned int height = 768;
+        unsigned int width = 1920;
+        unsigned int height = 1080;
         bool resizable = true;
         bool fullscreen = false;
         unsigned int monitorIndex = 0;
