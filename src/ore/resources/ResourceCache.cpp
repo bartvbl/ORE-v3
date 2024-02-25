@@ -34,6 +34,8 @@ void ore::resources::ResourceCache::wakeResourceLoadingThread() {
             anItemWasLoaded = anItemWasLoaded
                 || this->fonts.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
             anItemWasLoaded = anItemWasLoaded
+                || this->videos.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
+            anItemWasLoaded = anItemWasLoaded
                 || this->customResources.loadNext(ore::resources::ResourceLoadPriority::STREAMING);
         }
     };
@@ -57,6 +59,8 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
         this->shaders.registerResource(id, priority, fileLocation, new ShaderResource());
     } else if(extension == ".ttf") {
         this->fonts.registerResource(id, priority, fileLocation, new FontResource());
+    } else if(extension == ".mp4") {
+        this->videos.registerResource(id, priority, fileLocation, new VideoResource());
     } else {
         LOG(FATAL) << "The resource with ID " << id << ", located at " << fileLocation << " has an unknown extension, and can therefore not be loaded as a resource." << std::endl;
     }

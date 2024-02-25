@@ -18,6 +18,7 @@ namespace ore {
         GLFWwindow* gameWindow;
 
         unsigned int nextListenerID = 0;
+        unsigned int targetJoystick = GLFW_JOYSTICK_1;
 
         enum class PointerType {
             BOOL, FLOAT, INT

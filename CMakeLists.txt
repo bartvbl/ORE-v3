@@ -43,12 +43,19 @@ option (GLFW_INSTALL OFF)
 option (GLFW_BUILD_DOCS OFF)
 option (GLFW_BUILD_EXAMPLES OFF)
 option (GLFW_BUILD_TESTS OFF)
-add_subdirectory (lib/glfw)
+find_package(glfw3 REQUIRED)
 
 add_subdirectory(lib/g3log g3log)
 
 find_package(Freetype REQUIRED)
 include_directories( ${FREETYPE_INCLUDE_DIRS} )
+
+
+find_package(PkgConfig REQUIRED)
+pkg_search_module(gstreamer REQUIRED IMPORTED_TARGET gstreamer-1.0>=1.4)
+pkg_search_module(gstreamer-sdp REQUIRED IMPORTED_TARGET gstreamer-sdp-1.0>=1.4)
+pkg_search_module(gstreamer-app REQUIRED IMPORTED_TARGET gstreamer-app-1.0>=1.4)
+pkg_search_module(gstreamer-video REQUIRED IMPORTED_TARGET gstreamer-video-1.0>=1.4)
 
 #
 # Set include paths
@@ -81,8 +88,18 @@ add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES} ${PROJECT_HEADERS} ${LIBRA
 
 
 if(WIN32)
-  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES})
+  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES}
+          PkgConfig::gstreamer
+          PkgConfig::gstreamer-sdp
+          PkgConfig::gstreamer-app
+          PkgConfig::gstreamer-video
+  )
 else()
-  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES})
+  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES}
+          PkgConfig::gstreamer
+          PkgConfig::gstreamer-sdp
+          PkgConfig::gstreamer-app
+          PkgConfig::gstreamer-video
+  )
 endif()
 set_property(TARGET ${PROJECT_NAME} PROPERTY CUDA_ARCHITECTURES 52 60 61 70 75 86)

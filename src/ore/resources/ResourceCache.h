@@ -10,6 +10,7 @@
 #include <ore/resources/resourceTypes/ShaderResource.h>
 #include <ore/resources/resourceTypes/FontResource.h>
 #include <ore/resources/resourceTypes/SoundResource.h>
+#include <ore/resources/resourceTypes/VideoResource.h>
 #include <ore/resources/ResourceContainer.h>
 #include <ore/resources/ResourceLoadPriority.h>
 #include <GLFW/glfw3.h>
@@ -36,6 +37,7 @@ namespace ore {
             ore::resources::ResourceContainer<ore::resources::LXFMLResource> lxfmlMeshes;
             ore::resources::ResourceContainer<ore::resources::ShaderResource> shaders;
             ore::resources::ResourceContainer<ore::resources::FontResource> fonts;
+            ore::resources::ResourceContainer<ore::resources::VideoResource> videos;
             ore::resources::ResourceContainer<ore::resources::ResourceType> customResources;
 
             ResourceCache(unsigned int resourceLoadingThreadCount) : loadingThreadPool(resourceLoadingThreadCount) {}

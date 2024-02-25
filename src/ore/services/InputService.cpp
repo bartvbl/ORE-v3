@@ -11,6 +11,16 @@ void ore::InputService::scrollCallback(GLFWwindow *window, double xOffset, doubl
 }
 
 void ore::InputService::init(GLFWwindow* window) {
+    for(int i = 0; i < GLFW_JOYSTICK_LAST; i++) {
+        std::string name = glfwJoystickPresent(GLFW_JOYSTICK_1 + i)
+                ? glfwGetJoystickName(GLFW_JOYSTICK_1 + i) : "";
+        bool isXboxGamepad = name.find(std::string("Xbox")) != std::string::npos;
+        if(isXboxGamepad) {
+            targetJoystick = GLFW_JOYSTICK_1 + i;
+            std::cout << "Selected joystick with ID " << (i+1) << ": " << name << std::endl;
+            break;
+        }
+    }
     this->gameWindow = window;
     ore::input::xScrollOffset = 0;
     ore::input::yScrollOffset = 0;
@@ -119,7 +129,7 @@ void ore::InputService::handleInputState(ore::input::InputType type, float curre
     entry->second = currentState;
 }
 
-const unsigned int targetJoystick = GLFW_JOYSTICK_3;
+
 
 
 void ore::InputService::tick() {
