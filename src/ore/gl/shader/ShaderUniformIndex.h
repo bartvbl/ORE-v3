@@ -2,9 +2,18 @@
 
 namespace ore {
     namespace gl {
+        struct ShaderInputIndex {
+            static const unsigned int vertices = 0;
+            static const unsigned int normals = 1;
+            static const unsigned int texCoords = 2;
+            static const unsigned int normalMapTangent = 4;
+            static const unsigned int normalMapBitangent = 5;
+        };
+
         struct ShaderUniformIndex {
             // Texture bindings
             static const unsigned int diffuseTextureID = 0;
+            static const unsigned int normalMapTextureID = 1;
             static const unsigned int shadowDepthMapTextureID0 = 5;
             static const unsigned int shadowDepthMapTextureID1 = 6;
             static const unsigned int shadowDepthMapTextureID2 = 7;
@@ -15,6 +24,7 @@ namespace ore {
             static const unsigned int diffuseTextureEnabled = 1;
             static const unsigned int lightingEnabled = 2;
             static const unsigned int shadowsEnabled = 3;
+            static const unsigned int normalMappingEnabled = 4;
 
             static const unsigned int cameraPosition = 12;
 

@@ -23,3 +23,7 @@ void ore::resources::Material::completeOnMainThread() {
 bool ore::resources::Material::hasDiffuseTexture() {
     return diffuseTexture.id > 0;
 }
+
+bool ore::resources::Material::hasNormalMap() {
+    return normalMapTexture.id > 0;
+}

@@ -19,6 +19,7 @@ void ore::scene::GeometryNode::preRender(ore::RenderState &state) {
     glUniform1i(ore::gl::ShaderUniformIndex::diffuseTextureEnabled, state.shading.enableTexturing ? 1 : 0);
     glUniform1i(ore::gl::ShaderUniformIndex::lightingEnabled, state.shading.enableLighting ? 1 : 0);
     glUniform1i(ore::gl::ShaderUniformIndex::shadowsEnabled, state.shading.enableShadows ? 1 : 0);
+    glUniform1i(ore::gl::ShaderUniformIndex::normalMappingEnabled, state.shading.enableNormalMapping ? 1 : 0);
 
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::modelViewProjectionMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
     glUniformMatrix4fv(ore::gl::ShaderUniformIndex::modelViewMatrix, 1, GL_FALSE, glm::value_ptr(mvMatrix));

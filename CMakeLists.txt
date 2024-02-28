@@ -69,6 +69,7 @@ include_directories (
     lib/fast_obj/
     lib/json/
     lib/g3log/src/
+    lib/nuklear
 )
 
 #

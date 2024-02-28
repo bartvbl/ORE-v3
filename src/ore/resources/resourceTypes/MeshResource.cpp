@@ -103,7 +103,6 @@ void constructMesh(const fastObjMesh* temporaryMesh,
                    const nlohmann::json &modelFileContents,
                    const ore::filesystem::path &objectFileLocation,
                    ore::resources::Mesh &mesh) {
-    mesh.geometry.hasNormalMap = false;
     mesh.geometry.hasNormals = temporaryMesh->normal_count != 0;
     mesh.geometry.hasTextures = temporaryMesh->texcoord_count != 0;
 
@@ -114,10 +113,8 @@ void constructMesh(const fastObjMesh* temporaryMesh,
     mesh.geometry.indices.reserve(3 * temporaryMesh->face_count);
     mesh.parts.emplace_back();
 
-    // Construct part tree and fill buffers
-    visitMeshPart(modelFileContents["partStructure"], mesh, 0, temporaryMesh, modelFileLocation, objectFileLocation);
-
     // Process materials (load textures)
+    bool containsNormalMap = false;
     mesh.materials.reserve(temporaryMesh->material_count);
     for(unsigned int materialIndex = 0; materialIndex < temporaryMesh->material_count; materialIndex++) {
         fastObjMaterial material = temporaryMesh->materials[materialIndex];
@@ -132,8 +129,10 @@ void constructMesh(const fastObjMesh* temporaryMesh,
                 std::string(material.map_Kd.path) : "",
                 material.map_bump.path != nullptr ?
                 std::string(material.map_bump.path) : "");
+        containsNormalMap = containsNormalMap || material.map_bump.path != nullptr;
         mesh.materials.at(mesh.materials.size() - 1).load();
     }
+    mesh.geometry.hasNormalMap = containsNormalMap;
 
     if(temporaryMesh->material_count == 0) {
         mesh.materials.emplace_back(
@@ -146,6 +145,10 @@ void constructMesh(const fastObjMesh* temporaryMesh,
                 "",
                 "");
     }
+
+    // Construct part tree and fill buffers
+    visitMeshPart(modelFileContents["partStructure"], mesh, 0, temporaryMesh, modelFileLocation, objectFileLocation);
+
 }
 
 void ore::resources::MeshResource::loadMDLFile(const ore::filesystem::path &modelFileLocation) {

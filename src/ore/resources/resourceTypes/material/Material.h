@@ -48,6 +48,8 @@ namespace ore {
             void completeOnMainThread();
 
             bool hasDiffuseTexture();
+
+            bool hasNormalMap();
         };
     }
 }

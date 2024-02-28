@@ -6,6 +6,7 @@ namespace ore {
             bool enableTexturing = true;
             bool enableShadows = true;
             bool enableLighting = true;
+            bool enableNormalMapping = true;
 
             bool isShadowDepthPass = false;
         };
