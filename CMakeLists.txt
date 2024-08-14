@@ -48,7 +48,10 @@ find_package(glfw3 REQUIRED)
 add_subdirectory(lib/g3log g3log)
 
 find_package(Freetype REQUIRED)
-include_directories( ${FREETYPE_INCLUDE_DIRS} )
+include_directories(${FREETYPE_INCLUDE_DIRS})
+
+find_package(PkgConfig)
+pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
 
 
 find_package(PkgConfig REQUIRED)
@@ -70,6 +73,8 @@ include_directories (
     lib/json/
     lib/g3log/src/
     lib/nuklear
+    ${GLIB_INCLUDE_DIRS}
+    ${GSTREAMER_INCLUDE_DIRS}
 )
 
 #
@@ -89,14 +94,14 @@ add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES} ${PROJECT_HEADERS} ${LIBRA
 
 
 if(WIN32)
-  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES}
+  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES} ${GSTREAMER_LIBRARIES}
           PkgConfig::gstreamer
           PkgConfig::gstreamer-sdp
           PkgConfig::gstreamer-app
           PkgConfig::gstreamer-video
   )
 else()
-  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES}
+  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES} ${GSTREAMER_LIBRARIES}
           PkgConfig::gstreamer
           PkgConfig::gstreamer-sdp
           PkgConfig::gstreamer-app
