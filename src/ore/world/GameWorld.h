@@ -9,6 +9,7 @@
 #include <ore/sceneGraph/Scene.h>
 #include <ore/world/Actors.h>
 #include <GLFW/glfw3.h>
+#include "ore/services/PhysicsService.h"
 
 namespace ore {
     struct WorldServices {
@@ -17,6 +18,7 @@ namespace ore {
         ore::InputService inputService;
         ore::SoundService soundService;
         ore::ConfigService configService;
+        ore::PhysicsService physicsService;
     };
 
     class GameWorld {

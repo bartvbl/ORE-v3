@@ -1,4 +1,8 @@
+#include <ore/resources/resourceTypes/TextureResource.h>
+#include <ore/gl/shapes/PrimitiveGenerator.h>
 #include "VideoTextureNode.h"
+#include "MaterialNode.h"
+#include "GeometryNode.h"
 
 void ore::scene::VideoTextureNode::preRender(ore::RenderState &state) {
     CoordinateNode::preRender(state);
@@ -9,7 +13,7 @@ void ore::scene::VideoTextureNode::render(ore::RenderState &renderState) {
 }
 
 ore::scene::VideoTextureNode::VideoTextureNode(std::filesystem::path videoFile) {
-    ore::resources::Material* material = new ore::resources::Material();
+    /*ore::resources::Material* material = new ore::resources::Material();
     ore::scene::MaterialNode* materialNode = new ore::scene::MaterialNode(material);
 
     ore::resources::TextureResource* imageResource = world->resourceCache.textures.getResource_Blocking(graphicsObject.imageTextureResourceName);
@@ -25,5 +29,5 @@ ore::scene::VideoTextureNode::VideoTextureNode(std::filesystem::path videoFile) 
     graphicsImageMaterialNodes.push_back(materialNode);
     graphicsImageMaterials.push_back(material);
     graphicsImageGeometryNodes.push_back(squarePlane);
-    materialNode->getChildren()->push_back(squarePlane);
+    materialNode->getChildren()->push_back(squarePlane);*/
 }

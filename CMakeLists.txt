@@ -50,15 +50,23 @@ add_subdirectory(lib/g3log g3log)
 find_package(Freetype REQUIRED)
 include_directories(${FREETYPE_INCLUDE_DIRS})
 
+# Makes Jolt about 8% slower but makes simulation completely deterministic no matter where the code is run
+set(CROSS_PLATFORM_DETERMINISTIC ON)
+set(BUILD_SHARED_LIBS OFF)
+set(OVERRIDE_CXX_FLAGS OFF)
+set(ENABLE_ALL_WARNINGS OFF)
+add_definitions(-DJPH_ENABLE_ASSERTS -DJPH_DEBUG_RENDERER)
+add_subdirectory(lib/JoltPhysics-5.1.0/Build joltPhysics)
+
 find_package(PkgConfig)
-pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
+#pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
 
 
-find_package(PkgConfig REQUIRED)
-pkg_search_module(gstreamer REQUIRED IMPORTED_TARGET gstreamer-1.0>=1.4)
-pkg_search_module(gstreamer-sdp REQUIRED IMPORTED_TARGET gstreamer-sdp-1.0>=1.4)
-pkg_search_module(gstreamer-app REQUIRED IMPORTED_TARGET gstreamer-app-1.0>=1.4)
-pkg_search_module(gstreamer-video REQUIRED IMPORTED_TARGET gstreamer-video-1.0>=1.4)
+#find_package(PkgConfig REQUIRED)
+#pkg_search_module(gstreamer REQUIRED IMPORTED_TARGET gstreamer-1.0>=1.4)
+#pkg_search_module(gstreamer-sdp REQUIRED IMPORTED_TARGET gstreamer-sdp-1.0>=1.4)
+#pkg_search_module(gstreamer-app REQUIRED IMPORTED_TARGET gstreamer-app-1.0>=1.4)
+#pkg_search_module(gstreamer-video REQUIRED IMPORTED_TARGET gstreamer-video-1.0>=1.4)
 
 #
 # Set include paths
@@ -72,6 +80,7 @@ include_directories (
     lib/fast_obj/
     lib/json/
     lib/g3log/src/
+    lib/JoltPhysics-5.1.0
     lib/nuklear
     ${GLIB_INCLUDE_DIRS}
     ${GSTREAMER_INCLUDE_DIRS}
@@ -93,19 +102,11 @@ add_definitions(-DGLFW_INCLUDE_NONE)
 add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES} ${PROJECT_HEADERS} ${LIBRARY_SOURCES})
 
 
-if(WIN32)
-  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES} ${GSTREAMER_LIBRARIES}
-          PkgConfig::gstreamer
-          PkgConfig::gstreamer-sdp
-          PkgConfig::gstreamer-app
-          PkgConfig::gstreamer-video
+  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log Jolt ${FREETYPE_LIBRARIES} ${GSTREAMER_LIBRARIES}
+#          PkgConfig::gstreamer
+#          PkgConfig::gstreamer-sdp
+#          PkgConfig::gstreamer-app
+#          PkgConfig::gstreamer-video
   )
-else()
-  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log ${FREETYPE_LIBRARIES} ${GSTREAMER_LIBRARIES}
-          PkgConfig::gstreamer
-          PkgConfig::gstreamer-sdp
-          PkgConfig::gstreamer-app
-          PkgConfig::gstreamer-video
-  )
-endif()
+
 set_property(TARGET ${PROJECT_NAME} PROPERTY CUDA_ARCHITECTURES 52 60 61 70 75 86)
