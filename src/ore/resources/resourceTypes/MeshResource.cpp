@@ -172,6 +172,10 @@ void ore::resources::MeshResource::loadMDLFile(const ore::filesystem::path &mode
     fastObjMesh* temporaryMesh = fast_obj_read(objectFileLocation.string().c_str());
     constructMesh(temporaryMesh, modelFileLocation, modelFileContents, objectFileLocation, this->mesh);
     fast_obj_destroy(temporaryMesh);
+
+    if(modelFileContents.contains("physicsObject") && modelFileContents.at("physicsObject")) {
+
+    }
 }
 
 
