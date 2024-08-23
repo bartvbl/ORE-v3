@@ -50,13 +50,7 @@ add_subdirectory(lib/g3log g3log)
 find_package(Freetype REQUIRED)
 include_directories(${FREETYPE_INCLUDE_DIRS})
 
-# Makes Jolt about 8% slower but makes simulation completely deterministic no matter where the code is run
-set(CROSS_PLATFORM_DETERMINISTIC ON)
-set(BUILD_SHARED_LIBS OFF)
-set(OVERRIDE_CXX_FLAGS OFF)
-set(ENABLE_ALL_WARNINGS OFF)
-add_definitions(-DJPH_ENABLE_ASSERTS -DJPH_DEBUG_RENDERER)
-add_subdirectory(lib/JoltPhysics-5.1.0/Build joltPhysics)
+
 
 find_package(PkgConfig)
 #pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
@@ -80,7 +74,6 @@ include_directories (
     lib/fast_obj/
     lib/json/
     lib/g3log/src/
-    lib/JoltPhysics-5.1.0
     lib/nuklear
     ${GLIB_INCLUDE_DIRS}
     ${GSTREAMER_INCLUDE_DIRS}
