@@ -14,9 +14,13 @@ namespace ore {
             glm::vec3 pivot = {0, 0, 0};
 
             glm::mat4 storedModelMatrix;
+            glm::mat4 customTransformationMatrix;
 
-            CoordinateNode(std::string nodeName) : ore::scene::ContainerNode(nodeName) {}
-            CoordinateNode() : ore::scene::ContainerNode("Coordinate Node") {}
+            CoordinateNode(std::string nodeName)
+                : ore::scene::ContainerNode(nodeName),
+                  customTransformationMatrix{glm::mat4(1.0)} {}
+            CoordinateNode() : ore::scene::ContainerNode("Coordinate Node"),
+                               customTransformationMatrix{glm::mat4(1.0)} {}
 
             void preRender(RenderState &renderState) override;
             void render(RenderState &renderState) override;
