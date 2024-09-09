@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <ore/utilities/filesystem.h>
 #include <ore/core/window/WindowSettings.h>
 

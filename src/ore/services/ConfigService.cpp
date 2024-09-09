@@ -59,5 +59,8 @@ void ore::ConfigService::load(ore::filesystem::path &configFile) {
                                                          configFileContents["display"]["clearColour"][1],
                                                          configFileContents["display"]["clearColour"][2]};
         }
+        if(configFileContents["display"].contains("frameRateLimit")) {
+            configuration.windowSettings.frameRateLimit = configFileContents["display"]["frameRateLimit"];
+        }
     }
 }

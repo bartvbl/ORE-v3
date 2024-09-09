@@ -14,6 +14,7 @@ namespace ore {
         bool fullscreen = false;
         unsigned int monitorIndex = 0;
         unsigned int MSAASamplesPerPixel = 1;
+        unsigned int frameRateLimit = 0xFFFFFFFF; // infinite
         std::string windowTitle = "ORE V3";
         glm::vec3 clearColour = {0.3f, 0.5f, 0.8f};
     };

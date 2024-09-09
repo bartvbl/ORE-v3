@@ -91,3 +91,27 @@ void ore::window::newFrame(GLFWwindow* window) {
     glfwGetWindowSize(window, &windowWidth, &windowHeight);
     glViewport(0, 0, windowWidth, windowHeight);
 }
+
+void ore::window::sleepToFrameRate(const ore::ConfigService &config) {
+    static bool hasBeenInitialised = false;
+    static std::chrono::time_point<std::chrono::steady_clock> previousCallTime;
+
+    if(!hasBeenInitialised) {
+        hasBeenInitialised = true;
+        previousCallTime = std::chrono::steady_clock::now();
+        return;
+    }
+
+    std::chrono::time_point<std::chrono::steady_clock> currentCallTime = std::chrono::steady_clock::now();
+    std::chrono::duration timeDifference = currentCallTime - previousCallTime;
+    previousCallTime = currentCallTime;
+
+    double elapsedTimeSincePreviousCall = double(std::chrono::duration_cast<std::chrono::nanoseconds>(timeDifference).count()) / 1000000000.0;
+    double targetFrameRate = config.configuration.windowSettings.frameRateLimit;
+    double minFrameTime = 1.0 / targetFrameRate;
+    if(elapsedTimeSincePreviousCall < minFrameTime) {
+        // Wait some time if the frame was computed too quickly
+        double timeToWaitSeconds = minFrameTime - elapsedTimeSincePreviousCall;
+        std::this_thread::sleep_for(std::chrono::nanoseconds(uint64_t(1000000000.0 * timeToWaitSeconds)));
+    }
+}

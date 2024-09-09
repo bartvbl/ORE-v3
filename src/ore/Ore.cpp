@@ -36,6 +36,7 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
         //ore::utilities::printSceneGraph(&this->world.scene.rootNode);
         ore::RenderPass::render(&this->world.scene.rootNode, window);
         glfwSwapBuffers(window);
+        ore::window::sleepToFrameRate(this->world.services.configService);
     }
 
     this->currentGameState->unset();
