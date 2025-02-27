@@ -45,6 +45,10 @@ namespace ore {
                     return;
                 }
 
+                if(!std::filesystem::exists(entry->second.fileLocation)) {
+                    throw std::runtime_error("Failed to load resource " + entryID + ". Cause: resource file is missing - " + entry->second.fileLocation.string());
+                }
+
                 resourceType->load(entry->second.fileLocation);
 
                 if(resourceType->requiresMainThread() && !isMainThread) {
