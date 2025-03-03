@@ -61,6 +61,8 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
         this->fonts.registerResource(id, priority, fileLocation, new FontResource());
     } else if(extension == ".mp4") {
         this->videos.registerResource(id, priority, fileLocation, new VideoResource());
+    } else if(extension == ".mp3" || extension == ".wav") {
+        this->sounds.registerResource(id, priority, fileLocation, new SoundResource());
     } else {
         LOG(FATAL) << "The resource with ID " << id << ", located at " << fileLocation << " has an unknown extension, and can therefore not be loaded as a resource." << std::endl;
     }

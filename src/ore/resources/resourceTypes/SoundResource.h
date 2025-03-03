@@ -15,7 +15,7 @@ namespace ore {
             void destroy() override;
 
         public:
-            ma_decoder decoder;
+            std::filesystem::path location;
         };
     }
 }

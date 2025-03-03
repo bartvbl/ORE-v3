@@ -16,7 +16,7 @@
 #include "PhysicsService.h"
 
 
-
+/*
 using namespace JPH::literals;
 
 static void TraceImpl(const char *inFMT, ...)
@@ -40,10 +40,10 @@ static bool AssertFailedImpl(const char *inExpression, const char *inMessage, co
     throw std::runtime_error("Physics simulation failed: " + explanation + ", " + message + ", in file " + file + ", line " + std::to_string(inLine));
 };
 #endif // JPH_ENABLE_ASSERTS
-
+*/
 void ore::PhysicsService::init() {
     // Register allocation hook
-    JPH::RegisterDefaultAllocator();
+    /*JPH::RegisterDefaultAllocator();
 
     // Install callbacks
     JPH::Trace = TraceImpl;
@@ -53,7 +53,7 @@ void ore::PhysicsService::init() {
     JPH::Factory::sInstance = new JPH::Factory();
 
     // Register all Jolt physics types
-    JPH::RegisterTypes();
+    JPH::RegisterTypes();*/
 }
 
 void ore::PhysicsService::update() {
@@ -62,11 +62,11 @@ void ore::PhysicsService::update() {
 
 void ore::PhysicsService::shutdown() {
     // Unregisters all types with the factory and cleans up the default material
-    JPH::UnregisterTypes();
+    //JPH::UnregisterTypes();
 
     // Destroy the factory
-    delete JPH::Factory::sInstance;
-    JPH::Factory::sInstance = nullptr;
+    //delete JPH::Factory::sInstance;
+    //JPH::Factory::sInstance = nullptr;
 }
 
 ore::PhysicsHandle ore::PhysicsService::simulate(ore::scene::GeometryNode *node, ore::SimulationType type) {

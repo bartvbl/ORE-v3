@@ -55,7 +55,7 @@ set(CROSS_PLATFORM_DETERMINISTIC ON)
 set(BUILD_SHARED_LIBS OFF)
 set(OVERRIDE_CXX_FLAGS OFF)
 set(ENABLE_ALL_WARNINGS OFF)
-add_definitions(-DJPH_ENABLE_ASSERTS -DJPH_DEBUG_RENDERER)
+#add_definitions(-DJPH_ENABLE_ASSERTS -DJPH_DEBUG_RENDERER)
 add_subdirectory(lib/JoltPhysics-5.1.0/Build joltPhysics)
 
 find_package(PkgConfig)
