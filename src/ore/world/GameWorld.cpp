@@ -3,11 +3,11 @@
 
 void ore::GameWorld::init(GLFWwindow* window) {
     resourceCache.init(window);
+    services.configService.init();
     services.soundService.init();
     services.inputService.init(window);
     services.animationService.init();
     services.aiService.init();
-    services.configService.init();
     services.physicsService.init();
 
     actors.spawn(new ore::BuiltinEngineKeybinds(&services));

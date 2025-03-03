@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ore/resources/resourceTypes/ResourceType.h>
+#include "miniaudio.h"
 
 namespace ore {
     namespace resources {
@@ -12,6 +13,9 @@ namespace ore {
             void completeLoadOnMainThread() override;
 
             void destroy() override;
+
+        public:
+            ma_decoder decoder;
         };
     }
 }

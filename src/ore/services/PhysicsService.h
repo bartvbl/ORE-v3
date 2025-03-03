@@ -4,6 +4,7 @@
 #include "ore/physics/SimulationType.h"
 #include "ore/physics/SimulatedPhysicsObject.h"
 #include <ore/sceneGraph/nodes/CoordinateNode.h>
+#include <unordered_map>
 
 namespace ore {
     class PhysicsService {

@@ -6,9 +6,11 @@
 void ore::resources::ShaderResource::load(const ore::filesystem::path &fileLocation) {
     ore::filesystem::path containingDirectory = fileLocation.parent_path();
     std::string fileName = fileLocation.filename().string();
+    std::string extension = fileLocation.extension();
     // Remove the file extension
-    size_t dotIndex = fileName.find('.');
+    size_t dotIndex = fileName.size() - extension.size();
     fileName = fileName.substr(0, dotIndex);
+    std::cout << containingDirectory << " -> " << fileName << std::endl;
     shaderSources = ore::gl::loadShaderSources(containingDirectory, fileName);
 
 }

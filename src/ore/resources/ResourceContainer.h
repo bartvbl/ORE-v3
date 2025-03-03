@@ -45,7 +45,7 @@ namespace ore {
                     return;
                 }
 
-                if(!std::filesystem::exists(entry->second.fileLocation)) {
+                if(!std::filesystem::exists(entry->second.fileLocation) && entry->second.fileLocation.extension() != ".shader") {
                     throw std::runtime_error("Failed to load resource " + entryID + ". Cause: resource file is missing - " + entry->second.fileLocation.string());
                 }
 
