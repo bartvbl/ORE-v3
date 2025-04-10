@@ -181,6 +181,7 @@ void ore::resources::MeshResource::loadMDLFile(const ore::filesystem::path &mode
 
 
 void ore::resources::MeshResource::loadOBJFile(const ore::filesystem::path &modelFileLocation) {
+
     fastObjMesh* temporaryMesh = fast_obj_read(modelFileLocation.string().c_str());
 
     nlohmann::json fakeFileContents;

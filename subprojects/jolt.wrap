@@ -1,0 +1,10 @@
+[wrap-git]
+url=https://github.com/jrouwe/JoltPhysics.git
+revision=0373ec0dd762e4bc2f6acdb08371ee84fa23c6db
+depth=1
+directory = joltPhysics
+method = cmake
+clone-recursive = true
+
+[provide]
+jolt = jolt_dep

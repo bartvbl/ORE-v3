@@ -45,8 +45,6 @@ option (GLFW_BUILD_EXAMPLES OFF)
 option (GLFW_BUILD_TESTS OFF)
 find_package(glfw3 REQUIRED)
 
-add_subdirectory(lib/g3log g3log)
-
 find_package(Freetype REQUIRED)
 include_directories(${FREETYPE_INCLUDE_DIRS})
 
@@ -80,7 +78,6 @@ include_directories (
     lib/stb_image/
     lib/fast_obj/
     lib/json/
-    lib/g3log/src/
     lib/nuklear
     lib/JoltPhysics-5.1.0
     ${GLIB_INCLUDE_DIRS}
@@ -103,7 +100,7 @@ add_definitions(-DGLFW_INCLUDE_NONE)
 add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES} ${PROJECT_HEADERS} ${LIBRARY_SOURCES})
 
 
-  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log Jolt miniaudio ${FREETYPE_LIBRARIES} ${GSTREAMER_LIBRARIES}
+  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX Jolt miniaudio ${FREETYPE_LIBRARIES} ${GSTREAMER_LIBRARIES}
 #          PkgConfig::gstreamer
 #          PkgConfig::gstreamer-sdp
 #          PkgConfig::gstreamer-app
