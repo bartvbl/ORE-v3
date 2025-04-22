@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include "TextureGenerator.h"
 
+
 ore::resources::Texture ore::gl::generateTexture(const unsigned char* imageDataRGBA, unsigned int width, unsigned int height) {
     unsigned int textureID;
     glGenTextures(1, &textureID);
@@ -11,5 +12,15 @@ ore::resources::Texture ore::gl::generateTexture(const unsigned char* imageDataR
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+    return ore::resources::Texture(textureID, width, height);
+}
+
+ore::resources::Texture ore::gl::generateEmptyTexture(uint32_t width, uint32_t height) {
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     return ore::resources::Texture(textureID, width, height);
 }

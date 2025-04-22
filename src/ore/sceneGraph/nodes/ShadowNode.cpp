@@ -3,7 +3,6 @@
 #include <ore/gl/shader/ShaderUniformIndex.h>
 #include <ore/gl/camera/TripodCameraTransform.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <cmath>
 
 std::vector<ore::SceneNode*> *ore::scene::ShadowNode::getChildren() {
     return shadowedSceneContentsNode.getChildren();

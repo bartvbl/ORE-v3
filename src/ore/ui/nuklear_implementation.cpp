@@ -1,0 +1,3 @@
+#define NK_IMPLEMENTATION
+#define NK_SDL_RENDERER_IMPLEMENTATION
+#include "nuklear_configured.h"
