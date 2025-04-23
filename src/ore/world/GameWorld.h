@@ -27,6 +27,7 @@ namespace ore {
         ore::WorldServices services;
         ore::Scene scene;
         ore::Actors actors;
+        GLFWwindow* window = nullptr;
 
         GameWorld() : resourceCache(5) {}
 

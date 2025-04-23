@@ -1,14 +1,15 @@
 #include "GameWorld.h"
 #include <ore/gameObjects/input/BuiltinEngineKeybinds.h>
 
-void ore::GameWorld::init(GLFWwindow* window) {
-    resourceCache.init(window);
+void ore::GameWorld::init(GLFWwindow* _window) {
+    resourceCache.init(_window);
     services.configService.init();
     services.soundService.init();
-    services.inputService.init(window);
+    services.inputService.init(_window);
     services.animationService.init();
     services.aiService.init();
     services.physicsService.init();
+    this->window = _window;
 
     actors.spawn(new ore::BuiltinEngineKeybinds(&services));
 }
