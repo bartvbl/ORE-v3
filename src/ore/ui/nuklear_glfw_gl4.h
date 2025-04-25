@@ -25,7 +25,7 @@ NK_API struct nk_context*   nk_glfw3_init(GLFWwindow *win, enum nk_glfw_init_sta
 NK_API void                 nk_glfw3_shutdown(void);
 NK_API void                 nk_glfw3_font_stash_begin(struct nk_font_atlas **atlas);
 NK_API void                 nk_glfw3_font_stash_end(void);
-NK_API void                 nk_glfw3_new_frame(void);
+NK_API void                 nk_glfw3_new_frame(uint32_t windowWidth, uint32_t windowHeight);
 NK_API void                 nk_glfw3_render(enum nk_anti_aliasing);
 
 NK_API void                 nk_glfw3_device_destroy(void);
@@ -559,7 +559,7 @@ nk_glfw3_font_stash_end(void)
 }
 
 NK_API void
-nk_glfw3_new_frame(void)
+nk_glfw3_new_frame(uint32_t windowWidth, uint32_t windowHeight)
 {
     int i;
     double x, y;
@@ -572,8 +572,13 @@ nk_glfw3_new_frame(void)
     glfw.ctx.delta_time_seconds = delta_time_now - glfw.delta_time_seconds_last;
     glfw.delta_time_seconds_last = delta_time_now;
 
-    glfwGetWindowSize(win, &glfw.width, &glfw.height);
-    glfwGetFramebufferSize(win, &glfw.display_width, &glfw.display_height);
+    glfw.width = windowWidth;
+    glfw.height = windowHeight;
+
+    //glfwGetWindowSize(win, &glfw.width, &glfw.height);
+    //glfwGetFramebufferSize(win, &glfw.display_width, &glfw.display_height);
+    glfw.display_width = windowWidth;
+    glfw.display_height = windowHeight;
     glfw.fb_scale.x = (float)glfw.display_width/(float)glfw.width;
     glfw.fb_scale.y = (float)glfw.display_height/(float)glfw.height;
 
