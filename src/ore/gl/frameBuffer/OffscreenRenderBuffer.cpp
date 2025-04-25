@@ -42,9 +42,11 @@ void ore::gl::OffscreenRenderBuffer::create(int32_t widthPixels, int32_t heightP
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void ore::gl::OffscreenRenderBuffer::activate() {
+void ore::gl::OffscreenRenderBuffer::activate(bool clear) {
     glBindFramebuffer(GL_FRAMEBUFFER, id);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if(clear) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
 }
 
 void ore::gl::OffscreenRenderBuffer::deactivate() {

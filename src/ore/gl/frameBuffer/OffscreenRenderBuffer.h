@@ -11,7 +11,7 @@ namespace ore {
             ore::resources::Texture depthTexture;
 
             void create(int32_t widthPixels, int32_t heightPixels);
-            void activate();
+            void activate(bool clear = true);
             void deactivate();
             void render(ore::RenderState& renderState);
         };
