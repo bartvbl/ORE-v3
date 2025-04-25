@@ -1,4 +1,5 @@
 #include <iostream>
+#include <glad/glad.h>
 #include <ore/gl/GLError.h>
 #include <ore/utilities/Logger.h>
 #include "ShaderLoader.h"

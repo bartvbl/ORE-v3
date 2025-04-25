@@ -7,6 +7,8 @@ namespace ore {
         struct OffscreenRenderBuffer {
             uint32_t id = 0;
             uint32_t renderBufferID = 0;
+            uint32_t width = 0;
+            uint32_t height = 0;
             ore::resources::Texture colourTexture;
             ore::resources::Texture depthTexture;
 
@@ -14,6 +16,7 @@ namespace ore {
             void activate(bool clear = true);
             void deactivate();
             void render(ore::RenderState& renderState);
+            void blitAt(uint32_t x, uint32_t y);
         };
     }
 }

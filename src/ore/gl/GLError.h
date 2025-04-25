@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glad/glad.h>
 #include <string>
 #include <iostream>
 
@@ -21,7 +20,7 @@ namespace ore {
                     case GL_INVALID_OPERATION:
                         errorString = "GL_INVALID_OPERATION";
                         break;
-                    case GL_INVALID_FRAMEBUFFER_OPERATION:
+                    case GL_INVALID_FRAMEBUFFER_OPERATION_EXT:
                         errorString = "GL_INVALID_FRAMEBUFFER_OPERATION";
                         break;
                     case GL_OUT_OF_MEMORY:

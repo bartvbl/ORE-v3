@@ -12,6 +12,49 @@ static void glfwErrorCallback(int error, const char *description)
     fprintf(stderr, "GLFW returned an error:\n\t%s (%i)\n", description, error);
 }
 
+void APIENTRY openglDebugCallback(GLenum source,
+                                   GLenum type,
+                                   GLuint id,
+                                   GLenum severity,
+                                   GLsizei length,
+                                   const GLchar *message,
+                                   const void *userParam) {
+#ifdef NDEBUG
+    // nondebug
+#else
+    std::cout << "--- OpenGL Error ---" << std::endl;
+    std::string errorString;
+
+    switch(type) {
+        case GL_INVALID_ENUM:
+            errorString = "GL_INVALID_ENUM";
+            break;
+        case GL_INVALID_OPERATION:
+            errorString = "GL_INVALID_OPERATION";
+            break;
+        case GL_INVALID_FRAMEBUFFER_OPERATION_EXT:
+            errorString = "GL_INVALID_FRAMEBUFFER_OPERATION";
+            break;
+        case GL_OUT_OF_MEMORY:
+            errorString = "GL_OUT_OF_MEMORY";
+            break;
+        case GL_STACK_UNDERFLOW:
+            errorString = "GL_STACK_UNDERFLOW";
+            break;
+        case GL_STACK_OVERFLOW:
+            errorString = "GL_STACK_OVERFLOW";
+            break;
+        default:
+            errorString = "[Unknown error ID]";
+            break;
+    }
+    std::cout << type << " - " << message << std::endl;
+    if(severity == GL_DEBUG_SEVERITY_HIGH || severity == GL_DEBUG_SEVERITY_MEDIUM)
+    throw std::runtime_error(message);
+#endif
+
+}
+
 GLFWwindow* ore::window::initialise(ore::WindowSettings settings)
 {
     // Initialise GLFW
@@ -78,6 +121,10 @@ GLFWwindow* ore::window::initialise(ore::WindowSettings settings)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(settings.clearColour.x, settings.clearColour.y, settings.clearColour.z, 1.0f);
+
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(&openglDebugCallback, nullptr);
 
     return window;
 }

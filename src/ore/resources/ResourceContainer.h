@@ -76,7 +76,9 @@ namespace ore {
                     typename std::map<std::string, ore::resources::ResourceContainerEntry<ContentsType>>::iterator
                             entry = resourceMap.find(nextEntry);
                     ore::resources::ResourceType* resourceType = entry->second.content;
-                    resourceType->completeLoadOnMainThread();
+                    if(!entry->second.isLoaded) {
+                        resourceType->completeLoadOnMainThread();
+                    }
                     entry->second.isLoaded = true;
                     #pragma omp atomic
                     requiredItemsInProgress--;
