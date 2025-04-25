@@ -6,7 +6,7 @@
 namespace ore {
     namespace window {
         GLFWwindow* initialise(ore::WindowSettings settings);
-        void newFrame(GLFWwindow* window);
+        void newFrame(GLFWwindow *window, const WindowSettings& settings);
         void sleepToFrameRate(const ore::ConfigService& config);
     }
 }

@@ -142,14 +142,12 @@ void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadSc
     unsigned int remainingItemsToLoad = totalItemsToLoad;
     wakeResourceLoadingThread();
 
-    // Do load screen render
-    glClearColor(0, 0, 0, 1);
+    WindowSettings settings;
+    settings.clearColour = {0, 0, 0};
 
     // Rendering Loop
     while (!glfwWindowShouldClose(window) && remainingItemsToLoad > 0) {
-        // Clear colour and depth buffers
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        ore::window::newFrame(window);
+        ore::window::newFrame(window, settings);
 
         flushMainThreadCompletions();
 

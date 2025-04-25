@@ -30,7 +30,7 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
     // Rendering Loop
     while (!glfwWindowShouldClose(window) && !this->world.services.configService.gameShouldShutdown)
     {
-        ore::window::newFrame(window);
+        ore::window::newFrame(window, this->world.services.configService.configuration.windowSettings);
         this->currentGameState->update();
         this->world.frameTick();
         //ore::utilities::printSceneGraph(&this->world.scene.rootNode);

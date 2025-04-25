@@ -129,8 +129,9 @@ GLFWwindow* ore::window::initialise(ore::WindowSettings settings)
     return window;
 }
 
-void ore::window::newFrame(GLFWwindow* window) {
+void ore::window::newFrame(GLFWwindow *window, const WindowSettings& settings) {
     // Clear colour and depth buffers
+    glClearColor(settings.clearColour.x, settings.clearColour.y, settings.clearColour.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     int windowWidth;
