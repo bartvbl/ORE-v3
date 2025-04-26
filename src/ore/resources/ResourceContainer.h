@@ -129,15 +129,17 @@ namespace ore {
             void registerResource(std::string itemID, ore::resources::ResourceLoadPriority priority, ore::filesystem::path fileLocation, ContentsType* contentsTypeInstance) {
                 LOG(INFO) << "Registering resource: " << itemID << ". Src: " << fileLocation.string() << std::endl;
                 contentsTypeInstance->setName(itemID);
-                if(priority == ResourceLoadPriority::REQUIRED) {
-                    #pragma omp atomic
-                    requiredItemsInProgress++;
-                }
-                ore::resources::ResourceContainerEntry<ContentsType> entry;
-                entry.fileLocation = fileLocation;
-                entry.priority = priority;
-                entry.content = contentsTypeInstance;
-                if(this->resourceMap.find(itemID) == this->resourceMap.end()) {
+
+                if(!this->resourceMap.contains(itemID)) {
+                    if(priority == ResourceLoadPriority::REQUIRED) {
+                        #pragma omp atomic
+                        requiredItemsInProgress++;
+                    }
+                    ore::resources::ResourceContainerEntry<ContentsType> entry;
+                    entry.fileLocation = fileLocation;
+                    entry.priority = priority;
+                    entry.content = contentsTypeInstance;
+
                     loadingQueueMutex.lock();
                     this->resourceMap[itemID] = entry;
                     if(priority == ore::resources::ResourceLoadPriority::REQUIRED) {
@@ -147,6 +149,8 @@ namespace ore {
                         streamLoadingQueue.emplace(itemID);
                     }
                     loadingQueueMutex.unlock();
+                } else {
+                    std::cout << "WARNING: potential duplicate resource registered: " << fileLocation.string() << std::endl;
                 }
             }
 
