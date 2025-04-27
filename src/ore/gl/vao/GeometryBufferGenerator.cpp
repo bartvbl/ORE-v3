@@ -5,7 +5,7 @@
 #include <ore/gl/shader/ShaderUniformIndex.h>
 #include "GeometryBufferGenerator.h"
 
-void augmentVAOWithTBNBuffers(unsigned int vaoID, const ore::resources::MeshGeometry &geometry) {
+void augmentVAOWithTBNBuffers(unsigned int vaoID, const ore::resources::MeshGeometry &geometry, unsigned int drawMode) {
     std::vector<glm::vec3> T;
     std::vector<glm::vec3> B;
 
@@ -54,57 +54,92 @@ void augmentVAOWithTBNBuffers(unsigned int vaoID, const ore::resources::MeshGeom
     unsigned int tangentBufferID;
     glGenBuffers(1, &tangentBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, tangentBufferID);
-    glBufferData(GL_ARRAY_BUFFER, T.size() * sizeof(glm::vec3), T.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, T.size() * sizeof(glm::vec3), T.data(), drawMode);
     glVertexAttribPointer(ore::gl::ShaderInputIndex::normalMapTangent, 3, GL_FLOAT, GL_TRUE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(ore::gl::ShaderInputIndex::normalMapTangent);
 
     unsigned int bitangentBufferID;
     glGenBuffers(1, &bitangentBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, bitangentBufferID);
-    glBufferData(GL_ARRAY_BUFFER, B.size() * sizeof(glm::vec3), B.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, B.size() * sizeof(glm::vec3), B.data(), drawMode);
     glVertexAttribPointer(ore::gl::ShaderInputIndex::normalMapBitangent, 3, GL_FLOAT, GL_TRUE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(ore::gl::ShaderInputIndex::normalMapBitangent);
 }
 
 
-ore::gl::GeometryBuffer ore::gl::generateGeometryBuffer(const ore::resources::MeshGeometry &geometry) {
+ore::gl::GeometryBuffer ore::gl::generateGeometryBuffer(const ore::resources::MeshGeometry &geometry, unsigned int drawMode) {
     ore::gl::GeometryBuffer buffer;
+    updateGeometryBuffer(geometry, buffer, drawMode);
+    return buffer;
+}
 
-    glGenVertexArrays(1, &buffer.vaoID);
+ore::gl::GeometryBuffer ore::gl::createStreamingGeometryBuffer() {
+    ore::resources::MeshGeometry geometry;
+    geometry.vertices = {{0, 0, 0}, {1, 0, 0}, {1, 1, 0}, {0, 1, 0}};
+    geometry.indices = {0, 1, 2, 0, 2, 3};
+    geometry.hasNormals = false;
+    geometry.hasTextures = false;
+    geometry.hasNormalMap = false;
+
+    ore::gl::GeometryBuffer buffer = generateGeometryBuffer(geometry, GL_STREAM_DRAW);
+
+    return buffer;
+}
+
+void ore::gl::updateGeometryBuffer(const ore::resources::MeshGeometry &geometry, ore::gl::GeometryBuffer &buffer,
+                              unsigned int drawMode) {
+
+    if(drawMode == 0xFFFFFFFF) {
+        drawMode = GL_STATIC_DRAW;
+    }
+
+    if(buffer.vaoID == 0xFFFFFFFF) {
+        glGenVertexArrays(1, &buffer.vaoID);
+    }
     glBindVertexArray(buffer.vaoID);
 
-    glGenBuffers(1, &buffer.vertexBufferID);
+    if(buffer.vertexBufferID == 0xFFFFFFFF) {
+        glGenBuffers(1, &buffer.vertexBufferID);
+    }
     glBindBuffer(GL_ARRAY_BUFFER, buffer.vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, geometry.vertices.size() * sizeof(glm::vec3), geometry.vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, geometry.vertices.size() * sizeof(glm::vec3), geometry.vertices.data(), drawMode);
     glVertexAttribPointer(ore::gl::ShaderInputIndex::vertices, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(ore::gl::ShaderInputIndex::vertices);
 
     if(geometry.hasNormals) {
-        glGenBuffers(1, &buffer.normalBufferID);
+        if(buffer.normalBufferID == 0xFFFFFFFF) {
+            glGenBuffers(1, &buffer.normalBufferID);
+        }
         glBindBuffer(GL_ARRAY_BUFFER, buffer.normalBufferID);
-        glBufferData(GL_ARRAY_BUFFER, geometry.normals.size() * sizeof(glm::vec3), geometry.normals.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, geometry.normals.size() * sizeof(glm::vec3), geometry.normals.data(), drawMode);
         glVertexAttribPointer(ore::gl::ShaderInputIndex::normals, 3, GL_FLOAT, GL_TRUE, 3 * sizeof(float), nullptr);
         glEnableVertexAttribArray(ore::gl::ShaderInputIndex::normals);
+    } else if(buffer.normalBufferID != 0xFFFFFFFF) {
+        glDisableVertexAttribArray(ore::gl::ShaderInputIndex::normals);
     }
 
     if(geometry.hasTextures) {
-        glGenBuffers(1, &buffer.textureBufferID);
+        if(buffer.textureBufferID == 0xFFFFFFFF) {
+            glGenBuffers(1, &buffer.textureBufferID);
+        }
         glBindBuffer(GL_ARRAY_BUFFER, buffer.textureBufferID);
-        glBufferData(GL_ARRAY_BUFFER, geometry.textureCoordinates.size() * sizeof(glm::vec2), geometry.textureCoordinates.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, geometry.textureCoordinates.size() * sizeof(glm::vec2), geometry.textureCoordinates.data(), drawMode);
         glVertexAttribPointer(ore::gl::ShaderInputIndex::texCoords, 2, GL_FLOAT, GL_TRUE, 2 * sizeof(float), nullptr);
         glEnableVertexAttribArray(ore::gl::ShaderInputIndex::texCoords);
+    } else if(buffer.textureBufferID != 0xFFFFFFFF) {
+        glDisableVertexAttribArray(ore::gl::ShaderInputIndex::texCoords);
     }
 
     if(geometry.hasNormalMap) {
-        augmentVAOWithTBNBuffers(buffer.vaoID, geometry);
+        augmentVAOWithTBNBuffers(buffer.vaoID, geometry, drawMode);
     }
 
-    glGenBuffers(1, &buffer.indexBufferID);
+    if(buffer.indexBufferID == 0xFFFFFFFF) {
+        glGenBuffers(1, &buffer.indexBufferID);
+    }
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer.indexBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, geometry.indices.size() * sizeof(unsigned int), geometry.indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, geometry.indices.size() * sizeof(unsigned int), geometry.indices.data(), drawMode);
 
     buffer.indexCount = geometry.indices.size();
-
-    return buffer;
 }
 

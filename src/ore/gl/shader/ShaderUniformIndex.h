@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ore/gl/vao/GeometryBuffer.h>
+
 namespace ore {
     namespace gl {
         struct ShaderInputIndex {
@@ -58,5 +60,7 @@ namespace ore {
             static const unsigned int shadowLightPositionArray = 91; // + 4
             static const unsigned int shadowLightAttenuationArray = 95; // + 4
         };
+
+
     }
 }
