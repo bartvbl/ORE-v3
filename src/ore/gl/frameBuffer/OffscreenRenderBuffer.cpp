@@ -55,3 +55,13 @@ void ore::gl::OffscreenRenderBuffer::blitAt(uint32_t x, uint32_t y) {
                            GL_COLOR_BUFFER_BIT,// you only care about the color data, not the depth data …
                            GL_NEAREST);
 }
+
+void ore::gl::OffscreenRenderBuffer::destroy() {
+    glDeleteFramebuffers(1, &id);
+    if(colourTexture.id != 0) {
+        glDeleteTextures(1, &colourTexture.id);
+    }
+    if(depthTexture.id != 0) {
+        glDeleteTextures(1, &depthTexture.id);
+    }
+}

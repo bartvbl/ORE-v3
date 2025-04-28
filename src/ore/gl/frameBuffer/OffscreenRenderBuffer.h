@@ -17,6 +17,8 @@ namespace ore {
             void deactivate();
             void render(ore::RenderState& renderState);
             void blitAt(uint32_t x, uint32_t y);
+
+            void destroy();
         };
     }
 }
