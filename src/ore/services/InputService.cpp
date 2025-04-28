@@ -15,7 +15,11 @@ void ore::InputService::init(GLFWwindow* window) {
         std::string name = glfwJoystickPresent(GLFW_JOYSTICK_1 + i)
                 ? glfwGetJoystickName(GLFW_JOYSTICK_1 + i) : "";
         bool isXboxGamepad = name.find(std::string("Xbox")) != std::string::npos;
-        if(isXboxGamepad) {
+        bool isGameControllerOfSomeKind = name.find(std::string("Controller")) != std::string::npos;
+        if(!name.empty()) {
+            std::cout << "Found gamepad: " << name << std::endl;
+        }
+        if(isXboxGamepad || isGameControllerOfSomeKind) {
             targetJoystick = GLFW_JOYSTICK_1 + i;
             std::cout << "Selected joystick with ID " << (i+1) << ": " << name << std::endl;
             break;
