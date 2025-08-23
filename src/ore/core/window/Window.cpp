@@ -49,7 +49,7 @@ void APIENTRY openglDebugCallback(GLenum source,
             break;
     }
     std::cout << type << " - " << message << std::endl;
-    if(severity == GL_DEBUG_SEVERITY_HIGH || severity == GL_DEBUG_SEVERITY_MEDIUM)
+    if(severity == GL_DEBUG_SEVERITY_HIGH)
     throw std::runtime_error(message);
 #endif
 

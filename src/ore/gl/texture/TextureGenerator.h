@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ore/resources/resourceTypes/texture/Texture.h>
+#include <stdint.h>
 
 namespace ore {
     namespace gl {
