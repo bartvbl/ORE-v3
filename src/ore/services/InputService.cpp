@@ -333,21 +333,31 @@ void ore::InputService::addKeyBindingsFromFiles(std::vector<ore::filesystem::pat
 void ore::InputService::runJoystickCheck(bool force) {
     std::chrono::time_point<std::chrono::steady_clock> currentTime = std::chrono::steady_clock::now();
     double secondsSinceLastJoystickCheck = double(std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastJoystickCheck).count()) / 1000.0;
+
     if(force || (secondsSinceLastJoystickCheck > secondsBetweenJoystickChecks)) {
+        bool joystickWasActive = joystickActive;
+        joystickActive = false;
+
         for(int i = 0; i < GLFW_JOYSTICK_LAST; i++) {
             std::string name = glfwJoystickPresent(GLFW_JOYSTICK_1 + i)
                                ? glfwGetJoystickName(GLFW_JOYSTICK_1 + i) : "";
             bool isXboxGamepad = name.find(std::string("Xbox")) != std::string::npos;
             bool isGameControllerOfSomeKind = name.find(std::string("Controller")) != std::string::npos;
-            /*if(!name.empty()) {
-                std::cout << "Found gamepad: " << name << std::endl;
-            }*/
+
             if(isXboxGamepad || isGameControllerOfSomeKind) {
+                if(!name.empty() && !joystickWasActive) {
+                    std::cout << "Detected a new controller was connected (ID " << (i+1) << "): " << name << std::endl;
+                }
+
                 targetJoystick = GLFW_JOYSTICK_1 + i;
                 joystickActive = true;
-                std::cout << "Selected joystick with ID " << (i+1) << ": " << name << std::endl;
+
                 break;
             }
+        }
+
+        if(joystickWasActive && !joystickActive) {
+            std::cout << "Controller was disconnected." << std::endl;
         }
         lastJoystickCheck = currentTime;
     }
