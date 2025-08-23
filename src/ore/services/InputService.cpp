@@ -11,20 +11,8 @@ void ore::InputService::scrollCallback(GLFWwindow *window, double xOffset, doubl
 }
 
 void ore::InputService::init(GLFWwindow* window) {
-    for(int i = 0; i < GLFW_JOYSTICK_LAST; i++) {
-        std::string name = glfwJoystickPresent(GLFW_JOYSTICK_1 + i)
-                ? glfwGetJoystickName(GLFW_JOYSTICK_1 + i) : "";
-        bool isXboxGamepad = name.find(std::string("Xbox")) != std::string::npos;
-        bool isGameControllerOfSomeKind = name.find(std::string("Controller")) != std::string::npos;
-        if(!name.empty()) {
-            std::cout << "Found gamepad: " << name << std::endl;
-        }
-        if(isXboxGamepad || isGameControllerOfSomeKind) {
-            targetJoystick = GLFW_JOYSTICK_1 + i;
-            std::cout << "Selected joystick with ID " << (i+1) << ": " << name << std::endl;
-            break;
-        }
-    }
+    this->lastJoystickCheck = std::chrono::steady_clock::now();
+    runJoystickCheck(true);
     this->gameWindow = window;
     ore::input::xScrollOffset = 0;
     ore::input::yScrollOffset = 0;
@@ -138,6 +126,7 @@ void ore::InputService::handleInputState(ore::input::InputType type, float curre
 
 void ore::InputService::tick() {
     glfwPollEvents();
+    runJoystickCheck();
 
     // Fetch updated window and mouse positions
     double mouseX;
@@ -153,7 +142,9 @@ void ore::InputService::tick() {
 
     std::array<unsigned char, 32> controllerButtons;
     std::array<float, 32> controllerAxes;
-    bool controllerIsPresent = glfwJoystickPresent(targetJoystick);
+    controllerButtons.fill(0);
+    controllerAxes.fill(0);
+    bool controllerIsPresent = joystickActive && glfwJoystickPresent(targetJoystick);
     if(controllerIsPresent) {
         int count;
         const unsigned char* buttonState = glfwGetJoystickButtons(targetJoystick, &count);
@@ -336,6 +327,29 @@ void ore::InputService::detachListener(unsigned int reference) {
 void ore::InputService::addKeyBindingsFromFiles(std::vector<ore::filesystem::path> &configurationFilePaths) {
     for(const ore::filesystem::path& path : configurationFilePaths) {
         addKeyBindingsFromFile(path);
+    }
+}
+
+void ore::InputService::runJoystickCheck(bool force) {
+    std::chrono::time_point<std::chrono::steady_clock> currentTime = std::chrono::steady_clock::now();
+    double secondsSinceLastJoystickCheck = double(std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastJoystickCheck).count()) / 1000.0;
+    if(force || (secondsSinceLastJoystickCheck > secondsBetweenJoystickChecks)) {
+        for(int i = 0; i < GLFW_JOYSTICK_LAST; i++) {
+            std::string name = glfwJoystickPresent(GLFW_JOYSTICK_1 + i)
+                               ? glfwGetJoystickName(GLFW_JOYSTICK_1 + i) : "";
+            bool isXboxGamepad = name.find(std::string("Xbox")) != std::string::npos;
+            bool isGameControllerOfSomeKind = name.find(std::string("Controller")) != std::string::npos;
+            /*if(!name.empty()) {
+                std::cout << "Found gamepad: " << name << std::endl;
+            }*/
+            if(isXboxGamepad || isGameControllerOfSomeKind) {
+                targetJoystick = GLFW_JOYSTICK_1 + i;
+                joystickActive = true;
+                std::cout << "Selected joystick with ID " << (i+1) << ": " << name << std::endl;
+                break;
+            }
+        }
+        lastJoystickCheck = currentTime;
     }
 }
 

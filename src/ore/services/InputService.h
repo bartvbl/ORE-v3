@@ -19,6 +19,9 @@ namespace ore {
 
         unsigned int nextListenerID = 0;
         unsigned int targetJoystick = GLFW_JOYSTICK_1;
+        bool joystickActive = false;
+        std::chrono::time_point<std::chrono::steady_clock> lastJoystickCheck;
+        static constexpr double secondsBetweenJoystickChecks = 1;
 
         enum class PointerType {
             BOOL, FLOAT, INT
@@ -51,6 +54,7 @@ namespace ore {
 
         unsigned int attachListener(std::string &keyMappingName, Listener listener);
         static void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
+        void runJoystickCheck(bool force = false);
 
         void handleInputState(input::InputType type, float state, const std::vector<KeyMapping> *mappings);
 
