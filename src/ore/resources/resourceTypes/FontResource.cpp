@@ -7,7 +7,7 @@
 #include FT_FREETYPE_H
 
 const unsigned int CHARACTER_PADDING_PIXELS = 2;
-const std::array<unsigned int, 7> CHARACTER_SIZES = {8, 9, 10, 11, 12, 18, 48};
+const std::array<unsigned int, 8> CHARACTER_SIZES = {8, 9, 10, 11, 12, 18, 48, 96};
 const unsigned int CHAR_COUNT_TO_LOAD = 128;
 
 void computeTextureDimensions(FT_Face &face, unsigned int &textureWidth, unsigned int &textureHeight, const ore::filesystem::path &fileLocation) {
