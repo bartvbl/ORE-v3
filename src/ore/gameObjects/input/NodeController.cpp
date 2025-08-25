@@ -32,8 +32,8 @@ void ore::NodeController::update() {
     node->position.y += (movementDown - movementUp) * cameraSpeed;
 
     if(printCameraOrientation) {
-        std::cout << "                \"position\": [" << node->position.x << ", " << node->position.y << ", " << node->position.z << "]" << std::endl;
-        std::cout << "                \"orientation\": [" << node->rotation.x << ", " << node->rotation.y << ", " << node->rotation.z << "]" << std::endl;
+        std::cout << "\t\t\t\"position\": [" << node->position.x << ", " << node->position.y << ", " << node->position.z << "]," << std::endl;
+        std::cout << "\t\t\t\"orientation\": [" << node->rotation.x << ", " << node->rotation.y << ", " << node->rotation.z << "]," << std::endl;
     }
 
 }
