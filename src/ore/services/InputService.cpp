@@ -341,7 +341,8 @@ void ore::InputService::runJoystickCheck(bool force) {
         for(int i = 0; i < GLFW_JOYSTICK_LAST; i++) {
             std::string name = glfwJoystickPresent(GLFW_JOYSTICK_1 + i)
                                ? glfwGetJoystickName(GLFW_JOYSTICK_1 + i) : "";
-            bool isXboxGamepad = name.find(std::string("Xbox")) != std::string::npos;
+            bool isXboxGamepad = name.find(std::string("Xbox")) != std::string::npos
+                              || name.find(std::string("X-Box")) != std::string::npos;
             bool isGameControllerOfSomeKind = name.find(std::string("Controller")) != std::string::npos;
 
             if(isXboxGamepad || isGameControllerOfSomeKind) {
