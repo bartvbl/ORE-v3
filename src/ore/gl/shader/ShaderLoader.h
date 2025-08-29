@@ -13,6 +13,6 @@ namespace ore
 {
     namespace gl {
         ore::gl::ShaderSource* loadShaderSources(const ore::filesystem::path& directory, const std::string& fileName);
-        ore::resources::Shader createShader(ore::gl::ShaderSource* source);
+        ore::resources::Shader createShader(ore::gl::ShaderSource* source, const std::string& name);
     }
 }

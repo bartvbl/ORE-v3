@@ -10,6 +10,7 @@ namespace ore {
         private:
             ore::gl::ShaderSource* shaderSources;
             ore::resources::Shader shader;
+            std::string fileName;
         public:
             ore::resources::Shader getInstance();
 

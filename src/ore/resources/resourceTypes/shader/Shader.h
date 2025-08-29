@@ -1,12 +1,14 @@
 #pragma once
+#include <string>
 
 namespace ore {
     namespace resources {
         class Shader {
         public:
             unsigned int programID = 0;
+            std::string name = "Unnamed shader";
         public:
-            Shader(unsigned int shaderProgramID) : programID(shaderProgramID) {}
+            Shader(unsigned int shaderProgramID, const std::string& _name) : programID(shaderProgramID), name{_name} {}
             Shader() = default;
             void use();
             unsigned int get();

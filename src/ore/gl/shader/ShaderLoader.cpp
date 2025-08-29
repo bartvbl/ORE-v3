@@ -96,9 +96,9 @@ void validateProgram(unsigned int programID) {
     }
 }
 
-ore::resources::Shader ore::gl::createShader(ore::gl::ShaderSource* source) {
+ore::resources::Shader ore::gl::createShader(ore::gl::ShaderSource* source, const std::string& name) {
     unsigned int programID = glCreateProgram();
-    ore::resources::Shader shader(programID);
+    ore::resources::Shader shader(programID, name);
 
     if(!source->vertexShaderSource.empty()) {
         loadSingleShader(shader.get(), source->vertexShaderSource, ShaderType::VERTEX_SHADER);
