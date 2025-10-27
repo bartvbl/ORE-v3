@@ -81,7 +81,7 @@ include_directories (
     lib/fast_obj/
     lib/json/
     lib/g3log/src/
-    lib/nuklear
+    lib/Nuklear-4.12.8
     lib/JoltPhysics-5.3.0
     ${GLIB_INCLUDE_DIRS}
     ${GSTREAMER_INCLUDE_DIRS}
