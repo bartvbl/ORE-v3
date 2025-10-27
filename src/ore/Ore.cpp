@@ -8,7 +8,7 @@
 #include <ore/utilities/SceneGraphPrinter.h>
 #include "Ore.h"
 
-void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameState *initialState) {
+void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, std::shared_ptr<ore::GameState> initialState) {
     // Initialise logging system
     ore::Logger::init();
 
@@ -24,7 +24,7 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
     // Configure services
     this->world.services.inputService.addKeyBindingsFromFiles(this->world.services.configService.configuration.keyBindingConfigurationFiles);
 
-    this->currentGameState = initialState;
+    this->currentGameState = std::move(initialState);
     this->currentGameState->set(&this->world);
 
     // Rendering Loop
@@ -36,6 +36,15 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, ore::GameS
         //ore::utilities::printSceneGraph(&this->world.scene.rootNode);
         ore::RenderPass::render(&this->world.scene.rootNode, window);
         glfwSwapBuffers(window);
+
+        std::shared_ptr<ore::GameState> nextState = this->currentGameState->nextState();
+        if(nextState != nullptr) {
+            LOG(INFO) << "ore - Switching game state" << std::endl;
+            this->currentGameState->unset();
+            this->currentGameState = nextState;
+            this->currentGameState->set(&this->world);
+        }
+
         ore::window::sleepToFrameRate(this->world.services.configService);
     }
 

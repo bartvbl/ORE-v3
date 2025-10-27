@@ -8,12 +8,12 @@ namespace ore {
     class Engine {
     private:
         ore::GameWorld world;
-        ore::GameState* currentGameState;
+        std::shared_ptr<ore::GameState> currentGameState;
 
     public:
         void run(
             ore::filesystem::path engineConfigFileLocation,
-            ore::GameState* initialState
+            std::shared_ptr<ore::GameState> initialState
         );
     };
 }

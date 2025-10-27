@@ -56,7 +56,7 @@ set(BUILD_SHARED_LIBS OFF)
 set(OVERRIDE_CXX_FLAGS OFF)
 set(ENABLE_ALL_WARNINGS OFF)
 #add_definitions(-DJPH_ENABLE_ASSERTS -DJPH_DEBUG_RENDERER)
-add_subdirectory(lib/JoltPhysics-5.1.0/Build joltPhysics)
+add_subdirectory(lib/JoltPhysics-5.3.0/Build joltPhysics)
 
 find_package(PkgConfig)
 #pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
@@ -82,7 +82,7 @@ include_directories (
     lib/json/
     lib/g3log/src/
     lib/nuklear
-    lib/JoltPhysics-5.1.0
+    lib/JoltPhysics-5.3.0
     ${GLIB_INCLUDE_DIRS}
     ${GSTREAMER_INCLUDE_DIRS}
 )
