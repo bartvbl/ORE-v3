@@ -1,6 +1,8 @@
 #include "GameWorld.h"
 #include <ore/gameObjects/input/BuiltinEngineKeybinds.h>
 
+#include "ore/core/window/Window.h"
+
 void ore::GameWorld::init(GLFWwindow* _window) {
     resourceCache.init(_window);
     services.configService.init();
@@ -12,6 +14,10 @@ void ore::GameWorld::init(GLFWwindow* _window) {
     this->window = _window;
 
     actors.spawn(new ore::BuiltinEngineKeybinds(&services));
+}
+
+void ore::GameWorld::forceUpdateDisplayConfiguration() {
+    ore::window::update(window, services.configService.configuration.windowSettings);
 }
 
 void ore::GameWorld::frameTick() {

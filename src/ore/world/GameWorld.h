@@ -32,6 +32,7 @@ namespace ore {
         GameWorld() : resourceCache(5) {}
 
         void init(GLFWwindow* window);
+        void forceUpdateDisplayConfiguration();
 
         void frameTick();
 

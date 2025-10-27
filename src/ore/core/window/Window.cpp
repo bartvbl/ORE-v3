@@ -57,6 +57,24 @@ void APIENTRY openglDebugCallback(GLenum source,
 
 }
 
+namespace ore {
+    inline GLFWmonitor* getMonitor(const ore::WindowSettings& settings) {
+        GLFWmonitor* monitor = nullptr;
+        GLFWmonitor** monitors;
+        if(settings.fullscreen) {
+            int monitorCount = 0;
+            monitors = glfwGetMonitors(&monitorCount);
+            if((int)settings.monitorIndex >= monitorCount) {
+                monitor = glfwGetPrimaryMonitor();
+                LOG(WARNING) << "The requested monitor index " << settings.monitorIndex << " is out of range because this system only has " << monitorCount << " monitors available. Falling back to the default monitor instead." << std::endl;
+            } else {
+                monitor = monitors[settings.monitorIndex];
+            }
+        }
+        return monitor;
+    }
+}
+
 GLFWwindow* ore::window::initialise(ore::WindowSettings settings)
 {
     // Initialise GLFW
@@ -79,18 +97,7 @@ GLFWwindow* ore::window::initialise(ore::WindowSettings settings)
     glfwWindowHint(GLFW_SAMPLES, settings.MSAASamplesPerPixel);
 
     // Create window using GLFW
-    GLFWmonitor* monitor = nullptr;
-    GLFWmonitor** monitors;
-    if(settings.fullscreen) {
-        int monitorCount = 0;
-        monitors = glfwGetMonitors(&monitorCount);
-        if((int)settings.monitorIndex >= monitorCount) {
-            monitor = glfwGetPrimaryMonitor();
-            LOG(WARNING) << "The requested monitor index " << settings.monitorIndex << " is out of range because this system only has " << monitorCount << " monitors available. Falling back to the default monitor instead." << std::endl;
-        } else {
-            monitor = monitors[settings.monitorIndex];
-        }
-    }
+    GLFWmonitor* monitor = getMonitor(settings);
 
     GLFWwindow* window = glfwCreateWindow(settings.width,
                                           settings.height,
@@ -131,6 +138,11 @@ GLFWwindow* ore::window::initialise(ore::WindowSettings settings)
     return window;
 }
 
+void ore::window::update(GLFWwindow *window, const WindowSettings& settings) {
+    GLFWmonitor* monitor = getMonitor(settings);
+    glfwSetWindowMonitor(window, monitor, 0, 0, settings.width, settings.height, settings.frameRateLimit);
+}
+
 void ore::window::newFrame(GLFWwindow *window, const WindowSettings& settings) {
     // Clear colour and depth buffers
     glClearColor(settings.clearColour.x, settings.clearColour.y, settings.clearColour.z, 1.0f);
@@ -165,3 +177,5 @@ void ore::window::sleepToFrameRate(const ore::ConfigService &config) {
         std::this_thread::sleep_for(std::chrono::nanoseconds(uint64_t(1000000000.0 * timeToWaitSeconds)));
     }
 }
+
+
