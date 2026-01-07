@@ -2,9 +2,9 @@
 #include <iostream>
 
 const float rotationSpeed = 2.5f;
-const float cameraSpeed = 0.02f;
+const float cameraSpeed = 0.06f;
 // Controller specific, but because keyboard inputs are binary it automatically doesn't apply to those
-const float deadZone = 0.3;
+const float deadZone = 0.1;
 
 float applyDeadzone(float input) {
     return std::abs(input) > deadZone ? input : 0;

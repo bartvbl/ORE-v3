@@ -59,6 +59,7 @@ namespace ore {
             static const unsigned int shadowLightCount = 90;
             static const unsigned int shadowLightPositionArray = 91; // + 4
             static const unsigned int shadowLightAttenuationArray = 95; // + 4
+            static const unsigned int shadowLightEnableOutsideLightingArray = 99;
         };
 
 

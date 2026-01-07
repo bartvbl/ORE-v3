@@ -2,6 +2,8 @@
 
 #include <ore/gl/lighting/LightType.h>
 
+#include "json.hpp"
+
 namespace ore {
     namespace gl {
         struct Light {
@@ -12,6 +14,7 @@ namespace ore {
             float spotLightAngleDegrees = 90;
             float attenuation = 5;
             float directionalLightRadius = 5;
+            bool enableLightOutsideShadowMap = false;
         };
     }
 }

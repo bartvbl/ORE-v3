@@ -73,16 +73,18 @@ void ore::scene::ShadowNode::render(ore::RenderState &state) {
     glm::mat4 modelViewMatrix = state.transformations.view * state.transformations.model;
     std::array<glm::vec3, ore::MAX_SHADOW_LIGHT_SOURCES> transformedLightPositions;
     std::array<float, ore::MAX_SHADOW_LIGHT_SOURCES> lightAttenuations;
+    std::array<int, ore::MAX_SHADOW_LIGHT_SOURCES> enableUnshadowedLighting;
     for(unsigned int i = 0; i < lightSourceCount; i++) {
         transformedLightPositions.at(i) = modelViewMatrix * glm::vec4(lightSources.at(i).position, 1.0);
         lightAttenuations.at(i) = lightSources.at(i).attenuation;
+        enableUnshadowedLighting.at(i) = lightSources.at(i).enableLightOutsideShadowMap ? 1 : 0;
     }
     state.uniforms.setLightPositions(ore::gl::ShaderUniformIndex::shadowLightPositionArray,
                                      ore::gl::ShaderUniformIndex::shadowLightCount,
                                      reinterpret_cast<GLfloat*>(transformedLightPositions.data()),
                                      lightSourceCount);
     glUniform1fv(ore::gl::ShaderUniformIndex::shadowLightAttenuationArray, lightSourceCount, lightAttenuations.data());
-
+    glUniform1iv(ore::gl::ShaderUniformIndex::shadowLightEnableOutsideLightingArray, lightSourceCount, enableUnshadowedLighting.data());
 
     shadowedSceneContentsNode.render(state);
 
