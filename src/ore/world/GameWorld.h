@@ -29,7 +29,7 @@ namespace ore {
         ore::Actors actors;
         GLFWwindow* window = nullptr;
 
-        GameWorld() : resourceCache(5) {}
+        GameWorld() : resourceCache(10) {}
 
         void init(GLFWwindow* window);
         void forceUpdateDisplayConfiguration();
