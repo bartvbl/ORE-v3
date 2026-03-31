@@ -140,8 +140,8 @@ void ore::InputService::tick() {
     // Move mouse origin to window bottom left
     mouseY = double(windowHeight) - mouseY;
 
-    std::array<unsigned char, 32> controllerButtons;
-    std::array<float, 32> controllerAxes;
+    std::array<unsigned char, 128> controllerButtons;
+    std::array<float, 128> controllerAxes;
     controllerButtons.fill(0);
     controllerAxes.fill(0);
     bool controllerIsPresent = joystickActive && glfwJoystickPresent(targetJoystick);
