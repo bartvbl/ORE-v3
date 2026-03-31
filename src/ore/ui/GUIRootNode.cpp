@@ -23,7 +23,7 @@ std::string ore::GUIRootNode::getName() {
 }
 
 std::vector<ore::SceneNode *>* ore::GUIRootNode::getChildren() {
-    return reinterpret_cast<std::vector<ore::SceneNode *>*>(&windows);
+    return &noChildren;
 }
 
 void ore::GUIRootNode::addWindow(ore::GUIWindow *window) {

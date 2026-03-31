@@ -14,6 +14,7 @@ namespace ore {
         GLFWwindow* window = nullptr;
         nk_context* context;
         ore::ui::FontCache fontCache;
+        std::vector<ore::SceneNode *> noChildren;
 
     public:
         void init(GLFWwindow *_window);
