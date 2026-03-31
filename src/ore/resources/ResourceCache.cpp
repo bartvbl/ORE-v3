@@ -49,8 +49,8 @@ void ore::resources::ResourceCache::registerSingleEntry(std::string id, ore::fil
         LOG(FATAL) << "The file of the resource with ID " << id << ", located at " << fileLocation.string() << " could not be found.";
     }
 
-    std::transform(extension.begin(), extension.end(), extension.begin(),
-                   [](unsigned char c){ return std::tolower(c); });
+    std::ranges::transform(extension, extension.begin(),
+                           [](unsigned char c){ return std::tolower(c); });
     if(extension == ".png" || extension == ".bmp" || extension == ".tga" || extension == ".jpg") {
         this->textures.registerResource(id, priority, fileLocation, new TextureResource());
     } else if(extension == ".mdl" || extension == ".obj") {

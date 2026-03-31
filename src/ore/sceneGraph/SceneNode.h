@@ -7,6 +7,8 @@
 namespace ore {
     class SceneNode {
     public:
+        virtual ~SceneNode() = default;
+
         virtual std::string getName() = 0;
 
         virtual void update(ore::RenderState &renderState);

@@ -12,6 +12,7 @@ void ore::GameWorld::init(GLFWwindow* _window) {
     services.aiService.init();
     services.physicsService.init();
     this->window = _window;
+    scene.guiRootNode.init(_window);
 
     actors.spawn(new ore::BuiltinEngineKeybinds(&services));
 }

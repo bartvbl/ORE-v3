@@ -35,6 +35,8 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, std::share
         this->world.frameTick();
         //ore::utilities::printSceneGraph(&this->world.scene.rootNode);
         ore::RenderPass::render(&this->world.scene.rootNode, window);
+        // GUI is always on top
+        ore::RenderPass::render(&this->world.scene.guiRootNode, window);
         glfwSwapBuffers(window);
 
         std::shared_ptr<ore::GameState> nextState = this->currentGameState->nextState();
