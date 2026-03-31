@@ -23,17 +23,25 @@ void ore::GUIWindow::drawComboBox(const std::vector<std::string> &options, uint3
     }
 }
 
-ore::GUIWindow::GUIWindow(std::string _title, int _initialX, int _initialY, int _width, int _height)
-    : title(_title), initialX(_initialX), initialY(_initialY), width(_width), height(_height) {
+ore::GUIWindow::GUIWindow(std::string _title, int _initialX, int _initialY, int _width, int _height, bool _titlebarVisible, bool _resizable, bool moveable)
+    : title(_title), initialX(_initialX), initialY(_initialY), width(_width), height(_height), titleBarVisible(_titlebarVisible), resizable(_resizable), moveable(moveable) {
 }
 
 void ore::GUIWindow::drawWindow(nk_context *context) {
     this->context = context;
-    if (nk_begin(context, title.c_str(), nk_rect(initialX, initialY, width, height),
-        NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_TITLE|NK_WINDOW_SCALABLE)) {
+
+    if (!isVisible) {
+        return;
+    }
+    int windowOptions = NK_WINDOW_BORDER | (titleBarVisible ? NK_WINDOW_TITLE : 0) | (moveable ? NK_WINDOW_MOVABLE : 0) | (resizable ? NK_WINDOW_SCALABLE : 0);
+    if (nk_begin(context, title.c_str(), nk_rect(initialX, initialY, width, height), windowOptions)) {
 
         drawContents();
 
         nk_end(context);
-        }
+    }
+}
+
+void ore::GUIWindow::setVisible(bool visible) {
+    this->isVisible = visible;
 }
