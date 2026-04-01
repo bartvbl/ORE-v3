@@ -6,13 +6,11 @@
 #include <GLFW/glfw3.h>
 
 #include "FontCache.h"
-#include "nuklear_configured.h"
 
 namespace ore {
     class GUIRootNode : public ore::SceneNode {
         std::vector<ore::GUIWindow*> windows;
         GLFWwindow* window = nullptr;
-        nk_context* context;
         ore::ui::FontCache fontCache;
         std::vector<ore::SceneNode *> noChildren;
 

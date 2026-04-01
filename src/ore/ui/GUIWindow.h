@@ -3,7 +3,6 @@
 #pragma once
 #include <vector>
 
-#include "nuklear_configured.h"
 #include "ore/sceneGraph/SceneNode.h"
 
 namespace ore {
@@ -17,9 +16,8 @@ namespace ore {
         bool titleBarVisible = true;
         bool resizable = true;
         bool moveable = true;
-        nk_context* context = nullptr;
+        bool isOpen = true;
     protected:
-        void newRow(uint32_t width, uint32_t height, uint32_t columns) const;
         bool drawButton(const std::string &label) const;
         void drawComboBox(const std::vector<std::string>& options, uint32_t& selectedIndex) const;
 
@@ -29,7 +27,7 @@ namespace ore {
 
         virtual void drawContents() = 0;
 
-        void drawWindow(nk_context* context);
+        void drawWindow();
         void setVisible(bool visible);
     };
 }

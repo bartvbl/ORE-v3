@@ -5,17 +5,27 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "nuklear_glfw_gl4.h"
+#include "imgui_configured.h"
 
 #define MAX_VERTEX_BUFFER (512 * 1024)
 #define MAX_ELEMENT_BUFFER (128 * 1024)
 
 void ore::GUIRootNode::init(GLFWwindow* _window) {
     window = _window;
-    context = nk_glfw3_init(_window, NK_GLFW3_INSTALL_CALLBACKS, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 
-    fontCache.initialize();
-    fontCache.setFont(context, ore::ui::Font::arial, 16);
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    //io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(_window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+    ImGui_ImplOpenGL3_Init();
+
+    //fontCache.initialize();
+    //fontCache.setFont(context, ore::ui::Font::arial, 16);
 }
 
 std::string ore::GUIRootNode::getName() {
@@ -40,14 +50,17 @@ void ore::GUIRootNode::removeWindow(ore::GUIWindow *window) {
 }
 
 void ore::GUIRootNode::render(ore::RenderState &renderState) {
-    nk_glfw3_new_frame(renderState.window.width, renderState.window.height);
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+    ImGui::ShowDemoWindow(); // Show demo window! :)
 
     for (ore::GUIWindow* win : windows) {
-        fontCache.setFont(context, ore::ui::Font::arial, 18);
-        win->drawWindow(context);
+        win->drawWindow();
     }
 
-    nk_glfw3_render(NK_ANTI_ALIASING_ON);
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 

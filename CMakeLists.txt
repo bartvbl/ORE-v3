@@ -62,6 +62,7 @@ find_package(PkgConfig)
 #pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
 
 add_subdirectory(lib/miniaudio-0.11.22)
+add_subdirectory(lib/fmt-11.1.4)
 
 #find_package(PkgConfig REQUIRED)
 #pkg_search_module(gstreamer REQUIRED IMPORTED_TARGET gstreamer-1.0>=1.4)
@@ -83,6 +84,8 @@ include_directories (
     lib/g3log/src/
     lib/Nuklear-4.12.8
     lib/JoltPhysics-5.3.0
+    lib/imgui-1.92.6
+    lib/imgui-1.92.6/backends
     ${GLIB_INCLUDE_DIRS}
     ${GSTREAMER_INCLUDE_DIRS}
 )
@@ -91,7 +94,15 @@ include_directories (
 # Add files
 #
 file (GLOB         LIBRARY_SOURCES lib/glad/src/glad.c
-                                   lib/fast_obj/fast_obj.c)
+                                   lib/fast_obj/fast_obj.c
+                                   lib/imgui-1.92.6/imgui.cpp
+                                   lib/imgui-1.92.6/imgui_draw.cpp
+                                   lib/imgui-1.92.6/imgui_demo.cpp
+                                   lib/imgui-1.92.6/imgui_tables.cpp
+                                   lib/imgui-1.92.6/imgui_widgets.cpp
+                                   lib/imgui-1.92.6/misc/cpp/imgui_stdlib.cpp
+                                   lib/imgui-1.92.6/backends/imgui_impl_glfw.cpp
+                                   lib/imgui-1.92.6/backends/imgui_impl_opengl3.cpp)
 file (GLOB_RECURSE PROJECT_HEADERS src/*.hpp
                                    src/*.h)
 file (GLOB_RECURSE PROJECT_SOURCES src/*.cpp
@@ -103,7 +114,7 @@ add_definitions(-DGLFW_INCLUDE_NONE)
 add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCES} ${PROJECT_HEADERS} ${LIBRARY_SOURCES})
 
 
-  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log Jolt miniaudio ${FREETYPE_LIBRARIES} ${GSTREAMER_LIBRARIES}
+  target_link_libraries (${PROJECT_NAME} glfw ${GLFW_LIBRARIES} ${GLAD_LIBRARIES} OpenMP::OpenMP_CXX g3log fmt::fmt Jolt miniaudio ${FREETYPE_LIBRARIES} ${GSTREAMER_LIBRARIES}
 #          PkgConfig::gstreamer
 #          PkgConfig::gstreamer-sdp
 #          PkgConfig::gstreamer-app

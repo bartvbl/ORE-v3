@@ -1,25 +1,28 @@
 
 
 #include "GUIWindow.h"
-
-void ore::GUIWindow::newRow(uint32_t cellWidth, uint32_t columnHeight, uint32_t columns) const {
-    nk_layout_row_static(context, columnHeight, cellWidth, columns);
-}
+#include "imgui_configured.h"
 
 bool ore::GUIWindow::drawButton(const std::string &label) const {
-    return nk_button_label(context, label.c_str());
+    return ImGui::Button(label.c_str());
 }
 
 void ore::GUIWindow::drawComboBox(const std::vector<std::string> &options, uint32_t& selectedIndex) const {
-    if (nk_combo_begin_label(context, options.at(selectedIndex).c_str(), nk_vec2(nk_widget_width(context), 200))) {
-        nk_layout_row_dynamic(context, 35, 1);
-        for(unsigned int i = 0; i < options.size(); i++) {
-            if (nk_combo_item_label(context, options.at(i).c_str(), NK_TEXT_LEFT)) {
-                // selection changed
+    const char* combo_preview_value = options.at(selectedIndex).c_str();
+    if (ImGui::BeginCombo("", combo_preview_value, 0))
+    {
+        for (uint32_t i = 0; i < options.size(); i++)
+        {
+            const bool is_selected = (selectedIndex == i);
+            if (ImGui::Selectable(options.at(i).c_str(), is_selected)) {
                 selectedIndex = i;
             }
+
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
         }
-        nk_combo_end(context);
+        ImGui::EndCombo();
     }
 }
 
@@ -27,19 +30,14 @@ ore::GUIWindow::GUIWindow(std::string _title, int _initialX, int _initialY, int 
     : title(_title), initialX(_initialX), initialY(_initialY), width(_width), height(_height), titleBarVisible(_titlebarVisible), resizable(_resizable), moveable(moveable) {
 }
 
-void ore::GUIWindow::drawWindow(nk_context *context) {
-    this->context = context;
+void ore::GUIWindow::drawWindow() {
 
     if (!isVisible) {
         return;
     }
-    int windowOptions = NK_WINDOW_BORDER | (titleBarVisible ? NK_WINDOW_TITLE : 0) | (moveable ? NK_WINDOW_MOVABLE : 0) | (resizable ? NK_WINDOW_SCALABLE : 0);
-    if (nk_begin(context, title.c_str(), nk_rect(initialX, initialY, width, height), windowOptions)) {
-
-        drawContents();
-
-        nk_end(context);
-    }
+    ImGui::Begin(title.c_str(), &isOpen);
+    drawContents();
+    ImGui::End();
 }
 
 void ore::GUIWindow::setVisible(bool visible) {
