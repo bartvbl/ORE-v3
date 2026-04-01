@@ -26,20 +26,31 @@ void ore::GUIWindow::drawComboBox(const std::vector<std::string> &options, uint3
     }
 }
 
-ore::GUIWindow::GUIWindow(std::string _title, int _initialX, int _initialY, int _width, int _height, bool _titlebarVisible, bool _resizable, bool moveable)
-    : title(_title), initialX(_initialX), initialY(_initialY), width(_width), height(_height), titleBarVisible(_titlebarVisible), resizable(_resizable), moveable(moveable) {
+ore::GUIWindow::GUIWindow(std::string _title, int _initialX, int _initialY, int _width, int _height, bool _titlebarVisible, bool _resizable, bool moveable, bool closeable)
+    : title(_title), initialX(_initialX), initialY(_initialY), width(_width), height(_height), titleBarVisible(_titlebarVisible), resizable(_resizable), moveable(moveable), closeable(closeable) {
 }
 
 void ore::GUIWindow::drawWindow() {
-
     if (!isVisible) {
         return;
     }
-    ImGui::Begin(title.c_str(), &isOpen);
+
+    if (closeable) {
+        ImGui::Begin(title.c_str(), &isWindowOpen);
+    } else {
+        ImGui::Begin(title.c_str(), nullptr);
+    }
+
+    if (!isWindowOpen) {
+        isVisible = false;
+    }
     drawContents();
     ImGui::End();
 }
 
 void ore::GUIWindow::setVisible(bool visible) {
     this->isVisible = visible;
+    if (visible) {
+        this->isWindowOpen = true;
+    }
 }
