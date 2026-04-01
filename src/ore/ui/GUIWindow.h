@@ -17,6 +17,7 @@ namespace ore {
         bool resizable = true;
         bool moveable = true;
         bool isOpen = true;
+
     protected:
         bool drawButton(const std::string &label) const;
         void drawComboBox(const std::vector<std::string>& options, uint32_t& selectedIndex) const;
