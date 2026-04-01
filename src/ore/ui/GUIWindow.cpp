@@ -26,6 +26,10 @@ void ore::GUIWindow::drawComboBox(const std::vector<std::string> &options, uint3
     }
 }
 
+void ore::GUIWindow::drawCheckbox(const std::string &label, bool &isChecked) {
+    ImGui::Checkbox(label.c_str(), &isChecked);
+}
+
 ore::GUIWindow::GUIWindow(std::string _title, int _initialX, int _initialY, int _width, int _height, bool _titlebarVisible, bool _resizable, bool moveable, bool closeable)
     : title(_title), initialX(_initialX), initialY(_initialY), width(_width), height(_height), titleBarVisible(_titlebarVisible), resizable(_resizable), moveable(moveable), closeable(closeable) {
 }

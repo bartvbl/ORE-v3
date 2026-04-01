@@ -22,6 +22,7 @@ namespace ore {
     protected:
         bool drawButton(const std::string &label) const;
         void drawComboBox(const std::vector<std::string>& options, uint32_t& selectedIndex) const;
+        void drawCheckbox(const std::string& label, bool& isChecked);
 
     public:
         GUIWindow(std::string _title, int _initialX, int _initialY, int _width, int _height, bool _titlebarVisible = true, bool _resizable = true, bool moveable = true, bool closeable = true);
