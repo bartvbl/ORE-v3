@@ -21,11 +21,12 @@ namespace ore {
 
     protected:
         bool drawButton(const std::string &label) const;
-        void drawComboBox(const std::string& label, const std::vector<std::string>& options, uint32_t& selectedIndex) const;
-        void drawCheckbox(const std::string& label, bool& isChecked);
-        void drawTextLineEditor(const std::string& label, std::string& lineToEdit);
-        void drawDragFloat3(const std::string& label, glm::vec3* vecToEdit);
-        void drawDragFloat(const std::string& label, float* floatToEdit);
+        bool drawComboBox(const std::string& label, const std::vector<std::string>& options, uint32_t& selectedIndex) const;
+        bool drawCheckbox(const std::string& label, bool& isChecked);
+        bool drawTextLineEditor(const std::string& label, std::string& lineToEdit);
+        bool drawDragFloat3(const std::string& label, glm::vec3* vecToEdit);
+        bool drawDragFloat2(const std::string& label, glm::vec2* vecToEdit);
+        bool drawDragFloat(const std::string& label, float* floatToEdit);
         void drawText(const std::string& text);
         void keepSameLine();
 

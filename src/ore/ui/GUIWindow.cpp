@@ -7,8 +7,9 @@ bool ore::GUIWindow::drawButton(const std::string &label) const {
     return ImGui::Button(label.c_str());
 }
 
-void ore::GUIWindow::drawComboBox(const std::string& label, const std::vector<std::string> &options, uint32_t& selectedIndex) const {
+bool ore::GUIWindow::drawComboBox(const std::string& label, const std::vector<std::string> &options, uint32_t& selectedIndex) const {
     const char* combo_preview_value = options.at(selectedIndex).c_str();
+    uint32_t originalSelectedIndex = selectedIndex;
     if (ImGui::BeginCombo(label.c_str(), combo_preview_value, 0))
     {
         for (uint32_t i = 0; i < options.size(); i++)
@@ -24,26 +25,36 @@ void ore::GUIWindow::drawComboBox(const std::string& label, const std::vector<st
         }
         ImGui::EndCombo();
     }
+    return selectedIndex != originalSelectedIndex;
 }
 
-void ore::GUIWindow::drawCheckbox(const std::string &label, bool &isChecked) {
-    ImGui::Checkbox(label.c_str(), &isChecked);
+bool ore::GUIWindow::drawCheckbox(const std::string &label, bool &isChecked) {
+    return ImGui::Checkbox(label.c_str(), &isChecked);
 }
 
-void ore::GUIWindow::drawTextLineEditor(const std::string &label, std::string &lineToEdit) {
-    ImGui::InputText(label.c_str(), &lineToEdit);
+bool ore::GUIWindow::drawTextLineEditor(const std::string &label, std::string &lineToEdit) {
+    return ImGui::InputText(label.c_str(), &lineToEdit);
 }
 
-void ore::GUIWindow::drawDragFloat3(const std::string &label, glm::vec3 *vecToEdit) {
+bool ore::GUIWindow::drawDragFloat3(const std::string &label, glm::vec3 *vecToEdit) {
     float tempArray[3] = {vecToEdit->x, vecToEdit->y, vecToEdit->z};
-    ImGui::DragFloat3(label.c_str(), tempArray, 0.01);
+    bool modified = ImGui::DragFloat3(label.c_str(), tempArray, 0.01);
     vecToEdit->x = tempArray[0];
     vecToEdit->y = tempArray[1];
     vecToEdit->z = tempArray[2];
+    return modified;
 }
 
-void ore::GUIWindow::drawDragFloat(const std::string &label, float *floatToEdit) {
-    ImGui::DragFloat(label.c_str(), floatToEdit, 0.01);
+bool ore::GUIWindow::drawDragFloat2(const std::string &label, glm::vec2 *vecToEdit) {
+    float tempArray[2] = {vecToEdit->x, vecToEdit->y};
+    bool modified = ImGui::DragFloat2(label.c_str(), tempArray, 0.01);
+    vecToEdit->x = tempArray[0];
+    vecToEdit->y = tempArray[1];
+    return modified;
+}
+
+bool ore::GUIWindow::drawDragFloat(const std::string &label, float *floatToEdit) {
+    return ImGui::DragFloat(label.c_str(), floatToEdit, 0.01);
 }
 
 void ore::GUIWindow::drawText(const std::string &text) {
