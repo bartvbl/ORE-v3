@@ -21,8 +21,12 @@ namespace ore {
 
     protected:
         bool drawButton(const std::string &label) const;
-        void drawComboBox(const std::vector<std::string>& options, uint32_t& selectedIndex) const;
+        void drawComboBox(const std::string& label, const std::vector<std::string>& options, uint32_t& selectedIndex) const;
         void drawCheckbox(const std::string& label, bool& isChecked);
+        void drawTextLineEditor(const std::string& label, std::string& lineToEdit);
+        void drawDragFloat3(const std::string& label, glm::vec3* vecToEdit);
+        void drawText(const std::string& text);
+        void keepSameLine();
 
     public:
         GUIWindow(std::string _title, int _initialX, int _initialY, int _width, int _height, bool _titlebarVisible = true, bool _resizable = true, bool moveable = true, bool closeable = true);
@@ -31,6 +35,7 @@ namespace ore {
         virtual void drawContents() = 0;
 
         void drawWindow();
+        bool isClosed();
         void setVisible(bool visible);
     };
 }
