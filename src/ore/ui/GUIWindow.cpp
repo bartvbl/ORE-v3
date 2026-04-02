@@ -42,6 +42,10 @@ void ore::GUIWindow::drawDragFloat3(const std::string &label, glm::vec3 *vecToEd
     vecToEdit->z = tempArray[2];
 }
 
+void ore::GUIWindow::drawDragFloat(const std::string &label, float *floatToEdit) {
+    ImGui::DragFloat(label.c_str(), floatToEdit, 0.01);
+}
+
 void ore::GUIWindow::drawText(const std::string &text) {
     ImGui::Text(text.c_str());
 }

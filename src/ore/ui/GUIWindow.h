@@ -25,6 +25,7 @@ namespace ore {
         void drawCheckbox(const std::string& label, bool& isChecked);
         void drawTextLineEditor(const std::string& label, std::string& lineToEdit);
         void drawDragFloat3(const std::string& label, glm::vec3* vecToEdit);
+        void drawDragFloat(const std::string& label, float* floatToEdit);
         void drawText(const std::string& text);
         void keepSameLine();
 
