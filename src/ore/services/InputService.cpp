@@ -345,7 +345,14 @@ void ore::InputService::runJoystickCheck(bool force) {
                               || name.find(std::string("X-Box")) != std::string::npos;
             bool isGameControllerOfSomeKind = name.find(std::string("Controller")) != std::string::npos;
 
-            if(isXboxGamepad || isGameControllerOfSomeKind) {
+            int stickCount = 0;
+            int buttonCount = 0;
+            glfwGetJoystickAxes(GLFW_JOYSTICK_1 + i, &stickCount);
+            glfwGetJoystickButtons(GLFW_JOYSTICK_1 + i, &buttonCount);
+
+            bool hasSomeNumberOfButtons = (stickCount >= 4) && (buttonCount >= 4);
+
+            if((isXboxGamepad || isGameControllerOfSomeKind) && hasSomeNumberOfButtons) {
                 if(!name.empty() && !joystickWasActive) {
                     std::cout << "Detected a new controller was connected (ID " << (i+1) << "): " << name << std::endl;
                 }
