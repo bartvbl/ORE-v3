@@ -18,6 +18,7 @@ void ore::GUIRootNode::init(GLFWwindow* _window) {
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io.ConfigDebugHighlightIdConflicts = true;
     //io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
 
     // Setup Platform/Renderer backends

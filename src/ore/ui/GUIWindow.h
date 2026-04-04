@@ -29,6 +29,7 @@ namespace ore {
         bool drawDragFloat(const std::string& label, float* floatToEdit);
         void drawText(const std::string& text);
         void keepSameLine();
+        void drawSeparator(const std::string& label = "");
 
     public:
         GUIWindow(std::string _title, int _initialX, int _initialY, int _width, int _height, bool _titlebarVisible = true, bool _resizable = true, bool moveable = true, bool closeable = true);

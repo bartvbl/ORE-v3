@@ -65,6 +65,14 @@ void ore::GUIWindow::keepSameLine() {
     ImGui::SameLine();
 }
 
+void ore::GUIWindow::drawSeparator(const std::string &label) {
+    if (!label.empty()) {
+        ImGui::SeparatorText(label.c_str());
+    } else {
+        ImGui::Separator();
+    }
+}
+
 ore::GUIWindow::GUIWindow(std::string _title, int _initialX, int _initialY, int _width, int _height, bool _titlebarVisible, bool _resizable, bool moveable, bool closeable)
     : title(_title), initialX(_initialX), initialY(_initialY), width(_width), height(_height), titleBarVisible(_titlebarVisible), resizable(_resizable), moveable(moveable), closeable(closeable) {
 }
