@@ -55,11 +55,21 @@ namespace ore {
             static const unsigned int lightPositionArrayCount = 49;
             static const unsigned int lightPositionArrayID = 50; // + 16
             static const unsigned int lightAttenuationArray = 66; // + 16
+            static const unsigned int lightParameterflagArray = 115; // + 16
+            static const unsigned int lightColourArray = 131; // + 16
+            static const unsigned int lightSpotLightAngleArray = 147; // + 16
+            static const unsigned int lightSpotLightDirectionArray = 163; // + 16
 
             static const unsigned int shadowLightCount = 90;
             static const unsigned int shadowLightPositionArray = 91; // + 4
             static const unsigned int shadowLightAttenuationArray = 95; // + 4
-            static const unsigned int shadowLightEnableOutsideLightingArray = 99;
+            static const unsigned int shadowLightEnableOutsideLightingArray = 99; // + 4
+        };
+
+        struct LightSourceParameter {
+            static const unsigned int enabledBit = 1;
+            static const unsigned int isSpotLightBit = 2;
+            static const unsigned int shadowSource_enableOutsideShadowBit = 4;
         };
 
 
