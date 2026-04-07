@@ -1,7 +1,11 @@
 #include "LightNode.h"
+
+#include <iostream>
 #include <g3log/g3log.hpp>
 #include <ore/gl/shader/ShaderUniformIndex.h>
 #include <glad/glad.h>
+
+#include "glm/gtx/string_cast.hpp"
 
 void ore::scene::LightNode::preRender(ore::RenderState &state) {
     glm::mat4 modelViewMatrix = state.transformations.view * state.transformations.model;
@@ -17,11 +21,12 @@ void ore::scene::LightNode::preRender(ore::RenderState &state) {
         transformedLightPositions.at(i) = modelViewMatrix * glm::vec4(lightSources.at(i).position, 1.0);
         lightAttenuations.at(i) = lightSources.at(i).attenuation;
         lightColours.at(i) = lightSources.at(i).lightColour;
-        transformedLightDirections.at(i) = glm::vec3(normalMatrix * glm::vec4(glm::normalize(lightSources.at(i).lightDirection), 1.0));
+        glm::vec3 direction = lightSources.at(i).lightDirection == glm::vec3(0, 0, 0) ? glm::vec3(0, -1, 0) : lightSources.at(i).lightDirection;
+        transformedLightDirections.at(i) = glm::vec3(normalMatrix * glm::vec4(glm::normalize(direction), 1.0));
         spotLightAngles.at(i) = lightSources.at(i).spotLightAngleDegrees;
         lightParametersFlags.at(i) =
                   ore::gl::LightSourceParameter::enabledBit
-                | (lightSources.at(i).type == ore::gl::LightType::POINT_LIGHT ? ore::gl::LightSourceParameter::isSpotLightBit : 0)
+                | (lightSources.at(i).type == ore::gl::LightType::SPOT_LIGHT ? ore::gl::LightSourceParameter::isSpotLightBit : 0)
                 | (lightSources.at(i).enableLightOutsideShadowMap ? ore::gl::LightSourceParameter::shadowSource_enableOutsideShadowBit : 0);
     }
     state.uniforms.setLightPositions(ore::gl::ShaderUniformIndex::lightPositionArrayID,
@@ -32,7 +37,7 @@ void ore::scene::LightNode::preRender(ore::RenderState &state) {
     glUniform3fv(ore::gl::ShaderUniformIndex::lightSpotLightDirectionArray, static_cast<int>(lightSourceCount), reinterpret_cast<GLfloat*>(transformedLightDirections.data()));
     glUniform1fv(ore::gl::ShaderUniformIndex::lightSpotLightAngleArray, static_cast<int>(lightSourceCount), reinterpret_cast<GLfloat*>(spotLightAngles.data()));
     glUniform3fv(ore::gl::ShaderUniformIndex::lightColourArray, static_cast<int>(lightSourceCount), reinterpret_cast<GLfloat*>(lightColours.data()));
-    glUniform1iv(ore::gl::ShaderUniformIndex::lightParameterflagArray, static_cast<int>(lightSourceCount), reinterpret_cast<int*>(lightParametersFlags.data()));
+    glUniform1uiv(ore::gl::ShaderUniformIndex::lightParameterflagArray, static_cast<int>(lightSourceCount), lightParametersFlags.data());
     glUniform1fv(ore::gl::ShaderUniformIndex::lightAttenuationArray, static_cast<int>(lightSourceCount), lightAttenuations.data());
 
 }
