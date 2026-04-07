@@ -27,7 +27,8 @@ void ore::scene::LightNode::preRender(ore::RenderState &state) {
         lightParametersFlags.at(i) =
                   ore::gl::LightSourceParameter::enabledBit
                 | (lightSources.at(i).type == ore::gl::LightType::SPOT_LIGHT ? ore::gl::LightSourceParameter::isSpotLightBit : 0)
-                | (lightSources.at(i).enableLightOutsideShadowMap ? ore::gl::LightSourceParameter::shadowSource_enableOutsideShadowBit : 0);
+                | (lightSources.at(i).enableLightOutsideShadowMap ? ore::gl::LightSourceParameter::shadowSource_enableOutsideShadowBit : 0)
+                | (lightSources.at(i).showLightBeams ? ore::gl::LightSourceParameter::spotLight_showLightBeamBit : 0);
     }
     state.uniforms.setLightPositions(ore::gl::ShaderUniformIndex::lightPositionArrayID,
                                      ore::gl::ShaderUniformIndex::lightPositionArrayCount,

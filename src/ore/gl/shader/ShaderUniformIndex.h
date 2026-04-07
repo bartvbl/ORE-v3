@@ -70,6 +70,7 @@ namespace ore {
             static const unsigned int enabledBit = 1;
             static const unsigned int isSpotLightBit = 2;
             static const unsigned int shadowSource_enableOutsideShadowBit = 4;
+            static const unsigned int spotLight_showLightBeamBit = 8;
         };
 
 
