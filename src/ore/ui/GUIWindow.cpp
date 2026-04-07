@@ -57,6 +57,15 @@ bool ore::GUIWindow::drawDragFloat(const std::string &label, float *floatToEdit)
     return ImGui::DragFloat(label.c_str(), floatToEdit, 0.01);
 }
 
+bool ore::GUIWindow::drawSelectColour(const std::string &label, glm::vec3 *colourToEdit) {
+    float tempArray[3] = {colourToEdit->x, colourToEdit->y, colourToEdit->z};
+    bool modified = ImGui::ColorEdit3(label.c_str(), tempArray);
+    colourToEdit->x = tempArray[0];
+    colourToEdit->y = tempArray[1];
+    colourToEdit->z = tempArray[2];
+    return modified;
+}
+
 void ore::GUIWindow::drawText(const std::string &text) {
     ImGui::Text(text.c_str());
 }
