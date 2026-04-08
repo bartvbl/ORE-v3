@@ -6,6 +6,7 @@
 #include <glad/glad.h>
 
 #include "glm/gtx/string_cast.hpp"
+#include "ore/gl/camera/TripodCameraTransform.h"
 
 void ore::scene::LightNode::preRender(ore::RenderState &state) {
     glm::mat4 modelViewMatrix = state.transformations.view * state.transformations.model;
@@ -21,9 +22,12 @@ void ore::scene::LightNode::preRender(ore::RenderState &state) {
         transformedLightPositions.at(i) = modelViewMatrix * glm::vec4(lightSources.at(i).position, 1.0);
         lightAttenuations.at(i) = lightSources.at(i).attenuation;
         lightColours.at(i) = lightSources.at(i).lightColour;
-        glm::vec3 direction = lightSources.at(i).lightDirection == glm::vec3(0, 0, 0) ? glm::vec3(0, -1, 0) : lightSources.at(i).lightDirection;
-        transformedLightDirections.at(i) = glm::vec3(normalMatrix * glm::vec4(glm::normalize(direction), 1.0));
-        spotLightAngles.at(i) = lightSources.at(i).spotLightAngleDegrees;
+        glm::mat4 identityMatrix = glm::mat4(1);
+        glm::mat4 directionMatrix = ore::gl::computeTripodViewTransformation(identityMatrix, glm::vec3(0, 0, 0), lightSources.at(i).lightDirection);
+        glm::vec4 direction = directionMatrix * glm::vec4(0.0, 0.0, 1.0, 1.0);
+
+        transformedLightDirections.at(i) = glm::vec3(normalMatrix * direction);
+        spotLightAngles.at(i) = glm::radians(lightSources.at(i).spotLightAngleDegrees);
         lightParametersFlags.at(i) =
                   ore::gl::LightSourceParameter::enabledBit
                 | (lightSources.at(i).type == ore::gl::LightType::SPOT_LIGHT ? ore::gl::LightSourceParameter::isSpotLightBit : 0)

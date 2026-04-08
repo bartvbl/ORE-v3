@@ -10,7 +10,7 @@ namespace ore {
             ore::gl::LightType type = LightType::POINT_LIGHT;
 
             glm::vec3 position = {0, 0, 0};
-            glm::vec3 lightDirection = {0, -1, 0};
+            glm::vec3 lightDirection = {0, 0, 0};
             glm::vec3 lightColour = {1, 1, 1};
             float spotLightAngleDegrees = 90;
             float attenuation = 5;
