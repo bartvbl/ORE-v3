@@ -26,7 +26,7 @@ void ore::scene::LightNode::preRender(ore::RenderState &state) {
         glm::mat4 directionMatrix = ore::gl::computeTripodViewTransformation(identityMatrix, glm::vec3(0, 0, 0), lightSources.at(i).lightDirection);
         glm::vec4 direction = directionMatrix * glm::vec4(0.0, 0.0, 1.0, 1.0);
 
-        transformedLightDirections.at(i) = glm::vec3(normalMatrix * direction);
+        transformedLightDirections.at(i) = glm::normalize(glm::vec3(normalMatrix * direction));
         spotLightAngles.at(i) = glm::radians(lightSources.at(i).spotLightAngleDegrees);
         lightParametersFlags.at(i) =
                   ore::gl::LightSourceParameter::enabledBit
