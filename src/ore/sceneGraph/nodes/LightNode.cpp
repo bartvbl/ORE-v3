@@ -8,6 +8,7 @@
 #include "glm/gtx/string_cast.hpp"
 #include "ore/gl/camera/TripodCameraTransform.h"
 
+
 void ore::scene::LightNode::preRender(ore::RenderState &state) {
     glm::mat4 modelViewMatrix = state.transformations.view * state.transformations.model;
     glm::mat4x4 normalMatrix = glm::transpose(glm::inverse(modelViewMatrix));
@@ -45,12 +46,34 @@ void ore::scene::LightNode::preRender(ore::RenderState &state) {
     glUniform1uiv(ore::gl::ShaderUniformIndex::lightParameterflagArray, static_cast<int>(lightSourceCount), lightParametersFlags.data());
     glUniform1fv(ore::gl::ShaderUniformIndex::lightAttenuationArray, static_cast<int>(lightSourceCount), lightAttenuations.data());
 
+
 }
 
 void ore::scene::LightNode::render(ore::RenderState &state) {
     preRender(state);
 
     ContainerNode::render(state);
+
+    ore::resources::Shader oldShader = state.currentActiveShader;
+    state.currentActiveShader = lightBeamShader;
+    lightBeamShader.use();
+    for(unsigned int i = 0; i < lightSourceCount; i++) {
+        if (lightSources.at(i).type == ore::gl::LightType::SPOT_LIGHT && lightSources.at(i).showLightBeams) {
+            this->lightConeLocationNode.position = lightSources.at(i).position;
+            this->lightConeLocationNode.rotation = lightSources.at(i).lightDirection;
+            float spotlightSine = std::sin(glm::radians(lightSources.at(i).spotLightAngleDegrees));
+            this->lightConeLocationNode.scale = glm::vec3(100.0 * spotlightSine, 100.0 * spotlightSine, 100.0);
+            this->lightConeLocationNode.preRender(state);
+            this->lightConeLocationNode.render(state);
+            this->lightConeLocationNode.postRender(state);
+        }
+    }
+    state.currentActiveShader = oldShader;
+    oldShader.use();
+}
+
+void ore::scene::LightNode::postRender(ore::RenderState &state) {
+    ContainerNode::postRender(state);
 }
 
 void ore::scene::LightNode::addLight(ore::gl::Light &light) {

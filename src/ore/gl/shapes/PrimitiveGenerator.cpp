@@ -64,20 +64,27 @@ ore::scene::GeometryNode ore::gl::PrimitiveGenerator::generateInvertedConeBuffer
 
     geometry.vertices.at(0) = glm::vec3(0, 0, 0);
     geometry.vertices.at(1) = glm::vec3(0, 0, height);
-    for (uint32_t i = 0; i < sliceCount; i++) {
+    for (uint32_t i = 1; i <= sliceCount; i++) {
         float fraction = float(i) / float(sliceCount);
         float angle = fraction * (M_PI * 2.0f);
-        geometry.vertices.at(i + 2) = glm::vec3(
+        geometry.vertices.at(i + 1) = glm::vec3(
             center.x + (radius * float(std::cos(angle))),
             center.y + (radius * float(std::sin(angle))),
             height);
-        geometry.indices.at(6 * i + 0) = 0;
-        geometry.indices.at(6 * i + 1) = i - 1;
-        geometry.indices.at(6 * i + 2) = i;
-        geometry.indices.at(6 * i + 3) = 1;
-        geometry.indices.at(6 * i + 4) = i;
-        geometry.indices.at(6 * i + 5) = i - 1;
+        geometry.indices.at(6 * (i - 1) + 0) = 0;
+        geometry.indices.at(6 * (i - 1) + 1) = i;
+        geometry.indices.at(6 * (i - 1) + 2) = i + 1;
+        geometry.indices.at(6 * (i - 1) + 3) = 1;
+        geometry.indices.at(6 * (i - 1) + 4) = i;
+        geometry.indices.at(6 * (i - 1) + 5) = i + 1;
     }
+
+    geometry.indices.at(0) = 0;
+    geometry.indices.at(1) = sliceCount + 1;
+    geometry.indices.at(2) = 2;
+    geometry.indices.at(3) = 1;
+    geometry.indices.at(4) = sliceCount + 1;
+    geometry.indices.at(5) = 2;
 
     return ore::gl::generateGeometryBuffer(geometry);
 
