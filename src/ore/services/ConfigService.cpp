@@ -52,7 +52,7 @@ void ore::ConfigService::load(ore::filesystem::path &configFile) {
             configuration.windowSettings.MSAASamplesPerPixel = configFileContents["display"]["MSAASamplesPerPixel"];
         }
         if(configFileContents["display"].contains("windowTitle")) {
-            configuration.windowSettings.windowTitle = configFileContents["display"]["windowTitle"];
+            configuration.windowSettings.windowTitle = std::string(configFileContents["display"]["windowTitle"]);
         }
         if(configFileContents["display"].contains("clearColour")) {
             configuration.windowSettings.clearColour = { configFileContents["display"]["clearColour"][0],
