@@ -52,3 +52,34 @@ ore::scene::GeometryNode ore::gl::PrimitiveGenerator::generateCircleBuffer(glm::
     return ore::gl::generateGeometryBuffer(geometry);
 }
 
+ore::scene::GeometryNode ore::gl::PrimitiveGenerator::generateInvertedConeBuffer(float radius, float height, uint32_t sliceCount) {
+    ore::resources::MeshGeometry geometry;
+    geometry.vertices.resize(sliceCount + 2);
+    geometry.indices.resize(3 * 2 * sliceCount);
+    geometry.hasTextures = false;
+    geometry.hasNormals = false;
+    geometry.hasNormalMap = false;
+
+    glm::vec3 center = glm::vec3(0, 0, 0);
+
+    geometry.vertices.at(0) = glm::vec3(0, 0, 0);
+    geometry.vertices.at(1) = glm::vec3(0, 0, height);
+    for (uint32_t i = 0; i < sliceCount; i++) {
+        float fraction = float(i) / float(sliceCount);
+        float angle = fraction * (M_PI * 2.0f);
+        geometry.vertices.at(i + 2) = glm::vec3(
+            center.x + (radius * float(std::cos(angle))),
+            center.y + (radius * float(std::sin(angle))),
+            height);
+        geometry.indices.at(6 * i + 0) = 0;
+        geometry.indices.at(6 * i + 1) = i - 1;
+        geometry.indices.at(6 * i + 2) = i;
+        geometry.indices.at(6 * i + 3) = 1;
+        geometry.indices.at(6 * i + 4) = i;
+        geometry.indices.at(6 * i + 5) = i - 1;
+    }
+
+    return ore::gl::generateGeometryBuffer(geometry);
+
+}
+
