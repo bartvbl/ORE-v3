@@ -5,6 +5,8 @@
 #include <ore/gl/render/RenderMode.h>
 #include <array>
 
+#include "ore/gl/vao/GeometryBufferGenerator.h"
+
 void ore::scene::GeometryNode::preRender(ore::RenderState &state) {
     CoordinateNode::preRender(state);
 
@@ -48,6 +50,11 @@ void ore::scene::GeometryNode::destroyGeometryBuffer() {
 void ore::scene::GeometryNode::setRenderMode(ore::gl::RenderMode mode) {
     this->mode = mode;
 }
+
+void ore::scene::GeometryNode::updateContents(const resources::MeshGeometry& geometry) {
+    gl::updateGeometryBuffer(geometry, buffer, GL_STREAM_DRAW);
+}
+
 
 void ore::scene::GeometryNode::drawBuffer() const {
     glBindVertexArray(buffer.vaoID);

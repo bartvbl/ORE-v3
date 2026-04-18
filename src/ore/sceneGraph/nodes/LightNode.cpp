@@ -54,6 +54,7 @@ void ore::scene::LightNode::render(ore::RenderState &state) {
 
     ContainerNode::render(state);
 
+    glCullFace(GL_BACK);
     ore::resources::Shader oldShader = state.currentActiveShader;
     state.currentActiveShader = lightBeamShader;
     lightBeamShader.use();

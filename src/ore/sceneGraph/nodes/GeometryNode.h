@@ -4,6 +4,7 @@
 #include <ore/gl/vao/GeometryBuffer.h>
 #include <ore/gl/render/RenderMode.h>
 #include "CoordinateNode.h"
+#include "ore/resources/resourceTypes/mesh/MeshGeometry.h"
 
 namespace ore {
     namespace scene {
@@ -28,6 +29,8 @@ namespace ore {
             void drawBuffer() const;
             void destroyGeometryBuffer();
             void setRenderMode(ore::gl::RenderMode mode);
+
+            void updateContents(const resources::MeshGeometry& geometry);
         };
     }
 }
