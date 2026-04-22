@@ -75,16 +75,16 @@ ore::scene::GeometryNode ore::gl::PrimitiveGenerator::generateInvertedConeBuffer
         geometry.indices.at(6 * (i - 1) + 1) = i + 1;
         geometry.indices.at(6 * (i - 1) + 2) = i;
         geometry.indices.at(6 * (i - 1) + 3) = 1;
-        geometry.indices.at(6 * (i - 1) + 4) = i + 1;
-        geometry.indices.at(6 * (i - 1) + 5) = i;
+        geometry.indices.at(6 * (i - 1) + 4) = i;
+        geometry.indices.at(6 * (i - 1) + 5) = i + 1;
     }
 
     geometry.indices.at(0) = 0;
     geometry.indices.at(2) = sliceCount + 1;
     geometry.indices.at(1) = 2;
     geometry.indices.at(3) = 1;
-    geometry.indices.at(5) = sliceCount + 1;
-    geometry.indices.at(4) = 2;
+    geometry.indices.at(5) = 2;
+    geometry.indices.at(4) = sliceCount + 1;
 
     return ore::gl::generateGeometryBuffer(geometry);
 
