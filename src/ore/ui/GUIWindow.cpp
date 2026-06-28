@@ -57,6 +57,22 @@ bool ore::GUIWindow::drawDragFloat(const std::string &label, float *floatToEdit)
     return ImGui::DragFloat(label.c_str(), floatToEdit, 0.01);
 }
 
+bool ore::GUIWindow::drawDragInteger(const std::string &label, int *intToEdit) {
+    return ImGui::DragInt(label.c_str(), intToEdit);
+}
+
+bool ore::GUIWindow::drawDragInteger(const std::string &label, unsigned int *intToEdit) {
+    int convertedToEdit = *reinterpret_cast<int*>(intToEdit);
+    bool out = ImGui::DragInt(label.c_str(), &convertedToEdit);
+    if (convertedToEdit < 0) {
+        convertedToEdit = 0;
+    }
+    if (out) {
+        *intToEdit = convertedToEdit;
+    }
+    return out;
+}
+
 bool ore::GUIWindow::drawSelectColour(const std::string &label, glm::vec3 *colourToEdit) {
     float tempArray[3] = {colourToEdit->x, colourToEdit->y, colourToEdit->z};
     bool modified = ImGui::ColorEdit3(label.c_str(), tempArray);

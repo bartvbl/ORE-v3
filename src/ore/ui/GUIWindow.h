@@ -27,6 +27,8 @@ namespace ore {
         bool drawDragFloat3(const std::string& label, glm::vec3* vecToEdit);
         bool drawDragFloat2(const std::string& label, glm::vec2* vecToEdit);
         bool drawDragFloat(const std::string& label, float* floatToEdit);
+        bool drawDragInteger(const std::string& label, int* intToEdit);
+        bool drawDragInteger(const std::string& label, unsigned int* intToEdit);
         bool drawSelectColour(const std::string& label, glm::vec3* colourToEdit);
         void drawText(const std::string& text);
         void keepSameLine();
