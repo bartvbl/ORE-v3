@@ -42,6 +42,10 @@ namespace ore {
                 // thread can get to it. So we do a check here just in case.
                 if(entry->second.isLoaded) {
                     std::cout << "Entry is already loaded, exiting.." << std::endl;
+
+                    #pragma omp atomic
+                    requiredItemsInProgress--;
+
                     return;
                 }
 
