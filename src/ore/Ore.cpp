@@ -8,6 +8,8 @@
 #include <ore/utilities/SceneGraphPrinter.h>
 #include "Ore.h"
 
+#include "resources/defaultResources.h"
+
 void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, std::shared_ptr<ore::GameState> initialState) {
     // Initialise logging system
     ore::Logger::init();
@@ -26,6 +28,8 @@ void ore::Engine::run(ore::filesystem::path engineConfigFileLocation, std::share
 
     this->currentGameState = std::move(initialState);
     this->currentGameState->set(&this->world);
+
+    ore::resources::enqueueDefaultResources(&this->world.resourceCache);
 
     // Rendering Loop
     while (!glfwWindowShouldClose(window) && !this->world.services.configService.gameShouldShutdown)

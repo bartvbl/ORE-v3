@@ -13,7 +13,7 @@ namespace ore {
         class LoadScreenRenderer {
         public:
             virtual void draw(float progress) = 0;
-            virtual void init(ore::resources::ResourceCache* cache) = 0;
+            virtual void init(ore::resources::ResourceCache* _cache) = 0;
             virtual void destroy() = 0;
         };
     }
