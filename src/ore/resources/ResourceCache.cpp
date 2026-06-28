@@ -112,14 +112,36 @@ void ore::resources::ResourceCache::enqueueResourceFile(ore::filesystem::path re
 
 unsigned int ore::resources::ResourceCache::countEnqueuedItems(ore::resources::ResourceLoadPriority threshold) {
     unsigned int totalResourceCount = 0;
-    totalResourceCount += textures.getEnqueuedItemCount(threshold);
-    totalResourceCount += animations.getEnqueuedItemCount(threshold);
-    totalResourceCount += sounds.getEnqueuedItemCount(threshold);
-    totalResourceCount += meshes.getEnqueuedItemCount(threshold);
-    totalResourceCount += lxfmlMeshes.getEnqueuedItemCount(threshold);
-    totalResourceCount += shaders.getEnqueuedItemCount(threshold);
-    totalResourceCount += fonts.getEnqueuedItemCount(threshold);
-    totalResourceCount += customResources.getEnqueuedItemCount(threshold);
+    uint32_t textureCount = textures.getEnqueuedItemCount(threshold);
+    uint32_t customResourcesCount = customResources.getEnqueuedItemCount(threshold);
+    uint32_t fontsCount = fonts.getEnqueuedItemCount(threshold);
+    uint32_t soundsCount = sounds.getEnqueuedItemCount(threshold);
+    uint32_t meshesCount = meshes.getEnqueuedItemCount(threshold);
+    uint32_t animationsCount = animations.getEnqueuedItemCount(threshold);
+    uint32_t lxfmlModelCount = lxfmlMeshes.getEnqueuedItemCount(threshold);
+    uint32_t shadersCount = shaders.getEnqueuedItemCount(threshold);
+
+    totalResourceCount += textureCount;
+    totalResourceCount += animationsCount;
+    totalResourceCount += soundsCount;
+    totalResourceCount += meshesCount;
+    totalResourceCount += lxfmlModelCount;
+    totalResourceCount += shadersCount;
+    totalResourceCount += fontsCount;
+    totalResourceCount += customResourcesCount;
+
+    constexpr bool displayCounts = false;
+    if (displayCounts) {
+        std::cout << "Textures: " << textureCount << std::endl;
+        std::cout << "Animations: " << animationsCount << std::endl;
+        std::cout << "Sounds: " << soundsCount << std::endl;
+        std::cout << "Meshes: " << meshesCount << std::endl;
+        std::cout << "Lxfml Models: " << lxfmlModelCount << std::endl;
+        std::cout << "Shaders: " << shadersCount << std::endl;
+        std::cout << "Fonts: " << fontsCount << std::endl;
+        std::cout << "Custom Resources: " << customResourcesCount << std::endl;
+    }
+
     return totalResourceCount;
 }
 
