@@ -17,12 +17,19 @@ ore::gl::GeometryBuffer ore::gl::Font::createRenderableText(std::string &text, u
     }
 
     float baseXCoordinate = 0;
+    float baseYCoordinate = 0;
     unsigned int characterIndex = 0;
     for(char characterInText : text) {
+        if (characterInText == '\n') {
+            baseXCoordinate = 0;
+            baseYCoordinate -= 1.2f * float(fontSize);
+            characterIndex++;
+            continue;
+        }
         FontCharacter characterInfo = characterList->second.at((unsigned int) characterInText);
 
         float positionX = baseXCoordinate + characterInfo.bearingPixels.x;
-        float positionY = characterInfo.bearingPixels.y - characterInfo.sizePixels.y;
+        float positionY = baseYCoordinate + characterInfo.bearingPixels.y - characterInfo.sizePixels.y;
         float width = characterInfo.sizePixels.x;
         float height = characterInfo.sizePixels.y;
 
