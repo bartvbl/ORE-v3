@@ -145,15 +145,58 @@ unsigned int ore::resources::ResourceCache::countEnqueuedItems(ore::resources::R
     return totalResourceCount;
 }
 
-void ore::resources::ResourceCache::flushMainThreadCompletions() {
-    textures.runMainThreadJobs();
-    animations.runMainThreadJobs();
-    sounds.runMainThreadJobs();
-    meshes.runMainThreadJobs();
-    lxfmlMeshes.runMainThreadJobs();
-    shaders.runMainThreadJobs();
-    fonts.runMainThreadJobs();
-    customResources.runMainThreadJobs();
+float ore::resources::ResourceCache::computeElapsedTimeSeconds(std::chrono::time_point<std::chrono::steady_clock> startTime) {
+    std::chrono::time_point<std::chrono::steady_clock> currentTime = std::chrono::steady_clock::now();
+    std::chrono::duration elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime - startTime);
+    float secondsElapsed = float(elapsedTime.count()) / 1000000000.0f;
+    return secondsElapsed;
+}
+
+void ore::resources::ResourceCache::flushMainThreadCompletions(float timeoutSeconds) {
+    std::chrono::time_point<std::chrono::steady_clock> startTime = std::chrono::steady_clock::now();
+    textures.runMainThreadJobs(timeoutSeconds);
+    float elapsedTime = computeElapsedTimeSeconds(startTime);
+    if (elapsedTime >= timeoutSeconds) {
+        return;
+    }
+
+    animations.runMainThreadJobs(timeoutSeconds - elapsedTime);
+    elapsedTime = computeElapsedTimeSeconds(startTime);
+    if (elapsedTime >= timeoutSeconds) {
+        return;
+    }
+
+    sounds.runMainThreadJobs(timeoutSeconds - elapsedTime);
+    elapsedTime = computeElapsedTimeSeconds(startTime);
+    if (elapsedTime >= timeoutSeconds) {
+        return;
+    }
+
+    meshes.runMainThreadJobs(timeoutSeconds - elapsedTime);
+    elapsedTime = computeElapsedTimeSeconds(startTime);
+    if (elapsedTime >= timeoutSeconds) {
+        return;
+    }
+
+    lxfmlMeshes.runMainThreadJobs(timeoutSeconds - elapsedTime);
+    elapsedTime = computeElapsedTimeSeconds(startTime);
+    if (elapsedTime >= timeoutSeconds) {
+        return;
+    }
+
+    shaders.runMainThreadJobs(timeoutSeconds - elapsedTime);
+    elapsedTime = computeElapsedTimeSeconds(startTime);
+    if (elapsedTime >= timeoutSeconds) {
+        return;
+    }
+
+    fonts.runMainThreadJobs(timeoutSeconds - elapsedTime);
+    elapsedTime = computeElapsedTimeSeconds(startTime);
+    if (elapsedTime >= timeoutSeconds) {
+        return;
+    }
+
+    customResources.runMainThreadJobs(timeoutSeconds - elapsedTime);
 }
 
 void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadScreenRenderer *renderer, ore::resources::ResourceLoadPriority threshold) {
@@ -171,7 +214,7 @@ void ore::resources::ResourceCache::runLoadScreenSequence(ore::resources::LoadSc
     while (!glfwWindowShouldClose(window) && remainingItemsToLoad > 0) {
         ore::window::newFrame(window, settings);
 
-        flushMainThreadCompletions();
+        flushMainThreadCompletions(1.0f / 60.0f);
 
         remainingItemsToLoad = countEnqueuedItems(threshold);
         float progress = float(totalItemsToLoad - remainingItemsToLoad) / float(totalItemsToLoad);

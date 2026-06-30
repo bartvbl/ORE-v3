@@ -72,9 +72,16 @@ namespace ore {
                 }
             }
 
-            void runMainThreadJobs() {
+            void runMainThreadJobs(float timeoutTimeSeconds) {
+                std::chrono::time_point<std::chrono::steady_clock> startTime = std::chrono::steady_clock::now();
                 mainThreadQueueMutex.lock();
                 while(!mainThreadCompletionQueue.empty()) {
+                    std::chrono::time_point<std::chrono::steady_clock> currentTime = std::chrono::steady_clock::now();
+                    std::chrono::duration elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime - startTime);
+                    float millisecondsElapsed = float(elapsedTime.count()) / 1000000000.0f;
+                    if (millisecondsElapsed > timeoutTimeSeconds) {
+                        break;
+                    }
                     std::string nextEntry = mainThreadCompletionQueue.front();
                     mainThreadCompletionQueue.pop();
                     typename std::map<std::string, ore::resources::ResourceContainerEntry<ContentsType>>::iterator
@@ -88,18 +95,6 @@ namespace ore {
                     requiredItemsInProgress--;
                 }
                 mainThreadQueueMutex.unlock();
-            }
-
-            unsigned int getEnqueuedItemCount(ore::resources::ResourceLoadPriority threshold) {
-                unsigned int enqueuedItemCount = 0;
-                if(threshold == ore::resources::ResourceLoadPriority::REQUIRED) {
-                    enqueuedItemCount += requiredItemsInProgress;
-                }
-                if((threshold == ore::resources::ResourceLoadPriority::STREAMING ||
-                    threshold == ore::resources::ResourceLoadPriority::REQUIRED)) {
-                    enqueuedItemCount += streamingItemsInProgress;
-                }
-                return enqueuedItemCount;
             }
 
             bool loadNext(ore::resources::ResourceLoadPriority threshold) {
@@ -130,6 +125,18 @@ namespace ore {
             }
 
         public:
+            unsigned int getEnqueuedItemCount(ore::resources::ResourceLoadPriority threshold) {
+                unsigned int enqueuedItemCount = 0;
+                if(threshold == ore::resources::ResourceLoadPriority::REQUIRED) {
+                    enqueuedItemCount += requiredItemsInProgress;
+                }
+                if((threshold == ore::resources::ResourceLoadPriority::STREAMING ||
+                    threshold == ore::resources::ResourceLoadPriority::REQUIRED)) {
+                        enqueuedItemCount += streamingItemsInProgress;
+                    }
+                return enqueuedItemCount;
+            }
+
             void registerResource(std::string itemID, ore::resources::ResourceLoadPriority priority, ore::filesystem::path fileLocation, ContentsType* contentsTypeInstance) {
                 LOG(INFO) << "Registering resource: " << itemID << ". Src: " << fileLocation.string() << std::endl;
                 contentsTypeInstance->setName(itemID);

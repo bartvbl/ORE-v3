@@ -22,7 +22,7 @@ void ore::GameWorld::forceUpdateDisplayConfiguration() {
 }
 
 void ore::GameWorld::frameTick() {
-    resourceCache.flushMainThreadCompletions();
+    resourceCache.flushMainThreadCompletions(1.0f / 60.0f);
     services.inputService.tick();
     services.animationService.update();
     services.physicsService.update();

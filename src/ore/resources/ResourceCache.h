@@ -27,8 +27,11 @@ namespace ore {
             ore::utilities::Threadpool loadingThreadPool;
             unsigned int countEnqueuedItems(ore::resources::ResourceLoadPriority threshold);
 
+            static float computeElapsedTimeSeconds(std::chrono::time_point<std::chrono::steady_clock> startTime);
+
             void registerSingleEntry(std::string id, ore::filesystem::path fileLocation, ore::resources::ResourceLoadPriority priority);
             void wakeResourceLoadingThread();
+
         public:
             ore::resources::ResourceContainer<ore::resources::TextureResource> textures;
             ore::resources::ResourceContainer<ore::resources::MeshResource> meshes;
@@ -51,7 +54,7 @@ namespace ore {
                     ore::resources::LoadScreenRenderer* renderer,
                     ore::resources::ResourceLoadPriority threshold);
 
-            void flushMainThreadCompletions();
+            void flushMainThreadCompletions(float timeoutTimeSeconds);
 
             void shutdown();
 
