@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ore/sceneGraph/SceneNode.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace ore {

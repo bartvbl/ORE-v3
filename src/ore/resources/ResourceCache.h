@@ -13,6 +13,7 @@
 #include <ore/resources/resourceTypes/VideoResource.h>
 #include <ore/resources/ResourceContainer.h>
 #include <ore/resources/ResourceLoadPriority.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <ore/utilities/Threadpool.h>
 

@@ -3,6 +3,7 @@
 
 #include "GUIWindow.h"
 #include "ore/sceneGraph/nodes/ContainerNode.h"
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 
