@@ -5,13 +5,11 @@
 #include "ore/sceneGraph/nodes/ContainerNode.h"
 #include <GLFW/glfw3.h>
 
-#include "FontCache.h"
 
 namespace ore {
     class GUIRootNode : public ore::SceneNode {
         std::vector<ore::GUIWindow*> windows;
         GLFWwindow* window = nullptr;
-        ore::ui::FontCache fontCache;
         std::vector<ore::SceneNode *> noChildren;
 
     public:

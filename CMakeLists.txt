@@ -82,7 +82,6 @@ include_directories (
     lib/fast_obj/
     lib/json/
     lib/g3log/src/
-    lib/Nuklear-4.12.8
     lib/JoltPhysics-5.3.0
     lib/imgui-1.92.6
     lib/imgui-1.92.6/backends
